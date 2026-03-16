@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Checkout - The Craft Room</title>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Be Vietnam Pro -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#ff5252', // Coral Red from DATA:THEME:THEME_1
+            headerBg: '#334155', // Deep Blueish Gray (Slate 700)
+            borderColor: '#C0C0C0', // Silver Gray
+          },
+          fontFamily: {
+            sans: ['"Be Vietnam Pro"', 'sans-serif'],
+          },
+          borderRadius: {
+            'custom': '8px', // ROUND_EIGHT from DATA:THEME:THEME_1
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-styling">
+    body {
+      font-family: "Be Vietnam Pro", sans-serif;
+      background-color: #f9fafb;
+    }
+    .step-active {
+      color: #ff5252;
+      border-bottom: 2px solid #ff5252;
+    }
+    input, select {
+      border-color: #C0C0C0 !important;
+      border-radius: 8px !important;
+    }
+    input:focus {
+      border-color: #ff5252 !important;
+      ring-color: #ff5252 !important;
+    }
+  </style>
+</head>
+<body class="text-slate-800">
+<!-- BEGIN: MainHeader -->
+<header class="bg-headerBg text-white py-6 shadow-md" data-purpose="global-header">
+<div class="container mx-auto px-4 flex justify-between items-center">
+<h1 class="text-2xl font-bold tracking-tight">THE CRAFT ROOM</h1>
+<a class="text-sm hover:underline opacity-90" href="#">Back to Shopping</a>
+</div>
+</header>
+<!-- END: MainHeader -->
+<main class="container mx-auto px-4 py-12 max-w-6xl">
+<!-- BEGIN: StepIndicator -->
+<nav class="mb-12" data-purpose="checkout-progress">
+<ol class="flex items-center justify-center space-x-8 text-sm font-medium uppercase tracking-wider">
+<li class="flex items-center text-slate-400">
+<span class="mr-2">01</span> Cart
+          <svg class="w-4 h-4 ml-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</li>
+<li class="flex items-center step-active pb-1">
+<span class="mr-2 text-primary">02</span> Shipping &amp; Payment
+          <svg class="w-4 h-4 ml-4 text-slate-300" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</li>
+<li class="flex items-center text-slate-400">
+<span class="mr-2">03</span> Confirmation
+        </li>
+</ol>
+</nav>
+<!-- END: StepIndicator -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+<!-- BEGIN: CheckoutForm -->
+<section class="lg:col-span-2 space-y-10" data-purpose="checkout-details-entry">
+<!-- Shipping Information -->
+<div class="bg-white p-8 rounded-custom shadow-sm border border-slate-100">
+<h2 class="text-xl font-semibold mb-6 flex items-center">
+<span class="w-8 h-8 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center mr-3 text-sm">1</span>
+            Shipping Information
+          </h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="md:col-span-1">
+<label class="block text-sm font-medium text-slate-600 mb-1">First Name</label>
+<input class="w-full p-2.5 outline-none focus:ring-1" placeholder="Jane" type="text"/>
+</div>
+<div class="md:col-span-1">
+<label class="block text-sm font-medium text-slate-600 mb-1">Last Name</label>
+<input class="w-full p-2.5 outline-none focus:ring-1" placeholder="Doe" type="text"/>
+</div>
+<div class="md:col-span-2">
+<label class="block text-sm font-medium text-slate-600 mb-1">Address</label>
+<input class="w-full p-2.5 outline-none focus:ring-1" placeholder="123 Crafty Lane" type="text"/>
+</div>
+<div class="md:col-span-1">
+<label class="block text-sm font-medium text-slate-600 mb-1">City</label>
+<input class="w-full p-2.5 outline-none focus:ring-1" placeholder="Portland" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-4 md:col-span-1">
+<div>
+<label class="block text-sm font-medium text-slate-600 mb-1">State</label>
+<select class="w-full p-2.5 outline-none focus:ring-1">
+<option>OR</option>
+<option>WA</option>
+<option>CA</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-600 mb-1">Zip</label>
+<input class="w-full p-2.5 outline-none focus:ring-1" placeholder="97201" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Payment Information -->
+<div class="bg-white p-8 rounded-custom shadow-sm border border-slate-100">
+<h2 class="text-xl font-semibold mb-6 flex items-center">
+<span class="w-8 h-8 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center mr-3 text-sm">2</span>
+            Payment Method
+          </h2>
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-medium text-slate-600 mb-1">Card Number</label>
+<div class="relative">
+<input class="w-full p-2.5 outline-none focus:ring-1 pl-10" placeholder="0000 0000 0000 0000" type="text"/>
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-6">
+<div>
+<label class="block text-sm font-medium text-slate-600 mb-1">Expiry Date</label>
+<input class="w-full p-2.5 outline-none focus:ring-1" placeholder="MM / YY" type="text"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-600 mb-1">CVC</label>
+<input class="w-full p-2.5 outline-none focus:ring-1" placeholder="123" type="text"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: CheckoutForm -->
+<!-- BEGIN: OrderSummary -->
+<aside class="lg:col-span-1" data-purpose="order-summary-sidebar">
+<div class="bg-white p-8 rounded-custom shadow-sm border border-slate-100 sticky top-8">
+<h2 class="text-xl font-semibold mb-6 border-bottom">Order Summary</h2>
+<!-- Item List -->
+<div class="space-y-4 mb-6" data-purpose="cart-items-preview">
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<div class="w-12 h-12 bg-slate-100 rounded-custom mr-3 flex-shrink-0">
+<img alt="Product" class="w-full h-full object-cover rounded-custom" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt7bL3AhjFV35zR9aHFLRJe_TeYu32KyGNalAB9-82AJ9sJmYQgRdn3o9VJT3siPRt_7nIM21ZxE0ZErMrfcJapvzNiwALBb_lnGuAgObIj__D7NhpQXHg-VGHoWA4Ksd3lLFwAd46-9qDRfCshaCeACBQUT9jQjgSTN4IRH7NBCcA3zH21yITq1Mwn3KuhYHO8r8IRAsUpNdZp8IRQFfyNN8bwLaJWqLhkeRpqZIqfEIk8k7Lh-v_GN9kdbQnf7HbWqhKeFaCepyu"/>
+</div>
+<div>
+<p class="text-sm font-medium">Handmade Ceramic Mug</p>
+<p class="text-xs text-slate-500">Qty: 1</p>
+</div>
+</div>
+<span class="text-sm font-semibold">$24.00</span>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<div class="w-12 h-12 bg-slate-100 rounded-custom mr-3 flex-shrink-0">
+<img alt="Product" class="w-full h-full object-cover rounded-custom" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFqksDAo6PRaechz7y_qKV8ltg3tQ1xBP0SxB_Ldi3u15gWTd2B49oIlqVoQiU6tY1usDw_rbpdbf5ds_ZrCvi0J3hSrUIrCDoiSXuBOd3iqS3ema7dGBCJ885J578eoWJyn_xtaOwIiR21gDqZdM9DDhxasU6AJDoVBLua-g9EBfoH-2dkBoHOZ99POC563OSYOmM0uR9vsZKcW1EVr96s89p8VXhsuJC-kG81NunDP7V2RlYcmHmHRBjxfVKfihO61wpIMW5KgxN"/>
+</div>
+<div>
+<p class="text-sm font-medium">Cotton Weaving Kit</p>
+<p class="text-xs text-slate-500">Qty: 2</p>
+</div>
+</div>
+<span class="text-sm font-semibold">$70.00</span>
+</div>
+</div>
+<div class="border-t border-slate-100 pt-4 space-y-2 mb-6">
+<div class="flex justify-between text-slate-600 text-sm">
+<span>Subtotal</span>
+<span>$94.00</span>
+</div>
+<div class="flex justify-between text-slate-600 text-sm">
+<span>Shipping</span>
+<span>$8.50</span>
+</div>
+<div class="flex justify-between text-slate-600 text-sm">
+<span>Tax</span>
+<span>$0.00</span>
+</div>
+<div class="flex justify-between text-lg font-bold pt-2 border-t border-slate-50 mt-2">
+<span>Total</span>
+<span>$102.50</span>
+</div>
+</div>
+<!-- Checkout Button -->
+<button class="w-full bg-primary hover:opacity-90 text-white font-bold py-4 rounded-custom transition-all shadow-lg active:scale-[0.98]" data-purpose="submit-checkout">
+            PLACE ORDER
+          </button>
+<p class="text-center text-xs text-slate-400 mt-4">Secure encrypted transaction</p>
+</div>
+</aside>
+<!-- END: OrderSummary -->
+</div>
+</main>
+<footer class="mt-20 py-8 border-t border-slate-200">
+<div class="container mx-auto px-4 text-center text-slate-400 text-sm">
+      © 2023 The Craft Room. All rights reserved.
+    </div>
+</footer>
+</body></html>

@@ -1,0 +1,111 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          DEFAULT: "#c62ab9",
+          dark: "#901e87",
+          50: "#fdf4fd",
+          100: "#fbe8fb",
+          200: "#f6d1f5",
+          300: "#efacea",
+          400: "#e47ddc",
+          500: "#c62ab9",
+          600: "#a82299",
+          700: "#901e87",
+          800: "#6d1a64",
+          900: "#5a1752",
+          950: "#380a32",
+        },
+        dark: {
+          50: "#f8f6f8",
+          100: "#f1f0f1",
+          200: "#e2e0e2",
+          300: "#c9c5c9",
+          400: "#a89fa7",
+          500: "#8a7f89",
+          600: "#6f646e",
+          700: "#5a5259",
+          800: "#4a444a",
+          900: "#20121f",
+          950: "#150a14",
+        },
+        // Semantic tokens
+        "background-light": "#f8f6f8",
+        "background-dark": "#20121f",
+        surface: "#301c2f",
+        "surface-dark": "#301c2f",
+        "surface-elevated": "#3d2a3c",
+        "surface-dark-border": "#432841",
+        border: "#432841",
+        "border-dark": "#432841",
+        "border-active": "#60395d",
+        "primary-hover": "#a8249d",
+        "primary-dark": "#a12296",
+        "text-dark": "#381e35",
+        "text-primary": "#ffffff",
+        "text-secondary": "#c398bf",
+        "text-subtle": "#c398bf",
+        "text-muted": "#8a7f89",
+      },
+      fontFamily: {
+        display: ["Teko", "sans-serif"],
+        mono: ["Space Mono", "monospace"],
+        body: ["Space Grotesk", "sans-serif"],
+      },
+      animation: {
+        marquee: "marquee 30s linear infinite",
+        "fade-in-up": "fadeInUp 0.6s ease-out forwards",
+        "slide-in": "slideIn 0.4s ease-out forwards",
+        "slide-up": "slideUp 0.3s ease-out forwards",
+        "scale-in": "scaleIn 0.2s ease-out forwards",
+        "glow-pulse": "glowPulse 2s ease-in-out infinite",
+        shimmer: "shimmer 1.5s linear infinite",
+      },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+        fadeInUp: {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        slideIn: {
+          "0%": { opacity: "0", transform: "translateX(-20px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
+        slideUp: {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        scaleIn: {
+          "0%": { opacity: "0", transform: "scale(0.95)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
+        glowPulse: {
+          "0%, 100%": { boxShadow: "0 0 20px rgba(251,13,64,0.3)" },
+          "50%": { boxShadow: "0 0 40px rgba(251,13,64,0.6)" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
+      },
+      boxShadow: {
+        glow: "0 0 20px rgba(251, 13, 64, 0.5)",
+        "glow-lg": "0 0 40px rgba(251, 13, 64, 0.7)",
+        "glow-sm": "0 0 10px rgba(251, 13, 64, 0.3)",
+      },
+      transitionDuration: {
+        fast: "150ms",
+        normal: "300ms",
+        slow: "500ms",
+      },
+    },
+  },
+  plugins: [],
+};

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Product Gallery | The Craft Room</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Font: Be Vietnam Pro -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              primary: '#FF5252', // Coral Red
+              dark: '#37474F',    // Blueish Gray
+              snow: '#FFFFFF',    // Snow White
+            }
+          },
+          fontFamily: {
+            sans: ['"Be Vietnam Pro"', 'sans-serif'],
+          },
+          borderRadius: {
+            'custom': '8px', // ROUND_EIGHT
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-typography">
+    body {
+      font-family: "Be Vietnam Pro", sans-serif;
+      background-color: #FFFFFF;
+      color: #37474F;
+    }
+  </style>
+<style data-purpose="component-styles">
+    /* Custom hover transition for product cards */
+    .product-card {
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    /* Custom button hover */
+    .btn-details {
+      transition: background-color 0.2s;
+    }
+    .btn-details:hover {
+      background-color: #e64a4a;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+<!-- BEGIN: MainHeader -->
+<header class="border-b border-gray-100 sticky top-0 bg-white/95 backdrop-blur-sm z-50">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 bg-brand-primary rounded-custom flex items-center justify-center text-white font-bold text-xl">CR</div>
+<h1 class="text-2xl font-bold tracking-tight text-brand-dark">The Craft Room</h1>
+</div>
+<nav class="hidden md:flex space-x-8 font-medium text-brand-dark/80">
+<a class="hover:text-brand-primary transition-colors" href="#">New Arrivals</a>
+<a class="text-brand-primary" href="#">Shop All</a>
+<a class="hover:text-brand-primary transition-colors" href="#">Custom Commissions</a>
+<a class="hover:text-brand-primary transition-colors" href="#">About</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="p-2 text-brand-dark hover:bg-gray-100 rounded-full">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<button class="p-2 text-brand-dark hover:bg-gray-100 rounded-full relative">
+<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="absolute top-1 right-1 bg-brand-primary text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">3</span>
+</button>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: MainContent -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="flex flex-col md:flex-row gap-8">
+<!-- BEGIN: SidebarFilters -->
+<aside class="w-full md:w-64 flex-shrink-0" data-purpose="sidebar-filter">
+<div class="sticky top-28">
+<h2 class="text-lg font-bold mb-6 text-brand-dark uppercase tracking-wider">Categories</h2>
+<div class="space-y-6">
+<!-- Category Filter Group -->
+<section>
+<h3 class="text-sm font-semibold text-brand-dark/60 mb-3 uppercase">Gear Type</h3>
+<ul class="space-y-2">
+<li class="flex items-center gap-2">
+<input class="rounded border-gray-300 text-brand-primary focus:ring-brand-primary" id="cat-helmets" type="checkbox"/>
+<label class="text-sm" for="cat-helmets">Helmets</label>
+</li>
+<li class="flex items-center gap-2">
+<input checked="" class="rounded border-gray-300 text-brand-primary focus:ring-brand-primary" id="cat-swords" type="checkbox"/>
+<label class="text-sm" for="cat-swords">Swords &amp; Blades</label>
+</li>
+<li class="flex items-center gap-2">
+<input class="rounded border-gray-300 text-brand-primary focus:ring-brand-primary" id="cat-armor" type="checkbox"/>
+<label class="text-sm" for="cat-armor">Full Armor Sets</label>
+</li>
+<li class="flex items-center gap-2">
+<input class="rounded border-gray-300 text-brand-primary focus:ring-brand-primary" id="cat-shields" type="checkbox"/>
+<label class="text-sm" for="cat-shields">Shields</label>
+</li>
+</ul>
+</section>
+<!-- Price Range Filter -->
+<section>
+<h3 class="text-sm font-semibold text-brand-dark/60 mb-3 uppercase">Price Range</h3>
+<div class="space-y-2">
+<input class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-primary" type="range"/>
+<div class="flex justify-between text-xs text-brand-dark/70">
+<span>$100</span>
+<span>$2,500+</span>
+</div>
+</div>
+</section>
+<!-- Material Filter -->
+<section>
+<h3 class="text-sm font-semibold text-brand-dark/60 mb-3 uppercase">Material</h3>
+<ul class="space-y-2">
+<li class="flex items-center gap-2 text-sm"><input class="rounded border-gray-300 text-brand-primary" type="checkbox"/> EVA Foam</li>
+<li class="flex items-center gap-2 text-sm"><input class="rounded border-gray-300 text-brand-primary" type="checkbox"/> Resin Cast</li>
+<li class="flex items-center gap-2 text-sm"><input class="rounded border-gray-300 text-brand-primary" type="checkbox"/> 3D Printed</li>
+</ul>
+</section>
+</div>
+</div>
+</aside>
+<!-- END: SidebarFilters -->
+<!-- BEGIN: ProductGrid -->
+<section class="flex-1">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-xl font-medium text-brand-dark">Showing 12 Results</h2>
+<div class="flex items-center gap-2">
+<label class="text-sm text-brand-dark/60">Sort by:</label>
+<select class="border-0 bg-transparent text-sm font-semibold focus:ring-0 cursor-pointer">
+<option>Newest First</option>
+<option>Price: Low to High</option>
+<option>Price: High to Low</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Product Card 1 -->
+<article class="product-card bg-white border border-gray-100 rounded-custom overflow-hidden flex flex-col" data-purpose="product-item">
+<div class="relative aspect-square bg-gray-50 overflow-hidden">
+<img alt="Full Knight Vanguard Helmet" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2pBH_YwdqEjd5IZJblVjkkko0GQpo7GxJeUZZKthR--_vm82HB9bCV7f59EUEksQL9Wk3sLChDIKZmTHeWSLc-bSIG5ih7-YUwCwyMohR6GQs2sEl5IIqBOeqwsCcph23hmYFhTVKnIT3qHr1d6f9zCBy1818fp_NmzaMGO3hX83vYL2WndcBW6eBxK-Ppvb0R2Da1GICMWnxzOghmp8_1ftMsq5q8jT5WDL-2G68OVMHpiSNW3Bzcnhgwn4CXm-_M672LhGUTdAT"/>
+<span class="absolute top-3 left-3 bg-brand-dark text-white text-[10px] px-2 py-1 uppercase tracking-widest font-bold rounded">New Arrival</span>
+</div>
+<div class="p-5 flex flex-col flex-grow">
+<p class="text-[10px] text-brand-primary font-bold uppercase tracking-widest mb-1">Helmets</p>
+<h3 class="text-lg font-bold text-brand-dark mb-2">Vanguard Commander Helmet</h3>
+<p class="text-sm text-gray-500 mb-4 line-clamp-2">Hand-painted weathered steel finish. Made from high-density EVA foam for lightweight all-day wear.</p>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-xl font-bold text-brand-dark">$249.00</span>
+<button class="btn-details bg-brand-primary text-white px-4 py-2 rounded-custom text-sm font-semibold">View Details</button>
+</div>
+</div>
+</article>
+<!-- Product Card 2 -->
+<article class="product-card bg-white border border-gray-100 rounded-custom overflow-hidden flex flex-col" data-purpose="product-item">
+<div class="relative aspect-square bg-gray-50 overflow-hidden">
+<img alt="Rune Carved Greatsword" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC51PyPWUfn6k1zRjAP7nmOQkzuh7OPj5frmflRunszqdNqOO9Z-cHwdB8Ibhl4itlKmLfnuxCImQSK5wYPshIfYxPHz6HJoysDssO1hXTjlO5Fl-s91wx1KyecqFpFrceh0uDBjCqjDvDZWwwtnCFjlkhh3ew8nkioDbznIxK60VqYy9KcNeWjXxfVAieh2a041zufBBvONNQZp2l0Dc2qUw003tlx9sXlX9B-2W-fm9dXayA34x9zbsWYISszhn-WC0rvglxCnAPJ"/>
+</div>
+<div class="p-5 flex flex-col flex-grow">
+<p class="text-[10px] text-brand-primary font-bold uppercase tracking-widest mb-1">Swords</p>
+<h3 class="text-lg font-bold text-brand-dark mb-2">Rune-Carved Greatsword</h3>
+<p class="text-sm text-gray-500 mb-4 line-clamp-2">Exquisite prop sword with integrated LED runes. Features a textured leather-wrapped hilt.</p>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-xl font-bold text-brand-dark">$415.00</span>
+<button class="btn-details bg-brand-primary text-white px-4 py-2 rounded-custom text-sm font-semibold">View Details</button>
+</div>
+</div>
+</article>
+<!-- Product Card 3 -->
+<article class="product-card bg-white border border-gray-100 rounded-custom overflow-hidden flex flex-col" data-purpose="product-item">
+<div class="relative aspect-square bg-gray-50 overflow-hidden">
+<img alt="Paladin Armor Set" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfK8hm5_gTIzry2VwvS_xCeN49_3QZqZyZOTVTbXTcuDAaZ4UFAqC-omLsHxsNzX1AZzPDptT7OAoY3Hrzhgl0aBy3ndGfaHRzoDWOoQo80t-orttgGrI7KzKpu4W3K5fOdcbtO4nGCFRH1ZKeB__G1-uBQvDncOMNBG_7npC9ev8I6Kz5HAGzurDGL6PCqIB76eyAJPr0sJsiUk_cEpojXwfyo-hNM9tsKFojAASJL-kfeEgRFVD4cA4dbVa8dKHaFED8gW_P67A5"/>
+</div>
+<div class="p-5 flex flex-col flex-grow">
+<p class="text-[10px] text-brand-primary font-bold uppercase tracking-widest mb-1">Armor Sets</p>
+<h3 class="text-lg font-bold text-brand-dark mb-2">Titan Paladin Chestplate</h3>
+<p class="text-sm text-gray-500 mb-4 line-clamp-2">Highly detailed resin cast armor with adjustable nylon straps. Fits various body sizes.</p>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-xl font-bold text-brand-dark">$899.00</span>
+<button class="btn-details bg-brand-primary text-white px-4 py-2 rounded-custom text-sm font-semibold">View Details</button>
+</div>
+</div>
+</article>
+<!-- Product Card 4 -->
+<article class="product-card bg-white border border-gray-100 rounded-custom overflow-hidden flex flex-col" data-purpose="product-item">
+<div class="relative aspect-square bg-gray-50 overflow-hidden">
+<img alt="Shadow Assassin Dagger" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjEXQ9lLzVD8DuaVp58m80oOEFOixfQAHgWDGiuQbcxArHQqt0RrE0Rq1J-E-HzpkahPQrwmYC9sLeYuqrDzE8-IrBVzwfWMp9GEUq4fHADCjR3CwLjuQuseXB0WwfDLUa2a6oLxauDhYQIEm5v_ZGTWQfjo9scz29dLT_Nf7H-obsfbZMiCBoI-G2XFGMfd6Dj5wRbHRbFQ2Sx7iqahoQhQ26yqKAgEtmiESFB_u-STXrnONhOG0PeC_86MGsqDHRo5--PYFdpcw_"/>
+</div>
+<div class="p-5 flex flex-col flex-grow">
+<p class="text-[10px] text-brand-primary font-bold uppercase tracking-widest mb-1">Blades</p>
+<h3 class="text-lg font-bold text-brand-dark mb-2">Shadow Assassin Daggers (Pair)</h3>
+<p class="text-sm text-gray-500 mb-4 line-clamp-2">Lightweight carbon-fiber reinforced resin. Matte black finish with crimson accents.</p>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-xl font-bold text-brand-dark">$185.00</span>
+<button class="btn-details bg-brand-primary text-white px-4 py-2 rounded-custom text-sm font-semibold">View Details</button>
+</div>
+</div>
+</article>
+<!-- Product Card 5 -->
+<article class="product-card bg-white border border-gray-100 rounded-custom overflow-hidden flex flex-col" data-purpose="product-item">
+<div class="relative aspect-square bg-gray-50 overflow-hidden">
+<img alt="Ancient Aegis Shield" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8HKDyjpyEAmM0tjtnh98E2wOGjtWWORJNJm1fOlqreezpTsuXEnouc6llZF_Tx6fzR1b8gQBcJTGNos92Sx3GU3Bg-9461iRUvaa95dCIhZMlA-TkIj9jFz7wyvYH7PS5_eR4kJLBRmS8bnwghirgEclXK5UVZImXgF77-wC06wRZH8-vPHYd8hx1_9Kx0O21WYuug3fVzSG3WDXkQDwj3BOcD2A7It51thFfCoyQWqQssLN-J4_MQ7KkONMHjI9I6WmSCqsZqRN5"/>
+</div>
+<div class="p-5 flex flex-col flex-grow">
+<p class="text-[10px] text-brand-primary font-bold uppercase tracking-widest mb-1">Shields</p>
+<h3 class="text-lg font-bold text-brand-dark mb-2">Ancient Aegis Buckler</h3>
+<p class="text-sm text-gray-500 mb-4 line-clamp-2">Iconic round shield with intricate engraving. Perfect for wall mounting or cosplay use.</p>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-xl font-bold text-brand-dark">$320.00</span>
+<button class="btn-details bg-brand-primary text-white px-4 py-2 rounded-custom text-sm font-semibold">View Details</button>
+</div>
+</div>
+</article>
+<!-- Product Card 6 -->
+<article class="product-card bg-white border border-gray-100 rounded-custom overflow-hidden flex flex-col" data-purpose="product-item">
+<div class="relative aspect-square bg-gray-50 overflow-hidden">
+<img alt="Cyberpunk Visor" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXfTIRphcEQ2b9MESlEcA5_MUJ7yhoZBZqJIGNjKexCefyHkDmusUR7r9PqM3U4zhGtGvxpKRYzaXVGt5_nRdz-DYQc-BrwvMp5JH2slFjk_DyPTxS3VQ4ROVof1uw3vzaiRUhqbdFgNbrSHjdecJlyixJOR6uwQWsKRrQEUznpXCsux2UGotYCINkQ8umboJxCOBQ81-7U8D-08O4Ev4j9XSvrSHYcjhmlPZAUeKSFMTy5IpZaC_LbuacggL22nV6DJ1-KsnwznGs"/>
+</div>
+<div class="p-5 flex flex-col flex-grow">
+<p class="text-[10px] text-brand-primary font-bold uppercase tracking-widest mb-1">Helmets</p>
+<h3 class="text-lg font-bold text-brand-dark mb-2">Techno-Runner Visor</h3>
+<p class="text-sm text-gray-500 mb-4 line-clamp-2">Futuristic eyewear with programmable RGB lighting. Rechargable via USB-C.</p>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-xl font-bold text-brand-dark">$145.00</span>
+<button class="btn-details bg-brand-primary text-white px-4 py-2 rounded-custom text-sm font-semibold">View Details</button>
+</div>
+</div>
+</article>
+</div>
+<!-- BEGIN: Pagination -->
+<nav class="mt-16 flex justify-center items-center gap-4" data-purpose="pagination">
+<button class="w-10 h-10 flex items-center justify-center rounded-custom border border-gray-200 hover:bg-gray-50 text-brand-dark">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-custom bg-brand-primary text-white font-bold">1</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-custom hover:bg-gray-100">2</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-custom hover:bg-gray-100">3</button>
+<span class="px-2">...</span>
+<button class="w-10 h-10 flex items-center justify-center rounded-custom hover:bg-gray-100">8</button>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-custom border border-gray-200 hover:bg-gray-50 text-brand-dark">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</nav>
+<!-- END: Pagination -->
+</section>
+<!-- END: ProductGrid -->
+</div>
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: Footer -->
+<footer class="bg-brand-dark text-white py-16 mt-20">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="col-span-1 md:col-span-1">
+<div class="w-10 h-10 bg-brand-primary rounded-custom flex items-center justify-center text-white font-bold text-xl mb-6">CR</div>
+<p class="text-gray-400 text-sm leading-relaxed">Crafting high-end fantasy and sci-fi replicas for serious cosplayers and collectors. Every piece is hand-finished in our studio.</p>
+</div>
+<div>
+<h4 class="font-bold mb-6 text-white uppercase text-xs tracking-widest">Shop</h4>
+<ul class="space-y-4 text-sm text-gray-400">
+<li><a class="hover:text-brand-primary" href="#">Catalog</a></li>
+<li><a class="hover:text-brand-primary" href="#">Custom Orders</a></li>
+<li><a class="hover:text-brand-primary" href="#">Gift Cards</a></li>
+<li><a class="hover:text-brand-primary" href="#">Returns</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-6 text-white uppercase text-xs tracking-widest">Support</h4>
+<ul class="space-y-4 text-sm text-gray-400">
+<li><a class="hover:text-brand-primary" href="#">Care Instructions</a></li>
+<li><a class="hover:text-brand-primary" href="#">Shipping Info</a></li>
+<li><a class="hover:text-brand-primary" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-brand-primary" href="#">FAQ</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-6 text-white uppercase text-xs tracking-widest">Newsletter</h4>
+<p class="text-sm text-gray-400 mb-4">Get first dibs on limited run armor drops.</p>
+<div class="flex">
+<input class="bg-white/10 border-0 focus:ring-1 focus:ring-brand-primary text-white text-sm rounded-l-custom w-full" placeholder="Email address" type="email"/>
+<button class="bg-brand-primary px-4 py-2 rounded-r-custom text-sm font-bold">Join</button>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 pt-8 border-t border-white/10 text-center text-xs text-gray-500">
+      © 2023 The Craft Room Studio. All rights reserved.
+    </div>
+</footer>
+<!-- END: Footer -->
+</body></html>

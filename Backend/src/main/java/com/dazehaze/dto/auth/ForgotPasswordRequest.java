@@ -1,0 +1,17 @@
+package com.dazehaze.dto.auth;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ForgotPasswordRequest {
+
+    @NotBlank(message = "El correo electrónico es requerido")
+    @Email(message = "Formato de correo electrónico inválido")
+    private String email;
+}

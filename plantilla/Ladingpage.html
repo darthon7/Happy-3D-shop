@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Craft Room | Professional Cosplay Props</title>
+<!-- BEGIN: Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- END: Google Fonts -->
+<!-- BEGIN: Tailwind CSS & Configuration -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              DEFAULT: '#FF5252', // Coral Red
+              dark: '#D32F2F',
+            },
+            header: '#37474F', // Deep Blueish Gray
+            snow: '#FFFFFF',
+            silver: '#E0E0E0',
+          },
+          fontFamily: {
+            sans: ['"Be Vietnam Pro"', 'sans-serif'],
+          },
+          borderRadius: {
+            'custom': '8px', // ROUND_EIGHT
+          }
+        }
+      }
+    }
+  </script>
+<!-- END: Tailwind CSS & Configuration -->
+<style data-purpose="layout-refinements">
+    body {
+      background-color: #FFFFFF;
+      color: #37474F;
+      scroll-behavior: smooth;
+    }
+    .divider {
+      height: 1px;
+      background-color: #E0E0E0;
+    }
+    .sticky-header {
+      backdrop-filter: blur(8px);
+      background-color: rgba(55, 71, 79, 0.95);
+    }
+  </style>
+</head>
+<body class="font-sans">
+<!-- BEGIN: Sticky Header -->
+<header class="sticky top-0 z-50 sticky-header text-white shadow-md" data-purpose="main-navigation">
+<div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+<div class="text-2xl font-bold tracking-tight">
+        THE CRAFT <span class="text-brand">ROOM</span>
+</div>
+<nav class="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-widest">
+<a class="hover:text-brand transition-colors" href="#featured">Featured Props</a>
+<a class="hover:text-brand transition-colors" href="#process">Our Process</a>
+<a class="hover:text-brand transition-colors" href="#about">About Us</a>
+<a class="hover:text-brand transition-colors" href="#contact">Contact</a>
+</nav>
+<div class="flex items-center">
+<button class="bg-brand hover:bg-brand-dark text-white px-5 py-2 rounded-custom text-sm font-semibold transition-all shadow-sm">
+          Shop Now
+        </button>
+</div>
+</div>
+</header>
+<!-- END: Sticky Header -->
+<main>
+<!-- BEGIN: Hero Section -->
+<section class="relative bg-snow pt-16 pb-24 lg:pt-32 lg:pb-40 overflow-hidden" data-purpose="hero-banner">
+<div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="z-10">
+<h1 class="text-5xl lg:text-7xl font-bold leading-tight mb-6">
+            Crafting the <span class="text-brand">Extraordinary</span>
+</h1>
+<p class="text-lg text-gray-600 mb-10 max-w-lg leading-relaxed">
+            Professional 3D printed props and artisanal finishes for cosplayers who demand the highest level of screen-accuracy.
+          </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="bg-brand hover:bg-brand-dark text-white px-10 py-4 rounded-custom text-lg font-bold transition-all shadow-lg transform hover:-translate-y-1">
+              Browse Gallery
+            </button>
+<button class="border-2 border-header text-header hover:bg-header hover:text-white px-10 py-4 rounded-custom text-lg font-bold transition-all">
+              Custom Quote
+            </button>
+</div>
+</div>
+<div class="relative group" data-purpose="hero-image-container">
+<!-- High-definition 3D printed cyber-helmet on a white desk -->
+<img alt="Cyber Helmet Prop" class="w-full h-auto object-cover rounded-custom shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSjkSR6Z5mhKpGrGJjM95Di-oHdLrFS_PwKarbKE9R8RKQ8B5pUTh3mjYlHhxDy_hRqeTTN3TbXuGvCHn-UGRBC2pH-IMStj-1cY2TH1kkYL_DBqAu0TSLQtF_-3DBQK5PtdhbVkTZ-jLXuyxtEFv01sPdhBuuYzzkhL7BlfVYCJ_qHgK0onXn-qlMRpb3KxurcQ3KRAX5g5W6WpmZjLrzHIJGJnNG0Tf-5IHjks-7qcFBea7vLTcjHrP2pjJhxOkfwpPjACbkB7r_"/>
+<div class="absolute -bottom-6 -left-6 bg-white p-6 shadow-xl rounded-custom border border-silver hidden md:block">
+<p class="text-brand font-bold text-sm uppercase">Next-Gen Detail</p>
+<p class="text-header font-medium">8K Resolution 3D Printing</p>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Hero Section -->
+<div class="max-w-7xl mx-auto px-6">
+<div class="divider"></div>
+</div>
+<!-- BEGIN: Featured Props -->
+<section class="py-24 bg-snow" data-purpose="product-showcase" id="featured">
+<div class="max-w-7xl mx-auto px-6">
+<div class="text-center mb-16">
+<h2 class="text-3xl font-bold mb-4 uppercase tracking-wider">Featured Props</h2>
+<div class="w-16 h-1 bg-brand mx-auto"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Prop Item 1 -->
+<div class="group cursor-pointer">
+<div class="relative overflow-hidden rounded-custom mb-4 aspect-square bg-gray-100">
+<img alt="Blade Replica" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKfem5yLlZRFjD03uwlGU_Efc9i8xFhb_sHuhuwpSvl52X5qlg0n3XOlGmk-VgRDyfi43klZLyxbRKPesRw-7mtdC5Vv6-dz6aRRplAZ7NbuLw50s5Vx2YIF9k1fACs2NjQYRlEPtJ78m6bOZ2IIgoMjl2NBkJgYLk9KBATByicfzM5sK-g0ZDc4yYVR8G5dXkw5tLc1kOY3yVyIE90KtZbLiqLkMzuFzo2-NRYpx4DIU9_q8XJeJlpdkY1HW8tUbJSZjH3N3It1ep"/>
+</div>
+<h3 class="text-xl font-bold mb-1">Neon Katana</h3>
+<p class="text-gray-500 text-sm mb-4">Cyberpunk Series | LED Integrated</p>
+<span class="text-brand font-bold">$349.00</span>
+</div>
+<!-- Prop Item 2 -->
+<div class="group cursor-pointer">
+<div class="relative overflow-hidden rounded-custom mb-4 aspect-square bg-gray-100">
+<img alt="Armor Plate" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4jf4YxNbcjb2slLo9HS9Ro6nu4jJW8m_VNd8nUxn4BmSJa9Xt1b4QbPc-xo0luz6sC7kAl3QH5ozYsmbOUcebzvvEOzKqb-fMmyHQmAr7naxRYBSI8X_kUu_eWwIRzhbvCeARwsKxqbCcwJCDri4O6vyGlo0x7xCpcQAlzBb5j2hNo0zeJu0bvFwPpqNY2DQY9ZQKU4bR0-4E0frZAYmDIgNCs1zgUiy7_k8GrDRZHiQJQxzryqu99GRFlBW6KXrbaHekvmdwC7DX"/>
+</div>
+<h3 class="text-xl font-bold mb-1">Mandalorian Chest Plate</h3>
+<p class="text-gray-500 text-sm mb-4">Beskar Finish | Bespoke Sizing</p>
+<span class="text-brand font-bold">$189.00</span>
+</div>
+<!-- Prop Item 3 -->
+<div class="group cursor-pointer">
+<div class="relative overflow-hidden rounded-custom mb-4 aspect-square bg-gray-100">
+<img alt="Sci-Fi Prop" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzhpVNyyM4SW_mYL5cZ4yxXE--Z2iKFisMmAqdO4Fn3Tc9y2JFtULZTPATD3HugKrRHeDXkMMiP889ZbxDOXP38LNy_B6L5QZRx9Q-_GZHWGeuUi2Vv-Zbpb8v_hqhMnVw9BoOwZplT7UHNQJsU59iMQdT16coVmjKdeE18Mb35Mfd0V1vMxerQGi7CY76zjP9htZ07bFtzB7uk-yfX9GGAq4ry0wxy5ZPWD77WJv7ZCYhy_UiJ9_5Jjzr1otVNd9TEXWvgxOENf8s"/>
+</div>
+<h3 class="text-xl font-bold mb-1">Fusion Cell Core</h3>
+<p class="text-gray-500 text-sm mb-4">Wasteland Series | Hand-Weathered</p>
+<span class="text-brand font-bold">$95.00</span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Featured Props -->
+<!-- BEGIN: Our Process -->
+<section class="py-24 bg-header text-white" data-purpose="process-explanation" id="process">
+<div class="max-w-7xl mx-auto px-6">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div>
+<h2 class="text-4xl font-bold mb-8">Precision in Every Polygon</h2>
+<p class="text-gray-300 mb-8 leading-relaxed">
+              We don't just print; we engineer. Every piece undergoes a rigorous 4-stage process to ensure it doesn't just look like the character's gear—it feels like it.
+            </p>
+<ul class="space-y-6">
+<li class="flex items-start">
+<span class="flex-shrink-0 w-8 h-8 rounded-full border border-brand text-brand flex items-center justify-center font-bold mr-4">1</span>
+<div>
+<h4 class="font-bold text-lg">3D Modeling &amp; Scaling</h4>
+<p class="text-gray-400 text-sm">Perfectly scaled to your height and proportions using custom scan data.</p>
+</div>
+</li>
+<li class="flex items-start">
+<span class="flex-shrink-0 w-8 h-8 rounded-full border border-brand text-brand flex items-center justify-center font-bold mr-4">2</span>
+<div>
+<h4 class="font-bold text-lg">Ultra-Res Printing</h4>
+<p class="text-gray-400 text-sm">Industrial SLA and FDM printing for glass-smooth surfaces and structural integrity.</p>
+</div>
+</li>
+<li class="flex items-start">
+<span class="flex-shrink-0 w-8 h-8 rounded-full border border-brand text-brand flex items-center justify-center font-bold mr-4">3</span>
+<div>
+<h4 class="font-bold text-lg">Artisanal Hand-Finishing</h4>
+<p class="text-gray-400 text-sm">Hours of manual sanding, priming, and base coating to eliminate layer lines.</p>
+</div>
+</li>
+<li class="flex items-start">
+<span class="flex-shrink-0 w-8 h-8 rounded-full border border-brand text-brand flex items-center justify-center font-bold mr-4">4</span>
+<div>
+<h4 class="font-bold text-lg">Master Weathering</h4>
+<p class="text-gray-400 text-sm">Multi-layer paint techniques to simulate rust, wear, and battlefield scars.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="bg-gray-800 p-2 rounded-custom shadow-2xl">
+<img alt="Production Process" class="rounded-custom grayscale hover:grayscale-0 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChpSwXc7htj1-2GzSgpX9Bo1ssIX8wsb4qu_Df7gIA9SmcJucoVD7RAF6UodRUJvj94zqiAl6B54HTNSRNrhgeqUXT9S7Sr7DNuHcaOnqUHw1D6GwsPqb1z-ioxlX14Sirb9HE40W9giJAIgJIQTpn1zH7zLUHP_pjPgIchPe2_y0_kQ1YAwFcNs_zim8giM75pLnVCRpuayVSzLWcfOSgXw3liFvtnyYziMnYCop_FP5U09D3XfwrYsB36gJqSPZ-_bvTTluDWxT2"/>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Our Process -->
+<!-- BEGIN: Final CTA -->
+<section class="py-24 text-center" data-purpose="call-to-action-section">
+<div class="max-w-3xl mx-auto px-6">
+<h2 class="text-4xl font-bold mb-6 text-header">Ready to Elevate Your Build?</h2>
+<p class="text-gray-500 mb-10 text-lg">Join the thousands of professional cosplayers who trust The Craft Room for their competition-winning props.</p>
+<button class="bg-brand hover:bg-brand-dark text-white px-12 py-5 rounded-custom text-xl font-bold transition-transform hover:scale-105 shadow-xl">
+          Get Started Today
+        </button>
+</div>
+</section>
+<!-- END: Final CTA -->
+</main>
+<!-- BEGIN: Footer -->
+<footer class="bg-white border-t border-silver py-12" data-purpose="site-footer">
+<div class="max-w-7xl mx-auto px-6">
+<div class="flex flex-col md:flex-row justify-between items-center">
+<div class="mb-8 md:mb-0">
+<div class="text-xl font-bold text-header tracking-tight">
+            THE CRAFT <span class="text-brand">ROOM</span>
+</div>
+<p class="text-xs text-gray-400 mt-2 uppercase tracking-widest">© 2023 The Craft Room Props. All rights reserved.</p>
+</div>
+<div class="flex space-x-6 text-sm font-medium text-gray-500 uppercase tracking-tighter">
+<a class="hover:text-brand" href="#">Twitter</a>
+<a class="hover:text-brand" href="#">Instagram</a>
+<a class="hover:text-brand" href="#">Etsy</a>
+<a class="hover:text-brand" href="#">Discord</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- END: Footer -->
+</body></html>

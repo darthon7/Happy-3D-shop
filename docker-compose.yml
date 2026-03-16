@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  # Base de Datos PostgreSQL
+  db:
+    image: postgres:15-alpine
+    container_name: dazehaze_db
+    restart: always
+    environment:
+      POSTGRES_DB: DazeHaze
+      POSTGRES_HOST_AUTH_METHOD: trust
+    env_file:
+      - ./DazeHaze-Backend/.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432" # Solo para acceso externo si es necesario, puede quitarse en prod
+    networks:
+      - dazehaze_net
+
+  # Backend: Spring Boot
+  backend:
+    build:
+      context: ./DazeHaze-Backend
+      dockerfile: Dockerfile
+    container_name: dazehaze_backend
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8080:8080" # Expuesto para APIs y acceso local
+    env_file:
+      - ./DazeHaze-Backend/.env
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/DazeHaze
+    networks:
+      - dazehaze_net
+
+  # Frontend: React + Nginx
+  frontend:
+    build:
+      context: ./DazeHaze-Frontend
+      dockerfile: Dockerfile
+    container_name: dazehaze_frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80" # El tráfico principal web entra por aquí
+    # En Vite el VITE_API_URL a veces se quema en el build, así que para despliegue de 1 host:
+    # Se recomienda configurar el endpoint al backend expuesto o localhost si es misma ip
+    networks:
+      - dazehaze_net
+
+volumes:
+  postgres_data:
+    name: dazehaze_postgres_data
+
+networks:
+  dazehaze_net:
+    name: dazehaze_network
+    driver: bridge
