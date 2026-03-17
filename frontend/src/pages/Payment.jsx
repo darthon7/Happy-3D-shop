@@ -23,7 +23,7 @@ const Payment = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuthStore();
-  const { items, subtotal, discount, total, clearCart } = useCartStore();
+  const { items, subtotal, discount, total, clearCart, fetchCart } = useCartStore();
   
   // Get shipping data from navigation state
   const shippingData = location.state?.shippingData;
@@ -37,7 +37,7 @@ const Payment = () => {
   // Redirect if no shipping data
   useEffect(() => {
     if (!shippingData || !selectedRate) {
-      toast.error('Por favor selecciona un método de envío primero');
+      toast.error('Por favor completa los datos de envío primero');
       navigate('/checkout');
     }
   }, [shippingData, selectedRate, navigate]);
@@ -59,7 +59,7 @@ const Payment = () => {
       // Step 1: Create order first (status will be PENDING)
       const orderData = {
         shippingStreet: shippingData.address,
-        shippingStreetLine2: shippingData.apartment,
+        shippingStreetLine2: shippingData.colonia ? `Col. ${shippingData.colonia}${shippingData.apartment ? ', ' + shippingData.apartment : ''}` : shippingData.apartment,
         shippingCity: shippingData.city,
         shippingState: shippingData.state,
         shippingPostalCode: shippingData.postalCode,
@@ -89,32 +89,25 @@ const Payment = () => {
       setShowPaymentModal(true);
     } catch (err) {
       console.error('Payment/Order Error:', err);
-      toast.error('Error al procesar. Intenta de nuevo.');
+      toast.error(err.response?.data?.message || 'Error al procesar. Intenta de nuevo.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handlePaymentSuccess = async (paymentIntentId) => {
-    console.log('handlePaymentSuccess called with paymentIntentId:', paymentIntentId);
     try {
-      // Call backend to confirm payment and create shipment in Envia
       if (paymentIntentId) {
-        console.log('Calling confirmStripePayment API...');
-        const response = await paymentApi.confirmStripePayment(paymentIntentId);
-        console.log('confirmStripePayment response:', response);
-      } else {
-        console.warn('No paymentIntentId provided, skipping backend confirmation');
+        await paymentApi.confirmStripePayment(paymentIntentId);
       }
-      
-      // Payment successful - order already created
       clearCart();
+      await fetchCart();
       toast.success('¡Pedido realizado con éxito!');
       navigate('/pedidos');
     } catch (err) {
       console.error('Post-payment error:', err);
-      // Still navigate to orders even if shipment creation fails
       clearCart();
+      await fetchCart();
       toast.success('¡Pedido realizado con éxito!');
       navigate('/pedidos');
     }
@@ -132,9 +125,7 @@ const Payment = () => {
         toast.error('Pago cancelado. Puedes volver a intentarlo.');
         setPendingOrderId(null);
         setPendingOrderNumber(null);
-        
-        // Re-fetch cart just in case
-        await useCartStore.getState().fetchCart();
+        await fetchCart();
       } catch (err) {
         console.error('Error cancelling order:', err);
       }
@@ -146,10 +137,10 @@ const Payment = () => {
   }
 
   return (
-    <div className="bg-[#16091b] min-h-screen flex flex-col font-sans">
+    <div className="bg-[#F5F0E8] min-h-screen flex flex-col font-sans text-[#2C1F0E]">
       {/* Stripe Payment Modal */}
       {showPaymentModal && clientSecret && (
-        <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: 'night' } }}>
+        <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: 'flat' } }}>
             <StripePayment 
                 clientSecret={clientSecret} 
                 onSuccess={handlePaymentSuccess}
@@ -159,106 +150,111 @@ const Payment = () => {
       )}
 
       {/* Main Layout */}
-      <main className="flex-grow w-full px-4 md:px-10 py-8 max-w-7xl mx-auto">
+      <main className="flex-grow w-full px-4 md:px-10 py-12 max-w-7xl mx-auto">
+        <div className="flex flex-col mb-10 text-center">
+            <h1 className="text-3xl md:text-4xl font-black text-[#1B2A5E] mb-2 uppercase tracking-tight">Casi listo</h1>
+            <p className="text-[#2C1F0E]/70 text-lg italic">Revisa tu pedido y procede al pago seguro.</p>
+        </div>
+
         {/* Progress Steps */}
-        <div className="max-w-3xl mx-auto mb-12">
-          <div className="flex items-center justify-between relative">
-            <div className="absolute left-0 top-1/2 w-full h-0.5 bg-[#301c2f] -z-10"></div>
+        <div className="max-w-3xl mx-auto mb-16">
+          <div className="flex items-center justify-between relative px-4 text-xs font-bold uppercase tracking-widest">
+            <div className="absolute left-0 top-1/2 w-full h-[1px] bg-[#C9A84C]/20 -z-10"></div>
             
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-[#fa1c75] flex items-center justify-center text-white font-bold shadow-lg shadow-[#fa1c75]/30 ring-4 ring-[#16091b]">
+            <div className="flex flex-col items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-[#C9A84C] text-white flex items-center justify-center shadow-lg ring-4 ring-[#F5F0E8]">
                 <CheckCircle className="w-5 h-5" />
               </div>
-              <span className="text-sm font-bold text-[#fa1c75]">Carrito</span>
+              <span className="text-[#C9A84C]">Carrito</span>
             </div>
             
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-[#fa1c75] flex items-center justify-center text-white font-bold shadow-lg shadow-[#fa1c75]/30 ring-4 ring-[#16091b]">
+            <div className="flex flex-col items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-[#C9A84C] text-white flex items-center justify-center shadow-lg ring-4 ring-[#F5F0E8]">
                 <CheckCircle className="w-5 h-5" />
               </div>
-              <span className="text-sm font-bold text-[#fa1c75]">Envío</span>
+              <span className="text-[#C9A84C]">Envío</span>
             </div>
             
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-[#fa1c75] flex items-center justify-center text-white font-bold shadow-lg shadow-[#fa1c75]/30 ring-4 ring-[#16091b]">3</div>
-              <span className="text-sm font-bold text-white">Pago</span>
+            <div className="flex flex-col items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-[#1B2A5E] text-white flex items-center justify-center shadow-lg ring-4 ring-[#F5F0E8] shadow-[#1B2A5E]/20">
+                03
+              </div>
+              <span className="text-[#1B2A5E]">Pago</span>
             </div>
           </div>
         </div>
 
-        {/* Page Heading */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 border-b border-[#432841] pb-6">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-extrabold leading-tight tracking-tight text-white mb-2">Finalizar Pago</h2>
-            <p className="text-[#c398bf] text-base md:text-lg">Revisa tu pedido y completa el pago.</p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* LEFT COLUMN: Order Summary */}
-          <div className="lg:col-span-7 flex flex-col gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          {/* LEFT COLUMN: Summary Cards */}
+          <div className="lg:col-span-7 space-y-8">
             {/* Shipping Summary */}
-            <section className="bg-[#20131f] rounded-xl border border-[#60395d] p-6">
-              <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-green-400" />
-                Dirección de Envío
-              </h3>
-              <div className="text-[#c398bf] space-y-1">
-                <p className="text-white font-medium">{shippingData.firstName} {shippingData.lastName}</p>
-                <p>{shippingData.address}</p>
-                {shippingData.apartment && <p>{shippingData.apartment}</p>}
-                <p>{shippingData.city}, {shippingData.state} {shippingData.postalCode}</p>
-                <p>México</p>
-                <p className="mt-2">{shippingData.email}</p>
-                <p>{shippingData.phone}</p>
+            <section className="bg-white rounded-[8px] border border-[#C9A84C]/20 p-8 shadow-sm">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-bold text-[#1B2A5E] flex items-center gap-3 uppercase tracking-tight">
+                    <CheckCircle className="w-5 h-5 text-[#C9A84C]" />
+                    Dirección de Envío
+                </h3>
+                <Link to="/checkout" className="text-[#C9A84C] text-xs font-black uppercase tracking-widest hover:underline">
+                    Editar
+                </Link>
               </div>
-              <Link to="/checkout" className="text-[#fa1c75] text-sm mt-4 inline-block hover:underline">
-                ← Modificar dirección
-              </Link>
+              <div className="text-[#2C1F0E]/80 text-sm grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <p className="text-xs font-black text-[#C9A84C] uppercase tracking-wider mb-1">Destinatario</p>
+                    <p className="font-bold text-[#2C1F0E]">{shippingData.firstName} {shippingData.lastName}</p>
+                    <p>{shippingData.email}</p>
+                    <p>{shippingData.phone}</p>
+                </div>
+                <div>
+                    <p className="text-xs font-black text-[#C9A84C] uppercase tracking-wider mb-1">Ubicación</p>
+                    <p>{shippingData.address}</p>
+                    {shippingData.colonia && <p>Col. {shippingData.colonia}</p>}
+                    {shippingData.apartment && <p>{shippingData.apartment}</p>}
+                    <p>{shippingData.city}, {shippingData.state} {shippingData.postalCode}</p>
+                </div>
+              </div>
             </section>
 
             {/* Shipping Method Summary */}
-            <section className="bg-[#20131f] rounded-xl border border-[#60395d] p-6">
-              <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-green-400" />
+            <section className="bg-white rounded-[8px] border border-[#C9A84C]/20 p-8 shadow-sm">
+              <h3 className="text-xl font-bold text-[#1B2A5E] mb-6 flex items-center gap-3 uppercase tracking-tight">
+                <CheckCircle className="w-5 h-5 text-[#C9A84C]" />
                 Método de Envío
               </h3>
-              <div className="flex items-center justify-between p-4 rounded-xl bg-[#fa1c75]/10 border border-[#fa1c75]">
-                <div>
-                  <p className="text-white font-bold">{selectedRate.provider}</p>
-                  <p className="text-[#c398bf] text-sm">{selectedRate.serviceName} • {selectedRate.estimatedDays} días</p>
+              <div className="flex items-center justify-between p-5 rounded-[4px] bg-[#F5F0E8]/50 border border-[#C9A84C]/20">
+                <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center border border-[#C9A84C]/10">
+                        <ShoppingBag className="w-6 h-6 text-[#C9A84C]" />
+                    </div>
+                    <div>
+                        <p className="text-[#1B2A5E] font-black uppercase text-sm">{selectedRate.provider}</p>
+                        <p className="text-[#2C1F0E]/60 text-xs italic">{selectedRate.serviceName} • {selectedRate.estimatedDays} días</p>
+                    </div>
                 </div>
-                <span className="text-white font-bold">${shippingCost.toFixed(2)} {selectedRate.currency}</span>
+                <span className="text-[#1B2A5E] font-black text-lg">${shippingCost.toFixed(2)}</span>
               </div>
-              <Link to="/checkout" className="text-[#fa1c75] text-sm mt-4 inline-block hover:underline">
-                ← Cambiar método de envío
-              </Link>
             </section>
 
-            {/* Products */}
-            <section className="bg-[#20131f] rounded-xl border border-[#60395d] p-6">
-              <h3 className="text-lg font-bold text-white mb-4">Productos</h3>
-              <div className="space-y-4">
+            {/* Products List */}
+            <section className="bg-white rounded-[8px] border border-[#C9A84C]/20 p-8 shadow-sm">
+              <h3 className="text-xl font-bold text-[#1B2A5E] mb-6 uppercase tracking-tight">Tu Compra</h3>
+              <div className="space-y-6 max-h-[300px] overflow-y-auto pr-4 custom-scrollbar">
                 {items.map(item => (
                   <div key={item.id} className="flex gap-4">
-                    <div className="relative w-16 h-20 rounded-lg overflow-hidden shrink-0 border border-[#432841] bg-[#20131f]">
-                      {item.imageUrl ? (
+                    <div className="relative w-16 h-20 rounded-[4px] overflow-hidden shrink-0 border border-[#C9A84C]/10 bg-[#F5F0E8]">
+                      {item.imageUrl && (
                         <img src={item.imageUrl} alt={item.productName} className="w-full h-full object-cover" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <ShoppingBag className="w-6 h-6 text-[#c398bf]" />
-                        </div>
                       )}
-                      <span className="absolute top-0 right-0 bg-[#fa1c75] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-bl">{item.quantity}</span>
+                      <span className="absolute -top-1 -right-1 bg-[#1B2A5E] text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full">{item.quantity}</span>
                     </div>
                     <div className="flex flex-col flex-1 justify-center">
-                      <h4 className="text-white text-sm font-bold leading-tight">{item.productName}</h4>
-                      <p className="text-[#c398bf] text-xs mt-1">
-                        {item.size && `Size: ${item.size}`} {item.color && `/ Color: ${item.color}`}
+                      <h4 className="text-[#2C1F0E] text-sm font-bold leading-tight">{item.productName}</h4>
+                      <p className="text-[#2C1F0E]/50 text-[10px] font-black uppercase mt-1">
+                        {item.size && `${item.size}`} {item.color && `/ ${item.color}`}
                       </p>
                     </div>
                     <div className="flex flex-col justify-center items-end">
-                      <p className="text-white font-bold text-sm">${item.totalPrice?.toFixed(2) || (item.unitPrice * item.quantity).toFixed(2)}</p>
+                      <p className="text-[#1B2A5E] font-black text-sm">${(item.unitPrice * item.quantity).toFixed(2)}</p>
                     </div>
                   </div>
                 ))}
@@ -266,80 +262,90 @@ const Payment = () => {
             </section>
           </div>
 
-          {/* RIGHT COLUMN: Payment */}
-          <div className="lg:col-span-5 flex flex-col gap-6">
-            {/* Order Total Card */}
-            <div className="bg-[#301c2f] rounded-xl border border-[#432841] p-6 shadow-xl shadow-black/20">
-              <h3 className="text-lg font-bold text-white mb-4 border-b border-[#432841] pb-3">Resumen del Pedido</h3>
+          {/* RIGHT COLUMN: Order Total & Payment Action */}
+          <div className="lg:col-span-5 space-y-8">
+            {/* Summary Totals */}
+            <div className="bg-white rounded-[8px] border border-[#C9A84C]/20 p-8 shadow-md">
+              <h3 className="text-xl font-black text-[#1B2A5E] mb-6 uppercase tracking-widest border-b border-[#C9A84C]/10 pb-4">Resumen</h3>
               
-              <div className="space-y-3 mb-4">
-                <div className="flex justify-between text-sm">
-                  <span className="text-[#c398bf]">Subtotal</span>
-                  <span className="text-white font-medium">${subtotal.toFixed(2)}</span>
+              <div className="space-y-4 mb-8 text-sm">
+                <div className="flex justify-between text-[#2C1F0E]/70 font-medium">
+                  <span>Subtotal</span>
+                  <span className="text-[#2C1F0E]">${subtotal.toFixed(2)}</span>
                 </div>
                 {discount > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-[#c398bf]">Descuento</span>
-                    <span className="text-green-400 font-medium">-${discount.toFixed(2)}</span>
+                  <div className="flex justify-between text-[#2C1F0E]/70 font-medium">
+                    <span>Descuento</span>
+                    <span className="text-green-600">-${discount.toFixed(2)}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-sm">
-                  <span className="text-[#c398bf]">Envío ({selectedRate.provider})</span>
-                  <span className="text-white font-medium">${shippingCost.toFixed(2)}</span>
+                <div className="flex justify-between text-[#2C1F0E]/70 font-medium">
+                  <span>Envío ({selectedRate.provider})</span>
+                  <span className="text-[#2C1F0E]">${shippingCost.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between text-sm">
-                   <span className="text-[#c398bf]">IVA (16%)</span>
-                   <span className="text-white font-medium">${taxAmount.toFixed(2)}</span>
+                <div className="flex justify-between text-[#2C1F0E]/70 font-medium">
+                   <span>IVA (16%)</span>
+                   <span className="text-[#2C1F0E]">${taxAmount.toFixed(2)}</span>
                 </div>
               </div>
 
-              <div className="border-t border-[#432841] pt-4 mt-4">
+              <div className="border-t border-[#C9A84C]/10 pt-6 mt-6">
                 <div className="flex justify-between items-end">
-                  <span className="text-white font-bold text-lg">Total</span>
+                  <span className="text-[#1B2A5E] font-black text-lg uppercase">Total a Pagar</span>
                   <div className="text-right">
-                    <span className="text-2xl font-black text-[#fa1c75]">${displayTotal.toFixed(2)} MXN</span>
+                    <p className="text-3xl font-black text-[#C9A84C] leading-none mb-1">${displayTotal.toFixed(2)}</p>
+                    <p className="text-[10px] text-[#2C1F0E]/40 font-black uppercase">Mexican Pesos</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Payment Details */}
-            <div className="bg-[#20131f] rounded-xl border border-[#60395d] p-6">
-              <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                <CreditCard className="w-5 h-5 text-[#fa1c75]" />
-                Método de Pago
+            {/* Payment Action Area */}
+            <div className="bg-[#1B2A5E] rounded-[8px] p-8 shadow-xl shadow-[#1B2A5E]/20 text-white relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+              
+              <h3 className="text-xl font-black mb-6 flex items-center gap-3 uppercase tracking-tight relative z-10">
+                <CreditCard className="w-5 h-5 text-[#C9A84C]" />
+                Pago Seguro
               </h3>
               
-              {/* Payment Method - Card Only */}
-              <div className="flex items-center gap-3 p-4 rounded-lg bg-[#fa1c75]/20 border border-[#fa1c75] mb-6">
-                <CreditCard className="w-6 h-6 text-[#fa1c75]" />
+              <div className="flex items-center gap-4 p-5 rounded-[4px] bg-white/10 border border-white/10 mb-8 relative z-10">
+                <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">
+                    <CreditCard className="w-5 h-5 text-[#C9A84C]" />
+                </div>
                 <div>
-                  <p className="text-white font-bold text-sm">Pago con Tarjeta</p>
-                  <p className="text-[#c398bf] text-xs">Débito o Crédito</p>
+                  <p className="text-white font-black text-sm uppercase">Tarjeta Bancaria</p>
+                  <p className="text-white/60 text-xs italic">Crédito o Débito vía Stripe</p>
                 </div>
               </div>
 
-              <p className="text-sm text-[#c398bf] mb-4">
-                Haz clic en "Pagar Ahora" para abrir el formulario de pago seguro.
+              <p className="text-sm text-white/70 mb-8 leading-relaxed relative z-10 italic">
+                Tus datos de pago están protegidos con encriptación de grado bancario. No guardamos información sensible de tu tarjeta.
               </p>
 
-              {/* Action Button */}
               <button 
                 type="button"
                 onClick={handleProceedToPayment}
                 disabled={isSubmitting}
-                className="w-full bg-[#fa1c75] hover:bg-[#cc1261] disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-lg h-14 rounded-lg shadow-lg shadow-[#fa1c75]/20 transition-all flex items-center justify-center gap-2 group"
+                className="w-full bg-[#C9A84C] hover:bg-[#b8943e] disabled:opacity-50 disabled:cursor-not-allowed text-white font-black text-lg h-16 rounded-[4px] shadow-lg shadow-black/20 transition-all flex items-center justify-center gap-3 group relative z-10"
               >
-                {isSubmitting ? 'Procesando...' : 'Pagar Ahora'}
-                {!isSubmitting && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
+                {isSubmitting ? (
+                    <span className="flex items-center gap-2">
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        PROCESANDO...
+                    </span>
+                ) : (
+                    <>
+                        PAGAR AHORA
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </>
+                )}
               </button>
 
-              {/* Trust Signals */}
-              <div className="flex justify-center items-center gap-4 mt-6 opacity-50">
-                <Lock className="w-6 h-6 text-white" />
-                <ShieldCheck className="w-6 h-6 text-white" />
-                <Shield className="w-6 h-6 text-white" />
-                <p className="text-[10px] text-white uppercase tracking-wider font-bold">SSL Encrypted</p>
+              <div className="flex justify-center items-center gap-6 mt-8 opacity-40 relative z-10">
+                <Lock className="w-5 h-5" />
+                <ShieldCheck className="w-5 h-5" />
+                <p className="text-[10px] uppercase tracking-widest font-black">Secure Checkout</p>
               </div>
             </div>
           </div>

@@ -11,7 +11,7 @@ const sectionVariants = {
   }),
 };
 
-const LAST_UPDATED = '5 de marzo de 2026';
+const LAST_UPDATED = '16 de marzo de 2026';
 
 const sections = [
   {
@@ -21,9 +21,9 @@ const sections = [
       <>
         <p>En cumplimiento con la <strong className="text-white">Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP)</strong> y su Reglamento, informamos que el responsable del tratamiento de sus datos personales es:</p>
         <ul className="list-disc list-inside space-y-1 mt-3 text-text-secondary">
-          <li><strong className="text-white">Nombre comercial:</strong> DazeHaze</li>
+          <li><strong className="text-white">Nombre comercial:</strong> Prop's Room</li>
           <li><strong className="text-white">Domicilio:</strong> Ciudad de México, México</li>
-          <li><strong className="text-white">Correo electrónico:</strong> contacto@dazehaze.com</li>
+          <li><strong className="text-white">Correo electrónico:</strong> contacto@propsroom.com</li>
         </ul>
       </>
     ),
@@ -33,7 +33,7 @@ const sections = [
     title: '2. Datos Personales que Recabamos',
     content: (
       <>
-        <p>DazeHaze recaba los siguientes datos personales, de manera directa, cuando usted los proporciona voluntariamente a través de nuestro Sitio:</p>
+        <p>Prop's Room recaba los siguientes datos personales, de manera directa, cuando usted los proporciona voluntariamente a través de nuestro Sitio:</p>
         <div className="mt-3 space-y-3">
           <div>
             <p className="text-white font-medium text-sm mb-1">Datos de identificación:</p>
@@ -59,8 +59,8 @@ const sections = [
             </ul>
           </div>
         </div>
-        <p className="mt-3"><strong className="text-white">DazeHaze no recaba datos personales sensibles</strong> (origen étnico, estado de salud, orientación sexual, creencias religiosas, datos biométricos, etc.).</p>
-        <p className="mt-2"><strong className="text-white">Datos financieros:</strong> La información de pago (números de tarjeta, CVV, fecha de expiración) es procesada directamente por <strong className="text-white">Stripe, Inc.</strong> y nunca es almacenada en los servidores de DazeHaze.</p>
+        <p className="mt-3"><strong className="text-white">Prop's Room no recaba datos personales sensibles</strong> (origen étnico, estado de salud, orientación sexual, creencias religiosas, datos biométricos, etc.).</p>
+        <p className="mt-2"><strong className="text-white">Datos financieros:</strong> La información de pago (números de tarjeta, CVV, fecha de expiración) es procesada directamente por <strong className="text-white">Stripe, Inc.</strong> y nunca es almacenada en los servidores de Prop's Room.</p>
       </>
     ),
   },
@@ -85,7 +85,7 @@ const sections = [
           <li>Realizar análisis estadísticos y de comportamiento de compra para mejorar nuestros servicios.</li>
           <li>Enviar encuestas de satisfacción.</li>
         </ul>
-        <p className="mt-3">Si usted no desea que sus datos personales sean tratados para finalidades secundarias, puede manifestar su negativa enviando un correo a <strong className="text-white">contacto@dazehaze.com</strong> con el asunto "Negativa finalidades secundarias".</p>
+        <p className="mt-3">Si usted no desea que sus datos personales sean tratados para finalidades secundarias, puede manifestar su negativa enviando un correo a <strong className="text-white">contacto@propsroom.com</strong> con el asunto "Negativa finalidades secundarias".</p>
       </>
     ),
   },
@@ -94,14 +94,14 @@ const sections = [
     title: '4. Transferencias de Datos',
     content: (
       <>
-        <p>DazeHaze podrá transferir sus datos personales a los siguientes terceros, sin requerir su consentimiento, de acuerdo con el artículo 37 de la LFPDPPP:</p>
+        <p>Prop's Room podrá transferir sus datos personales a los siguientes terceros, sin requerir su consentimiento, de acuerdo con el artículo 37 de la LFPDPPP:</p>
         <ul className="list-disc list-inside space-y-1 mt-3 text-text-secondary">
           <li><strong className="text-white">Stripe, Inc.</strong> — Procesamiento de pagos con tarjeta.</li>
           <li><strong className="text-white">Empresas de paquetería</strong> (Estafeta, DHL, UPS u otros) — Entrega de productos adquiridos.</li>
           <li><strong className="text-white">Plataformas de alojamiento</strong> (servidores en la nube) — Almacenamiento seguro de información.</li>
           <li><strong className="text-white">Autoridades competentes</strong> — Cuando sea requerido por ley, orden judicial o procedimiento legal.</li>
         </ul>
-        <p className="mt-3">DazeHaze <strong className="text-white">no vende, alquila ni comercializa</strong> datos personales a terceros con fines de marketing o publicidad.</p>
+        <p className="mt-3">Prop's Room <strong className="text-white">no vende, alquila ni comercializa</strong> datos personales a terceros con fines de marketing o publicidad.</p>
       </>
     ),
   },
@@ -111,14 +111,14 @@ const sections = [
     content: (
       <>
         <p>Usted tiene derecho a <strong className="text-white">Acceder, Rectificar, Cancelar u Oponerse</strong> al tratamiento de sus datos personales (derechos ARCO), conforme a los artículos 28 al 35 de la LFPDPPP.</p>
-        <p className="mt-3">Para ejercer cualquiera de estos derechos, deberá enviar una solicitud al correo electrónico <strong className="text-white">contacto@dazehaze.com</strong> que contenga:</p>
+        <p className="mt-3">Para ejercer cualquiera de estos derechos, deberá enviar una solicitud al correo electrónico <strong className="text-white">contacto@propsroom.com</strong> que contenga:</p>
         <ul className="list-disc list-inside space-y-1 mt-3 text-text-secondary">
           <li>Nombre completo del titular.</li>
           <li>Descripción clara del derecho que desea ejercer.</li>
           <li>Copia de identificación oficial vigente.</li>
           <li>Correo electrónico o dirección para recibir la respuesta.</li>
         </ul>
-        <p className="mt-3">DazeHaze responderá a su solicitud en un plazo máximo de <strong className="text-white">20 días hábiles</strong> contados a partir de la recepción de la solicitud completa. La resolución se hará efectiva dentro de los <strong className="text-white">15 días hábiles</strong> siguientes a la respuesta.</p>
+        <p className="mt-3">Prop's Room responderá a su solicitud en un plazo máximo de <strong className="text-white">20 días hábiles</strong> contados a partir de la recepción de la solicitud completa. La resolución se hará efectiva dentro de los <strong className="text-white">15 días hábiles</strong> siguientes a la respuesta.</p>
       </>
     ),
   },
@@ -127,7 +127,7 @@ const sections = [
     title: '6. Revocación del Consentimiento',
     content: (
       <>
-        <p>Usted puede revocar el consentimiento otorgado para el tratamiento de sus datos personales en cualquier momento, enviando una solicitud a <strong className="text-white">contacto@dazehaze.com</strong> con el asunto "Revocación de consentimiento".</p>
+        <p>Usted puede revocar el consentimiento otorgado para el tratamiento de sus datos personales en cualquier momento, enviando una solicitud a <strong className="text-white">contacto@propsroom.com</strong> con el asunto "Revocación de consentimiento".</p>
         <p className="mt-3">Tenga en cuenta que la revocación del consentimiento para finalidades primarias podría impedir que completemos servicios activos (como pedidos en proceso de entrega).</p>
       </>
     ),
@@ -152,7 +152,7 @@ const sections = [
     title: '8. Medidas de Seguridad',
     content: (
       <>
-        <p>DazeHaze implementa medidas de seguridad administrativas, técnicas y físicas para proteger sus datos personales contra daño, pérdida, alteración, destrucción o uso, acceso o tratamiento no autorizado, incluyendo:</p>
+        <p>Prop's Room implementa medidas de seguridad administrativas, técnicas y físicas para proteger sus datos personales contra daño, pérdida, alteración, destrucción o uso, acceso o tratamiento no autorizado, incluyendo:</p>
         <ul className="list-disc list-inside space-y-1 mt-3 text-text-secondary">
           <li>Cifrado de datos en tránsito mediante protocolo <strong className="text-white">HTTPS/TLS</strong>.</li>
           <li>Procesamiento de pagos a través de <strong className="text-white">Stripe</strong> (certificado PCI-DSS Nivel 1).</li>
@@ -168,7 +168,7 @@ const sections = [
     title: '9. Cambios al Aviso de Privacidad',
     content: (
       <>
-        <p>DazeHaze se reserva el derecho de modificar el presente Aviso de Privacidad en cualquier momento. Las modificaciones se harán disponibles a través de:</p>
+        <p>Prop's Room se reserva el derecho de modificar el presente Aviso de Privacidad en cualquier momento. Las modificaciones se harán disponibles a través de:</p>
         <ul className="list-disc list-inside space-y-1 mt-3 text-text-secondary">
           <li>Publicación de la versión actualizada en esta misma página.</li>
           <li>Notificación por correo electrónico a los usuarios registrados cuando los cambios sean significativos.</li>
@@ -184,7 +184,7 @@ const sections = [
       <>
         <p>Si tiene dudas sobre el tratamiento de sus datos personales o desea ejercer sus derechos, puede contactarnos en:</p>
         <ul className="list-disc list-inside space-y-1 mt-3 text-text-secondary">
-          <li><strong className="text-white">Correo electrónico:</strong> contacto@dazehaze.com</li>
+          <li><strong className="text-white">Correo electrónico:</strong> contacto@propsroom.com</li>
           <li><strong className="text-white">Asunto sugerido:</strong> "Datos personales — [su solicitud]"</li>
         </ul>
         <p className="mt-3">Si considera que su derecho a la protección de datos personales ha sido vulnerado, puede presentar una denuncia ante el <strong className="text-white">Instituto Nacional de Transparencia, Acceso a la Información y Protección de Datos Personales (INAI)</strong>: <a href="https://home.inai.org.mx" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-white underline underline-offset-2 transition-colors">home.inai.org.mx</a></p>
@@ -196,7 +196,6 @@ const sections = [
 const PrivacyPolicy = () => {
   return (
     <div className="w-full flex-1">
-      {/* Hero */}
       <section className="relative py-16 lg:py-24 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-transparent to-transparent" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl" />
@@ -221,7 +220,6 @@ const PrivacyPolicy = () => {
         </div>
       </section>
 
-      {/* Breadcrumb */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
         <div className="flex items-center gap-2 text-sm">
           <Link to="/" className="text-primary font-medium hover:text-white transition-colors">Inicio</Link>
@@ -230,7 +228,6 @@ const PrivacyPolicy = () => {
         </div>
       </div>
 
-      {/* Sections */}
       <section className="relative pb-16 lg:pb-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-6">
@@ -261,7 +258,6 @@ const PrivacyPolicy = () => {
             ))}
           </div>
 
-          {/* INAI notice */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

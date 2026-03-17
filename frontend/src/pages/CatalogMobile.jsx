@@ -310,7 +310,7 @@ const CatalogMobile = () => {
                 onClick={() => handleCategoryChange(null, null)}
                 className={`flex-shrink-0 px-5 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all shadow-sm ${
                 !filters.categoryId 
-                    ? 'bg-white text-black' 
+                    ? 'bg-white text-[#2C1F0E]' 
                     : 'bg-surface border border-border text-text-secondary hover:text-white'
                 }`}
             >
@@ -322,7 +322,7 @@ const CatalogMobile = () => {
                 onClick={() => handleCategoryChange(cat.id, cat.slug)}
                 className={`flex-shrink-0 px-5 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all shadow-sm ${
                     filters.categoryId === cat.id 
-                    ? 'bg-white text-black' 
+                    ? 'bg-white text-[#2C1F0E]' 
                     : 'bg-surface border border-border text-text-secondary hover:text-white'
                 }`}
                 >

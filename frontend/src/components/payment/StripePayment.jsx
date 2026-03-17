@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { Lock, AlertCircle } from 'lucide-react';
+import { Lock, AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react';
 
 export default function StripePayment({ clientSecret, onSuccess, onCancel }) {
   const stripe = useStripe();
@@ -21,62 +21,77 @@ export default function StripePayment({ clientSecret, onSuccess, onCancel }) {
     const { error: submitError, paymentIntent } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${window.location.origin}/pedidos`, // Fallback
+        return_url: `${window.location.origin}/pedidos`,
       },
-      redirect: "if_required", // Important: handle redirect manually if possible
+      redirect: "if_required",
     });
 
     if (submitError) {
       setError(submitError.message);
       setProcessing(false);
     } else {
-      // Payment succeeded! 
-      // Get paymentIntentId from response or extract from clientSecret
       let paymentIntentId = paymentIntent?.id;
       if (!paymentIntentId && clientSecret) {
-        // clientSecret format: pi_xxxxx_secret_xxxxx
         paymentIntentId = clientSecret.split('_secret_')[0];
       }
-      console.log('Payment successful, paymentIntentId:', paymentIntentId);
       onSuccess(paymentIntentId);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-      <div className="bg-[#20131f] border border-[#60395d] rounded-2xl w-full max-w-md p-6 shadow-2xl relative animate-scale-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fade-in">
+      <div className="bg-white border border-[#C9A84C]/20 rounded-[8px] w-full max-w-md p-8 shadow-2xl relative animate-scale-in text-[#2C1F0E]">
         <button 
           onClick={onCancel}
-          className="absolute top-4 right-4 text-[#c398bf] hover:text-white"
+          className="absolute top-6 right-6 text-[#2C1F0E]/40 hover:text-[#1B2A5E] transition-colors"
         >
-          ✕
+          <span className="text-xl font-black">✕</span>
         </button>
 
-        <div className="text-center mb-6">
-          <div className="w-12 h-12 bg-[#fa1c75]/20 rounded-full flex items-center justify-center mx-auto mb-3">
-            <Lock className="w-6 h-6 text-[#fa1c75]" />
+        <div className="text-center mb-10">
+          <div className="w-16 h-16 bg-[#F5F0E8] rounded-full flex items-center justify-center mx-auto mb-4 border border-[#C9A84C]/10">
+            <Lock className="w-8 h-8 text-[#C9A84C]" />
           </div>
-          <h3 className="text-xl font-bold text-white">Secure Payment</h3>
-          <p className="text-sm text-[#c398bf]">Enter your card details securely</p>
+          <h3 className="text-2xl font-black text-[#1B2A5E] uppercase tracking-tight">Pago Seguro</h3>
+          <p className="text-sm text-[#2C1F0E]/60 italic">Ingresa los datos de tu tarjeta</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <PaymentElement 
-            options={{
-              theme: 'night',
-              variables: {
-                colorPrimary: '#fa1c75',
-                colorBackground: '#301c2f',
-                colorText: '#ffffff',
-                colorDanger: '#ef4444',
-                fontFamily: 'Outfit, sans-serif',
-                borderRadius: '8px',
-              }
-            }}
-          />
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="p-4 bg-[#F5F0E8]/50 rounded-[4px] border border-[#C9A84C]/10">
+            <PaymentElement 
+                options={{
+                theme: 'none',
+                variables: {
+                    colorPrimary: '#1B2A5E',
+                    colorBackground: '#ffffff',
+                    colorText: '#2C1F0E',
+                    colorDanger: '#ef4444',
+                    fontFamily: 'Outfit, sans-serif',
+                    spacingUnit: '4px',
+                },
+                rules: {
+                    '.Input': {
+                    border: '1px solid #C9A84C30',
+                    boxShadow: 'none',
+                    borderRadius: '4px',
+                    },
+                    '.Input:focus': {
+                    border: '1px solid #1B2A5E',
+                    },
+                    '.Label': {
+                    fontWeight: '700',
+                    fontSize: '12px',
+                    textTransform: 'uppercase',
+                    color: '#2C1F0E90',
+                    marginBottom: '4px',
+                    }
+                }
+                }}
+            />
+          </div>
 
           {error && (
-            <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center gap-2 text-red-400 text-sm">
+            <div className="p-4 bg-red-50 border border-red-100 rounded-[4px] flex items-center gap-3 text-red-600 text-xs">
               <AlertCircle className="w-4 h-4 shrink-0" />
               {error}
             </div>
@@ -85,18 +100,25 @@ export default function StripePayment({ clientSecret, onSuccess, onCancel }) {
           <button
             type="submit"
             disabled={!stripe || processing}
-            className="w-full bg-[#fa1c75] hover:bg-[#cc1261] disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold h-12 rounded-lg transition-all flex items-center justify-center gap-2"
+            className="w-full bg-[#1B2A5E] hover:bg-[#0f1836] disabled:opacity-50 disabled:cursor-not-allowed text-white font-black h-14 rounded-[4px] transition-all shadow-lg flex items-center justify-center gap-3"
           >
             {processing ? (
-              <span className="animate-pulse">Processing...</span>
+                <span className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    PROCESANDO...
+                </span>
             ) : (
-              "Pay Now"
+                <>
+                    PAGAR AHORA
+                    <ArrowRight className="w-5 h-5" />
+                </>
             )}
           </button>
         </form>
         
-        <div className="mt-4 text-center">
-            <p className="text-[10px] text-[#c398bf]/60 uppercase tracking-widest font-bold">Powered by Stripe</p>
+        <div className="mt-8 text-center flex items-center justify-center gap-2 opacity-30">
+            <ShieldCheck className="w-3 h-3" />
+            <p className="text-[10px] text-[#2C1F0E] uppercase tracking-widest font-black">Powered by Stripe</p>
         </div>
       </div>
     </div>

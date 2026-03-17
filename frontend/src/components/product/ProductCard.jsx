@@ -85,7 +85,7 @@ const ProductCard = ({ product }) => {
   return (
     <Link 
       to={`/producto/${product.slug}`} 
-      className="group block bg-white border border-gray-100 rounded-[8px] overflow-hidden flex flex-col transition-all duration-200 hover:translate-y-[-4px] hover:shadow-lg"
+      className="group block bg-white border border-[#C9A84C]/20 rounded-[8px] overflow-hidden flex flex-col transition-all duration-200 hover:translate-y-[-4px] hover:shadow-lg"
     >
       {/* Image Container */}
       <div className="relative aspect-square bg-gray-50 overflow-hidden">
@@ -110,7 +110,7 @@ const ProductCard = ({ product }) => {
         )}
         
         {hasDiscount && (
-          <span className="absolute top-3 right-3 bg-brand text-white text-[10px] px-2 py-1 uppercase tracking-widest font-bold rounded">
+          <span className="absolute top-3 right-3 bg-[#C9A84C] text-white text-[10px] px-2 py-1 uppercase tracking-widest font-bold rounded">
             -{discountPercentage}%
           </span>
         )}
@@ -118,7 +118,7 @@ const ProductCard = ({ product }) => {
       
       {/* Product Info */}
       <div className="p-5 flex flex-col flex-grow">
-        <p className="text-[10px] text-brand font-bold uppercase tracking-widest mb-1">
+        <p className="text-[10px] text-[#C9A84C] font-bold uppercase tracking-widest mb-1">
           {product.category?.name || 'Prop\'s Room'}
         </p>
         <h3 className="text-lg font-bold text-header mb-2 line-clamp-1">
@@ -128,7 +128,7 @@ const ProductCard = ({ product }) => {
           {product.description || 'Descripción del producto'}
         </p>
         
-        <div className="mt-auto flex items-center justify-between">
+        <div className="mt-auto flex flex-col gap-3">
           <div className="flex items-center gap-2">
             {hasDiscount && (
               <span className="text-sm text-gray-400 line-through">
@@ -142,9 +142,9 @@ const ProductCard = ({ product }) => {
           <button 
             onClick={handleAddToCart}
             disabled={addingToCart || !product.variants?.some(v => v.stock > 0)}
-            className="bg-brand hover:bg-brand-dark text-white px-4 py-2 rounded-[8px] text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-[#C9A84C] hover:bg-[#b8943e] text-[#1B2A5E] px-4 py-2.5 rounded-[8px] text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {addingToCart ? '...' : 'Ver Detalles'}
+            {addingToCart ? 'Agregando...' : 'Agregar al Carrito'}
           </button>
         </div>
       </div>

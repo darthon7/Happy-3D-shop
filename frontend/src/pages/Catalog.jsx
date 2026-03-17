@@ -220,7 +220,7 @@ const Catalog = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white text-header font-sans">
+    <div className="min-h-screen bg-[#F5F0E8] text-[#2C1F0E] font-sans">
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-col md:flex-row gap-8">
@@ -238,7 +238,7 @@ const Catalog = () => {
                         type="checkbox" 
                         checked={!filters.categoryId}
                         onChange={() => handleCategoryChange(null, null)}
-                        className="rounded border-gray-300 text-brand focus:ring-brand"
+                        className="rounded border-[#C9A84C]/30 text-brand focus:ring-brand"
                       />
                       <label className="text-sm cursor-pointer" onClick={() => handleCategoryChange(null, null)}>Todos</label>
                     </li>
@@ -248,7 +248,7 @@ const Catalog = () => {
                           type="checkbox" 
                           checked={filters.categoryId === category.id}
                           onChange={() => handleCategoryChange(category.id, category.slug)}
-                          className="rounded border-gray-300 text-brand focus:ring-brand"
+                          className="rounded border-[#C9A84C]/30 text-brand focus:ring-brand"
                         />
                         <label className="text-sm cursor-pointer" onClick={() => handleCategoryChange(category.id, category.slug)}>{category.name}</label>
                       </li>
@@ -266,14 +266,14 @@ const Catalog = () => {
                         placeholder="Min"
                         value={filters.minPrice}
                         onChange={(e) => handleFilterChange('minPrice', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-200 rounded-[8px] text-sm focus:outline-none focus:border-brand"
+                        className="w-full px-3 py-2 border border-[#C9A84C]/20 rounded-[8px] text-sm focus:outline-none focus:border-brand"
                       />
                       <input 
                         type="number" 
                         placeholder="Max"
                         value={filters.maxPrice}
                         onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-200 rounded-[8px] text-sm focus:outline-none focus:border-brand"
+                        className="w-full px-3 py-2 border border-[#C9A84C]/20 rounded-[8px] text-sm focus:outline-none focus:border-brand"
                       />
                     </div>
                   </div>
@@ -304,7 +304,7 @@ const Catalog = () => {
                 <select 
                   value={filters.sort}
                   onChange={(e) => handleFilterChange('sort', e.target.value)}
-                  className="border-0 bg-transparent text-sm font-semibold focus:ring-0 cursor-pointer text-header"
+                  className="border-0 bg-transparent text-sm font-semibold focus:ring-0 cursor-pointer text-[#2C1F0E]"
                 >
                   <option value="">Más recientes</option>
                   <option value="price_asc">Precio: Menor a Mayor</option>
@@ -320,7 +320,7 @@ const Catalog = () => {
                 {activeFilters.map((filter, i) => (
                   <span 
                     key={i}
-                    className="inline-flex items-center gap-1 px-3 py-1 bg-brand/10 text-brand text-sm rounded-full"
+                    className="inline-flex items-center gap-1 px-3 py-1 bg-[#C9A84C]/10 text-[#C9A84C] text-sm rounded-full"
                   >
                     {filter.label}
                     <button onClick={() => removeFilter(filter)} className="hover:text-brand-dark">
@@ -347,12 +347,12 @@ const Catalog = () => {
               </div>
             ) : products.length === 0 ? (
               <div className="text-center py-16">
-                <SearchX className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <SearchX className="w-16 h-16 text-[#2C1F0E]/50 mx-auto mb-4" />
                 <h3 className="text-xl font-bold text-header mb-2">No se encontraron productos</h3>
                 <p className="text-gray-500 mb-6">Intenta con otros filtros o términos de búsqueda</p>
                 <button 
                   onClick={clearFilters}
-                  className="bg-brand text-white px-6 py-3 rounded-[8px] font-semibold hover:bg-brand-dark transition-colors"
+                  className="bg-[#C9A84C] text-white px-6 py-3 rounded-[8px] font-semibold hover:bg-[#b8943e] transition-colors"
                 >
                   Limpiar filtros
                 </button>
@@ -371,7 +371,7 @@ const Catalog = () => {
                 <button 
                   onClick={handleLoadMore}
                   disabled={loadingMore}
-                  className="bg-brand text-white px-8 py-3 rounded-[8px] font-semibold hover:bg-brand-dark transition-colors disabled:opacity-50"
+                  className="bg-[#C9A84C] text-white px-8 py-3 rounded-[8px] font-semibold hover:bg-[#b8943e] transition-colors disabled:opacity-50"
                 >
                   {loadingMore ? 'Cargando...' : 'Cargar más'}
                 </button>
