@@ -53,18 +53,18 @@ const Gallery = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-[#F5F0E8] flex items-center justify-center">
         <div className="w-10 h-10 border-2 border-gray-200 border-t-brand rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#F5F0E8]">
       {/* Header */}
       <div className="py-12 px-4 text-center">
         <div className="flex items-center justify-center gap-2 mb-4">
-          <div className="w-12 h-12 bg-brand rounded-[8px] flex items-center justify-center text-white font-bold text-xl">PR</div>
+          <div className="w-12 h-12 bg-[#C9A84C] rounded-[8px] flex items-center justify-center text-white font-bold text-xl">PR</div>
         </div>
         <h1 className="text-3xl font-bold text-header mb-2">Galería</h1>
         <p className="text-gray-500 text-lg">Explora nuestros trabajos y proyectos</p>

@@ -42,14 +42,14 @@ export const AnimatedCartButton = ({
       onClick={handleClick}
       disabled={disabled || status !== 'idle'}
       className={cn(
-        "relative overflow-hidden w-full h-12 rounded-lg text-sm font-bold shadow-glow transition-all duration-300 flex items-center justify-center",
+        "relative overflow-hidden w-full h-12 rounded-lg text-sm font-bold transition-all duration-300 flex items-center justify-center",
         // Evitamos que active:scale aplique cuando está en medio de la animación o success
         status === 'idle' && !disabled ? "active:scale-[0.98]" : "",
         disabled && status === 'idle'
-          ? "bg-gray-600 cursor-not-allowed opacity-75"
+          ? "bg-[#2C1F0E]/20 cursor-not-allowed opacity-60 text-[#2C1F0E]/50"
           : status === 'success'
-            ? "bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)] border border-emerald-400"
-            : "bg-primary hover:shadow-glow-lg hover:bg-primary-600",
+            ? "bg-emerald-600 text-white shadow-[0_4px_14px_rgba(5,150,105,0.30)] border border-emerald-500"
+            : "bg-[#C9A84C] text-[#1B2A5E] hover:bg-[#b8943e] shadow-[0_4px_14px_rgba(201,168,76,0.30)] hover:shadow-[0_4px_20px_rgba(201,168,76,0.45)]",
         className
       )}
     >

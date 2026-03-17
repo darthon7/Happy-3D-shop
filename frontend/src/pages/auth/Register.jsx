@@ -84,23 +84,23 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-[#F5F0E8] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="flex justify-center mb-6 sm:mb-8">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-12 h-12 bg-brand rounded-[8px] flex items-center justify-center text-header font-bold text-xl">PR</div>
-            <h1 className="text-2xl font-bold text-header">PROP'S <span className="text-brand">ROOM</span></h1>
+            <div className="w-12 h-12 bg-[#C9A84C] rounded-[8px] flex items-center justify-center text-[#2C1F0E] font-bold text-xl">PR</div>
+            <h1 className="text-2xl font-bold text-[#2C1F0E]">PROP'S <span className="text-brand">ROOM</span></h1>
           </Link>
         </div>
 
         {/* Card */}
-        <div className="bg-white border border-gray-100 rounded-[8px] p-5 sm:p-8 shadow-lg">
+        <div className="bg-white border border-[#C9A84C]/20 rounded-[8px] p-5 sm:p-8 shadow-lg">
           <div className="text-center mb-6">
-            <h1 className="text-2xl font-bold text-header mb-2">
+            <h1 className="text-2xl font-bold text-[#2C1F0E] mb-2">
               Crear Cuenta
             </h1>
-            <p className="text-gray-500 text-sm">
+            <p className="text-[#2C1F0E]/60 text-sm">
               Completa tus datos para unirte a nosotros
             </p>
           </div>
@@ -125,11 +125,11 @@ const Register = () => {
             {/* Name Fields */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <label className="block text-sm font-medium text-gray-600">
+                <label className="block text-sm font-medium text-[#2C1F0E]/70">
                   Nombre
                 </label>
                 <div className="relative">
-                  <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#2C1F0E]/50">
                     <User className="w-4 h-4" />
                   </div>
                   <input
@@ -138,8 +138,8 @@ const Register = () => {
                     value={formData.firstName}
                     onChange={handleChange}
                     onBlur={() => handleBlur('firstName', formData.firstName, 'name')}
-                    className={`w-full border rounded-[8px] py-3 pl-10 pr-3 text-header text-sm focus:outline-none focus:ring-2 transition-all ${
-                      fieldErrors.firstName ? 'border-red-500 focus:ring-red-500/20' : 'border-gray-300 focus:border-brand focus:ring-brand/20'
+                    className={`w-full border rounded-[8px] py-3 pl-10 pr-3 text-[#2C1F0E] text-sm focus:outline-none focus:ring-2 transition-all ${
+                      fieldErrors.firstName ? 'border-red-500 focus:ring-red-500/20' : 'border-[#C9A84C]/30 focus:border-brand focus:ring-brand/20'
                     }`}
                     placeholder="Juan"
                     required
@@ -148,7 +148,7 @@ const Register = () => {
                 {fieldErrors.firstName && <p className="text-red-500 text-xs">{fieldErrors.firstName}</p>}
               </div>
               <div className="space-y-1.5">
-                <label className="block text-sm font-medium text-gray-600">
+                <label className="block text-sm font-medium text-[#2C1F0E]/70">
                   Apellido
                 </label>
                 <input
@@ -157,8 +157,8 @@ const Register = () => {
                   value={formData.lastName}
                   onChange={handleChange}
                   onBlur={() => handleBlur('lastName', formData.lastName, 'name')}
-                  className={`w-full bg-white border rounded-xl py-3 px-3 text-header placeholder-gray-500 text-sm focus:outline-none focus:ring-2 transition-all ${
-                    fieldErrors.lastName ? 'border-red-500 focus:ring-red-500/20' : 'border-gray-300 focus:border-brand focus:ring-brand/20'
+                  className={`w-full bg-white border rounded-xl py-3 px-3 text-[#2C1F0E] placeholder-gray-500 text-sm focus:outline-none focus:ring-2 transition-all ${
+                    fieldErrors.lastName ? 'border-red-500 focus:ring-red-500/20' : 'border-[#C9A84C]/30 focus:border-brand focus:ring-brand/20'
                   }`}
                   placeholder="Pérez"
                   required
@@ -169,11 +169,11 @@ const Register = () => {
 
             {/* Email Field */}
             <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-gray-600">
+              <label className="block text-sm font-medium text-[#2C1F0E]/70">
                 Correo Electrónico
               </label>
               <div className="relative">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#2C1F0E]/60">
                   <Mail className="w-4 h-4" />
                 </div>
                 <input
@@ -182,8 +182,8 @@ const Register = () => {
                   value={formData.email}
                   onChange={handleChange}
                   onBlur={() => handleBlur('email', formData.email, 'email')}
-                  className={`w-full bg-white border rounded-xl py-3 pl-10 pr-3 text-header placeholder-gray-500 text-sm focus:outline-none focus:ring-2 transition-all ${
-                    fieldErrors.email ? 'border-red-500 focus:ring-red-500/20' : 'border-gray-300 focus:border-brand focus:ring-brand/20'
+                  className={`w-full bg-white border rounded-xl py-3 pl-10 pr-3 text-[#2C1F0E] placeholder-gray-500 text-sm focus:outline-none focus:ring-2 transition-all ${
+                    fieldErrors.email ? 'border-red-500 focus:ring-red-500/20' : 'border-[#C9A84C]/30 focus:border-brand focus:ring-brand/20'
                   }`}
                   placeholder="tu@email.com"
                   required
@@ -194,11 +194,11 @@ const Register = () => {
 
             {/* Phone Field */}
             <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-gray-600">
-                Teléfono <span className="text-gray-500 text-xs">(opcional)</span>
+              <label className="block text-sm font-medium text-[#2C1F0E]/70">
+                Teléfono <span className="text-[#2C1F0E]/60 text-xs">(opcional)</span>
               </label>
               <div className="relative">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#2C1F0E]/60">
                   <Phone className="w-4 h-4" />
                 </div>
                 <input
@@ -207,8 +207,8 @@ const Register = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   onBlur={() => handleBlur('phone', formData.phone, 'phone', false)}
-                  className={`w-full bg-white border rounded-xl py-3 pl-10 pr-3 text-header placeholder-gray-500 text-sm focus:outline-none focus:ring-2 transition-all ${
-                    fieldErrors.phone ? 'border-red-500 focus:ring-red-500/20' : 'border-gray-300 focus:border-brand focus:ring-brand/20'
+                  className={`w-full bg-white border rounded-xl py-3 pl-10 pr-3 text-[#2C1F0E] placeholder-gray-500 text-sm focus:outline-none focus:ring-2 transition-all ${
+                    fieldErrors.phone ? 'border-red-500 focus:ring-red-500/20' : 'border-[#C9A84C]/30 focus:border-brand focus:ring-brand/20'
                   }`}
                   placeholder="+52 123 456 7890"
                 />
@@ -218,11 +218,11 @@ const Register = () => {
             
             {/* Password Field */}
             <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-gray-600">
+              <label className="block text-sm font-medium text-[#2C1F0E]/70">
                 Contraseña
               </label>
               <div className="relative">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#2C1F0E]/60">
                   <Lock className="w-4 h-4" />
                 </div>
                 <input
@@ -231,8 +231,8 @@ const Register = () => {
                   value={formData.password}
                   onChange={handleChange}
                   onBlur={() => handleBlur('password', formData.password, 'password')}
-                  className={`w-full bg-white border rounded-xl py-3 pl-10 pr-10 text-header placeholder-gray-500 text-sm focus:outline-none focus:ring-2 transition-all ${
-                    fieldErrors.password ? 'border-red-500 focus:ring-red-500/20' : 'border-gray-300 focus:border-brand focus:ring-brand/20'
+                  className={`w-full bg-white border rounded-xl py-3 pl-10 pr-10 text-[#2C1F0E] placeholder-gray-500 text-sm focus:outline-none focus:ring-2 transition-all ${
+                    fieldErrors.password ? 'border-red-500 focus:ring-red-500/20' : 'border-[#C9A84C]/30 focus:border-brand focus:ring-brand/20'
                   }`}
                   placeholder="Mínimo 8 caracteres"
                   minLength={8}
@@ -241,7 +241,7 @@ const Register = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-header transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#2C1F0E]/60 hover:text-[#2C1F0E] transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -271,11 +271,11 @@ const Register = () => {
 
             {/* Confirm Password Field */}
             <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-gray-600">
+              <label className="block text-sm font-medium text-[#2C1F0E]/70">
                 Confirmar Contraseña
               </label>
               <div className="relative">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#2C1F0E]/60">
                   <Lock className="w-4 h-4" />
                 </div>
                 <input
@@ -283,12 +283,12 @@ const Register = () => {
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className={`w-full bg-white border rounded-xl py-3 pl-10 pr-10 text-header placeholder-gray-500 text-sm focus:outline-none focus:ring-2 transition-all ${
+                  className={`w-full bg-white border rounded-xl py-3 pl-10 pr-10 text-[#2C1F0E] placeholder-gray-500 text-sm focus:outline-none focus:ring-2 transition-all ${
                     formData.confirmPassword && formData.password !== formData.confirmPassword 
                       ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
                       : formData.confirmPassword && formData.password === formData.confirmPassword
                       ? 'border-green-500 focus:border-green-500 focus:ring-green-500/20'
-                      : 'border-gray-300 focus:border-brand focus:ring-brand/20'
+                      : 'border-[#C9A84C]/30 focus:border-brand focus:ring-brand/20'
                   }`}
                   placeholder="Repite tu contraseña"
                   required
@@ -296,7 +296,7 @@ const Register = () => {
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-header transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#2C1F0E]/60 hover:text-[#2C1F0E] transition-colors"
                 >
                   {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -310,7 +310,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-primary hover:bg-brand-dark text-header font-bold py-3.5 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-brand/20 hover:shadow-primary/40 mt-2"
+              className="w-full bg-[#C9A84C] hover:bg-[#b8943e] text-[#2C1F0E] font-bold py-3.5 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#C9A84C]/20 hover:shadow-[#C9A84C]/40 mt-2"
             >
               {isLoading ? (
                 <>
@@ -329,10 +329,10 @@ const Register = () => {
           {/* Social Login Divider */}
           <div className="relative my-5">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
+              <div className="w-full border-t border-[#C9A84C]/30"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white text-gray-600">
+              <span className="px-4 bg-white text-[#2C1F0E]/70">
                 o continúa con
               </span>
             </div>
@@ -343,10 +343,10 @@ const Register = () => {
           {/* Divider */}
           <div className="relative my-5">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
+              <div className="w-full border-t border-[#C9A84C]/30"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white text-gray-600">
+              <span className="px-4 bg-white text-[#2C1F0E]/70">
                 ¿Ya tienes cuenta?
               </span>
             </div>
@@ -355,15 +355,15 @@ const Register = () => {
           {/* Login Link */}
           <Link
             to="/login"
-            className="w-full block text-center py-3 rounded-xl border border-gray-300 text-header font-bold hover:bg-white hover:border-primary/30 transition-all duration-300"
+            className="w-full block text-center py-3 rounded-xl border border-[#C9A84C]/30 text-[#2C1F0E] font-bold hover:bg-white hover:border-[#C9A84C]/50 transition-all duration-300"
           >
             Iniciar Sesión
           </Link>
         </div>
 
         {/* Back to Home */}
-        <p className="text-center mt-6 text-gray-600 text-sm">
-          <Link to="/" className="hover:text-brand transition-colors">
+        <p className="text-center mt-6 text-[#2C1F0E]/70 text-sm">
+          <Link to="/" className="hover:text-[#C9A84C] transition-colors">
             ← Volver al inicio
           </Link>
         </p>

@@ -19,7 +19,7 @@ const MobileTopBar = () => {
   };
 
   return (
-    <header className="md:hidden fixed top-0 left-0 right-0 z-50 bg-header/95 backdrop-blur-md border-b border-white/10 shadow-lg">
+    <header className="md:hidden fixed top-0 left-0 right-0 z-50 bg-[#1B2A5E]/95 backdrop-blur-md border-b border-white/10 shadow-lg">
       <div className="flex items-center gap-2 px-3 py-2 h-14">
         {/* Logo */}
         <Link 
@@ -33,8 +33,8 @@ const MobileTopBar = () => {
           className="flex items-center gap-1" 
           aria-label="Prop's Room Inicio"
         >
-          <div className="w-7 h-7 bg-brand rounded-[6px] flex items-center justify-center text-white font-bold text-sm">PR</div>
-          <span className="text-white font-bold text-sm">PROP'S <span className="text-brand">ROOM</span></span>
+          <div className="w-7 h-7 bg-[#C9A84C] rounded-[6px] flex items-center justify-center text-white font-bold text-sm">PR</div>
+          <span className="text-white font-bold text-sm">PROP'S <span className="text-[#C9A84C]">ROOM</span></span>
         </Link>
 
         {/* Search bar */}
@@ -46,7 +46,7 @@ const MobileTopBar = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Buscar..."
-              className="w-full bg-white/10 border border-white/20 rounded-full py-2 pl-9 pr-3 text-sm text-white placeholder-white/50 focus:outline-none focus:border-brand transition-colors"
+              className="w-full bg-white/10 border border-white/20 rounded-full py-2 pl-9 pr-3 text-sm text-white placeholder-white/50 focus:outline-none focus:border-[#C9A84C] transition-colors"
             />
           </div>
         </form>

@@ -11,7 +11,7 @@ const sectionVariants = {
   }),
 };
 
-const LAST_UPDATED = '5 de marzo de 2026';
+const LAST_UPDATED = '16 de marzo de 2026';
 
 const sections = [
   {
@@ -21,11 +21,11 @@ const sections = [
       <>
         <p>De conformidad con el artículo 76 Bis de la <strong className="text-white">Ley Federal de Protección al Consumidor (LFPC)</strong> y la <strong className="text-white">NOM-151-SCFI-2002</strong>, se proporciona la siguiente información:</p>
         <ul className="list-disc list-inside space-y-1 mt-3 text-text-secondary">
-          <li><strong className="text-white">Nombre comercial:</strong> DazeHaze</li>
+          <li><strong className="text-white">Nombre comercial:</strong> Prop's Room</li>
           <li><strong className="text-white">Domicilio:</strong> Ciudad de México, México</li>
-          <li><strong className="text-white">Contacto:</strong> contacto@dazehaze.com</li>
+          <li><strong className="text-white">Contacto:</strong> contacto@propsroom.com</li>
         </ul>
-        <p className="mt-3">Al acceder y utilizar el sitio web <strong className="text-white">dazehaze.com</strong> (en adelante "el Sitio"), usted acepta cumplir y estar sujeto a los presentes Términos y Condiciones.</p>
+        <p className="mt-3">Al acceder y utilizar el sitio web <strong className="text-white">propsroom.com</strong> (en adelante "el Sitio"), usted acepta cumplir y estar sujeto a los presentes Términos y Condiciones.</p>
       </>
     ),
   },
@@ -35,7 +35,7 @@ const sections = [
     content: (
       <>
         <p>El uso de este Sitio implica la aceptación plena de los presentes Términos y Condiciones. El Usuario declara ser mayor de 18 años o contar con la autorización de su padre, madre o tutor para realizar compras.</p>
-        <p className="mt-3">DazeHaze se reserva el derecho de modificar estos Términos en cualquier momento, notificando los cambios a través del Sitio. La versión vigente será siempre la publicada en esta página.</p>
+        <p className="mt-3">Prop's Room se reserva el derecho de modificar estos Términos en cualquier momento, notificando los cambios a través del Sitio. La versión vigente será siempre la publicada en esta página.</p>
       </>
     ),
   },
@@ -47,7 +47,7 @@ const sections = [
         <p>De acuerdo con el artículo 7 de la LFPC, todos los precios publicados en el Sitio están expresados en <strong className="text-white">Pesos Mexicanos (MXN)</strong> e incluyen el <strong className="text-white">Impuesto al Valor Agregado (IVA) del 16%</strong>, salvo que se indique lo contrario.</p>
         <ul className="list-disc list-inside space-y-1 mt-3 text-text-secondary">
           <li>Aceptamos pagos con tarjeta de crédito y débito a través de <strong className="text-white">Stripe</strong>, una plataforma de pagos certificada con estándar PCI-DSS.</li>
-          <li>DazeHaze se reserva el derecho de cancelar pedidos cuando existan indicios de actividad fraudulenta.</li>
+          <li>Prop's Room se reserva el derecho de cancelar pedidos cuando existan indicios de actividad fraudulenta.</li>
           <li>El precio vigente al momento de la compra es el que se aplicará al pedido, aún si el precio cambia posteriormente.</li>
         </ul>
       </>
@@ -61,7 +61,7 @@ const sections = [
         <p>Las entregas se realizan en todo el territorio de los <strong className="text-white">Estados Unidos Mexicanos</strong> a través de paqueterías autorizadas (Estafeta, DHL, UPS, entre otras).</p>
         <ul className="list-disc list-inside space-y-1 mt-3 text-text-secondary">
           <li>Los tiempos de entrega estimados se muestran al momento de seleccionar el método de envío y son aproximados.</li>
-          <li>DazeHaze no se hace responsable por retrasos causados por la paquetería, condiciones climáticas o causas de fuerza mayor.</li>
+          <li>Prop's Room no se hace responsable por retrasos causados por la paquetería, condiciones climáticas o causas de fuerza mayor.</li>
           <li>El comprador es responsable de proporcionar una dirección de entrega completa y correcta.</li>
           <li>Se proporcionará un número de guía de rastreo una vez que el pedido sea despachado.</li>
         </ul>
@@ -79,7 +79,7 @@ const sections = [
           <li>Se presente el comprobante de compra o número de pedido.</li>
           <li>El producto no sea de la categoría de artículos personalizados o en oferta especial no reembolsable (lo cual se indicará claramente al momento de la compra).</li>
         </ul>
-        <p className="mt-3">Para solicitar una devolución o cambio, el consumidor deberá contactar a <strong className="text-white">contacto@dazehaze.com</strong> dentro del plazo mencionado. El reembolso se realizará por el mismo medio de pago utilizado en un plazo no mayor a <strong className="text-white">15 días hábiles</strong> después de recibir el producto devuelto.</p>
+        <p className="mt-3">Para solicitar una devolución o cambio, el consumidor deberá contactar a <strong className="text-white">contacto@propsroom.com</strong> dentro del plazo mencionado. El reembolso se realizará por el mismo medio de pago utilizado en un plazo no mayor a <strong className="text-white">15 días hábiles</strong> después de recibir el producto devuelto.</p>
       </>
     ),
   },
@@ -88,15 +88,15 @@ const sections = [
     title: '6. Privacidad y Protección de Datos Personales',
     content: (
       <>
-        <p>DazeHaze cumple con la <strong className="text-white">Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP)</strong> y su Reglamento. Los datos personales recabados serán utilizados exclusivamente para:</p>
+        <p>Prop's Room cumple con la <strong className="text-white">Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP)</strong> y su Reglamento. Los datos personales recabados serán utilizados exclusivamente para:</p>
         <ul className="list-disc list-inside space-y-1 mt-3 text-text-secondary">
           <li>Procesar y enviar pedidos.</li>
           <li>Enviar comunicaciones relacionadas con su compra.</li>
           <li>Mejorar la experiencia de usuario en el Sitio.</li>
           <li>Cumplir con obligaciones legales.</li>
         </ul>
-        <p className="mt-3">DazeHaze <strong className="text-white">no venderá, alquilará ni compartirá</strong> sus datos personales con terceros no relacionados con la prestación del servicio. El usuario puede ejercer sus derechos <strong className="text-white">ARCO</strong> (Acceso, Rectificación, Cancelación y Oposición) enviando una solicitud a <strong className="text-white">contacto@dazehaze.com</strong>.</p>
-        <p className="mt-3">La información de pago es procesada directamente por Stripe y <strong className="text-white">DazeHaze no almacena datos de tarjetas</strong> de crédito o débito en sus servidores.</p>
+        <p className="mt-3">Prop's Room <strong className="text-white">no venderá, alquilará ni compartirá</strong> sus datos personales con terceros no relacionados con la prestación del servicio. El usuario puede ejercer sus derechos <strong className="text-white">ARCO</strong> (Acceso, Rectificación, Cancelación y Oposición) enviando una solicitud a <strong className="text-white">contacto@propsroom.com</strong>.</p>
+        <p className="mt-3">La información de pago es procesada directamente por Stripe y <strong className="text-white">Prop's Room no almacena datos de tarjetas</strong> de crédito o débito en sus servidores.</p>
       </>
     ),
   },
@@ -105,8 +105,8 @@ const sections = [
     title: '7. Propiedad Intelectual',
     content: (
       <>
-        <p>Todo el contenido del Sitio, incluyendo pero no limitado a: logotipos, diseños, fotografías, textos, gráficos, iconos, nombres comerciales y código fuente, son propiedad exclusiva de <strong className="text-white">DazeHaze</strong> y están protegidos por la <strong className="text-white">Ley Federal del Derecho de Autor</strong> y la <strong className="text-white">Ley de la Propiedad Industrial</strong>.</p>
-        <p className="mt-3">Queda estrictamente prohibida la reproducción, distribución, modificación o uso no autorizado de cualquier elemento del Sitio sin el consentimiento escrito de DazeHaze.</p>
+        <p>Todo el contenido del Sitio, incluyendo pero no limitado a: logotipos, diseños, fotografías, textos, gráficos, iconos, nombres comerciales y código fuente, son propiedad exclusiva de <strong className="text-white">Prop's Room</strong> y están protegidos por la <strong className="text-white">Ley Federal del Derecho de Autor</strong> y la <strong className="text-white">Ley de la Propiedad Industrial</strong>.</p>
+        <p className="mt-3">Queda estrictamente prohibida la reproducción, distribución, modificación o uso no autorizado de cualquier elemento del Sitio sin el consentimiento escrito de Prop's Room.</p>
       </>
     ),
   },
@@ -115,13 +115,13 @@ const sections = [
     title: '8. Disponibilidad de Productos',
     content: (
       <>
-        <p>La disponibilidad de los productos está sujeta a existencias. DazeHaze se reserva el derecho de:</p>
+        <p>La disponibilidad de los productos está sujeta a existencias. Prop's Room se reserva el derecho de:</p>
         <ul className="list-disc list-inside space-y-1 mt-3 text-text-secondary">
           <li>Limitar la cantidad de unidades por pedido.</li>
           <li>Cancelar pedidos de productos agotados, notificando al consumidor y procesando el reembolso correspondiente.</li>
           <li>Modificar o descontinuar productos sin previo aviso.</li>
         </ul>
-        <p className="mt-3">Si un producto se agota después de haberse confirmado la compra, DazeHaze notificará al cliente y ofrecerá un reembolso completo o la opción de seleccionar un producto alternativo.</p>
+        <p className="mt-3">Si un producto se agota después de haberse confirmado la compra, Prop's Room notificará al cliente y ofrecerá un reembolso completo o la opción de seleccionar un producto alternativo.</p>
       </>
     ),
   },
@@ -130,7 +130,7 @@ const sections = [
     title: '9. Garantías',
     content: (
       <>
-        <p>De conformidad con la LFPC, DazeHaze garantiza que los productos ofrecidos corresponden a la descripción, imágenes y especificaciones publicadas en el Sitio. En caso de que el producto recibido presente defectos de fabricación o no corresponda con lo adquirido, el consumidor podrá:</p>
+        <p>De conformidad con la LFPC, Prop's Room garantiza que los productos ofrecidos corresponden a la descripción, imágenes y especificaciones publicadas en el Sitio. En caso de que el producto recibido presente defectos de fabricación o no corresponda con lo adquirido, el consumidor podrá:</p>
         <ul className="list-disc list-inside space-y-1 mt-3 text-text-secondary">
           <li>Solicitar la <strong className="text-white">reposición del producto</strong> sin costo adicional.</li>
           <li>Solicitar el <strong className="text-white">reembolso total</strong> del precio pagado.</li>
@@ -160,10 +160,10 @@ const sections = [
     title: '11. Contacto y Atención al Cliente',
     content: (
       <>
-        <p>Para cualquier duda, aclaración, queja o sugerencia, el consumidor puede comunicarse con DazeHaze a través de:</p>
+        <p>Para cualquier duda, aclaración, queja o sugerencia, el consumidor puede comunicarse con Prop's Room a través de:</p>
         <ul className="list-disc list-inside space-y-1 mt-3 text-text-secondary">
-          <li><strong className="text-white">Correo electrónico:</strong> contacto@dazehaze.com</li>
-          <li><strong className="text-white">Redes sociales:</strong> @dazehaze.st (Instagram, Facebook, TikTok)</li>
+          <li><strong className="text-white">Correo electrónico:</strong> contacto@propsroom.com</li>
+          <li><strong className="text-white">Redes sociales:</strong> @propsroom3d (Instagram, Facebook, TikTok)</li>
         </ul>
         <p className="mt-3">Nos comprometemos a responder a todas las solicitudes en un plazo no mayor a <strong className="text-white">3 días hábiles</strong>.</p>
       </>
@@ -174,7 +174,6 @@ const sections = [
 const TermsAndConditions = () => {
   return (
     <div className="w-full flex-1">
-      {/* Hero */}
       <section className="relative py-16 lg:py-24 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-transparent to-transparent" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl" />
@@ -199,7 +198,6 @@ const TermsAndConditions = () => {
         </div>
       </section>
 
-      {/* Breadcrumb */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
         <div className="flex items-center gap-2 text-sm">
           <Link to="/" className="text-primary font-medium hover:text-white transition-colors">Inicio</Link>
@@ -208,7 +206,6 @@ const TermsAndConditions = () => {
         </div>
       </div>
 
-      {/* Sections */}
       <section className="relative pb-16 lg:pb-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-6">
@@ -222,7 +219,6 @@ const TermsAndConditions = () => {
                 variants={sectionVariants}
                 className="relative bg-surface border border-white/5 rounded-2xl p-6 md:p-8 hover:border-primary/30 transition-all duration-200 group overflow-hidden"
               >
-                {/* Hover glow */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
 
                 <div className="relative">
@@ -240,7 +236,6 @@ const TermsAndConditions = () => {
             ))}
           </div>
 
-          {/* PROFECO notice */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

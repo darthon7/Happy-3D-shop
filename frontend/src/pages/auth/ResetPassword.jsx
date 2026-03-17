@@ -82,7 +82,7 @@ const ResetPassword = () => {
 
   if (isSuccess) {
     return (
-      <div className="min-h-screen bg-background-dark flex flex-col">
+      <div className="min-h-screen bg-[#F5F0E8] flex flex-col">
         <div className="flex-grow flex items-center justify-center px-4 py-12">
           <div className="w-full max-w-md text-center">
             <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -105,7 +105,7 @@ const ResetPassword = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background-dark flex flex-col items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen bg-[#F5F0E8] flex flex-col items-center justify-center relative overflow-hidden">
       {/* Background Effects matching Login/Register */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent" />
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-3xl" />

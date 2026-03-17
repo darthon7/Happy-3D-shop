@@ -1,215 +1,383 @@
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { useNewArrivals } from '../hooks/useQueries';
+// eslint-disable-next-line no-unused-vars
+import { motion } from 'framer-motion';
+import { useNewArrivals, useFeaturedProducts } from '../hooks/useQueries';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+
+const heroImg = "https://res.cloudinary.com/dpeepkwas/image/upload/v1773684179/FondoH3DS_xglgzb.jpg";
+
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat('es-MX', {
+    style: 'currency',
+    currency: 'MXN'
+  }).format(amount);
+};
 
 const Home = () => {
-  const { data: arrivalsData, isLoading: loadingArrivals } = useNewArrivals(3);
-  const newArrivals = arrivalsData?.content || arrivalsData || [];
+  const { data: arrivalsData, isLoading: loadingArrivals } = useNewArrivals(4);
+  const { data: featuredData, isLoading: loadingFeatured } = useFeaturedProducts();
+  
+  const newArrivals = useMemo(() => 
+    arrivalsData?.content || arrivalsData || [], 
+    [arrivalsData]
+  );
+  const bestSellers = useMemo(() => {
+    const list = featuredData?.content || featuredData || [];
+    return list.slice(0, 8);
+  }, [featuredData]);
+
+  const [heroHover, setHeroHover] = useState(false);
+  const [carouselIndex, setCarouselIndex] = useState(0);
+
+  const visibleProducts = useMemo(() => {
+    if (newArrivals.length <= 4) return newArrivals;
+    return newArrivals.slice(carouselIndex, carouselIndex + 4);
+  }, [newArrivals, carouselIndex]);
+
+  const nextCarousel = () => {
+    if (newArrivals.length > 4) {
+      setCarouselIndex((prev) => (prev + 1) % (newArrivals.length - 3));
+    }
+  };
+
+  const prevCarousel = () => {
+    if (newArrivals.length > 4) {
+      setCarouselIndex((prev) => (prev === 0 ? newArrivals.length - 4 : prev - 1));
+    }
+  };
+
 
   return (
-    <div className="font-sans w-full overflow-x-hidden bg-white">
-      <main>
-        {/* Hero Section */}
-        <section className="relative bg-white pt-16 pb-24 lg:pt-32 lg:pb-40 overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="z-10">
-              <h1 className="text-5xl lg:text-7xl font-bold leading-tight mb-6 text-header">
-                Imprimiendo <span className="text-brand">algo extraordinario</span>
-              </h1>
-              <p className="text-lg text-gray-600 mb-10 max-w-lg leading-relaxed">
-                Impresiones 3D profesionales y acabados artesanales para cosplayers que exigen el más alto nivel de precisión.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  to="/catalogo"
-                  className="bg-brand hover:bg-brand-dark text-white px-10 py-4 rounded-[8px] text-lg font-bold transition-all shadow-lg hover:translate-y-[-2px]"
-                >
-                  Ver Galería
-                </Link>
-                <Link
-                  to="/contacto"
-                  className="border-2 border-header text-header hover:bg-header hover:text-white px-10 py-4 rounded-[8px] text-lg font-bold transition-all"
-                >
-                  Cotización Personalizada
-                </Link>
-              </div>
-            </div>
-            <div className="relative group">
-              <img
-                alt="Cyber Helmet Prop"
-                className="w-full h-auto object-cover rounded-[8px] shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSjkSR6Z5mhKpGrGJjM95Di-oHdLrFS_PwKarbKE9R8RKQ8B5pUTh3mjYlHhxDy_hRqeTTN3TbXuGvCHn-UGRBC2pH-IMStj-1cY2TH1kkYL_DBqAu0TSLQtF_-3DBQK5PtdhbVkTZ-jLXuyxtEFv01sPdhBuuYzzkhL7BlfVYCJ_qHgK0onXn-qlMRpb3KxurcQ3KRAX5g5W6WpmZjLrzHIJGJnNG0Tf-5IHjks-7qcFBea7vLTcjHrP2pjJhxOkfwpPjACbkB7r_"
-              />
-              <div className="absolute -bottom-6 -left-6 bg-white p-6 shadow-xl rounded-[8px] border border-silver hidden md:block">
-                <p className="text-brand font-bold text-sm uppercase">Next-Gen Detail</p>
-                <p className="text-header font-medium">8K Resolution 3D Printing</p>
-              </div>
-            </div>
-          </div>
-        </section>
+    <div className="bg-[#F5F0E8] text-[#2C1F0E] font-sans">
+{/* Hero Section */}
+      <section 
+        className="relative h-[420px] bg-cover bg-center flex items-center justify-center flex-col text-center px-6"
+        style={{ 
+          background: `linear-gradient(rgba(15,20,60,0.72), rgba(15,20,60,0.72)), url(${heroImg}) center/cover no-repeat`
+        }}
+      >
+        <div className="absolute inset-4 border border-[#C9A84C]/55 pointer-events-none rounded-sm" />
+        
+        {[...Array(4)].map((_, i) => {
+          const positions = [
+            { top: 5, left: 5, borderWidth: '2px 0 0 2px' },
+            { top: 5, right: 5, borderWidth: '2px 2px 0 0' },
+            { bottom: 5, left: 5, borderWidth: '0 0 2px 2px' },
+            { bottom: 5, right: 5, borderWidth: '0 2px 2px 0' },
+          ];
+          return (
+            <div 
+              key={i}
+              className="absolute w-5 h-5 border-[#C9A84C] border-solid opacity-80"
+              style={positions[i]}
+            />
+          );
+        })}
 
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="h-px bg-silver"></div>
-        </div>
+        <motion.h1 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-[#C9A84C] text-4xl md:text-5xl font-bold mb-3 text-shadow-[0_2px_12px_rgba(0,0,0,0.7)] tracking-wide relative z-10"
+        >
+          Forja tu Propia Leyenda
+        </motion.h1>
+        
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-[#E8DCC8] text-base max-w-md leading-relaxed mb-7 relative z-10"
+        >
+          Réplicas artesanales impresas en 3D para el aventurero exigente.
+        </motion.p>
+        
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          onMouseEnter={() => setHeroHover(true)}
+          onMouseLeave={() => setHeroHover(false)}
+          className="bg-[#C9A84C] text-[#1B2A5E] border-none px-9 py-3.5 text-sm font-bold tracking-[2px] uppercase cursor-pointer transition-all relative z-10"
+          style={{
+            background: heroHover ? '#b8943e' : '#C9A84C',
+            transform: heroHover ? 'scale(1.03)' : 'scale(1)',
+          }}
+        >
+          <Link to="/catalogo">
+            Explorar Catálogo
+          </Link>
+        </motion.button>
+      </section>
 
-        {/* Featured Props - New Arrivals */}
-        <section className="py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold mb-4 uppercase tracking-wider text-header">New Arrivals</h2>
-              <div className="w-16 h-1 bg-brand mx-auto"></div>
-            </div>
-            
-            {loadingArrivals ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {[...Array(3)].map((_, i) => (
-                  <div key={i} className="cursor-pointer">
-                    <div className="relative overflow-hidden rounded-[8px] mb-4 aspect-square bg-gray-100">
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200 to-transparent animate-pulse" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-1 text-header">Loading...</h3>
-                    <p className="text-gray-500 text-sm mb-4">Loading</p>
-                    <span className="text-brand font-bold">$0.00</span>
-                  </div>
-                ))}
+      {/* Best Sellers Section */}
+      <section className="py-14 px-10 bg-[#F5F0E8]">
+        <p className="text-center text-[#C9A84C] text-sm tracking-[2px] uppercase mb-1">
+          Favoritos de la Comunidad
+        </p>
+        <h2 className="text-2xl font-bold text-center text-[#2C1F0E] mb-2 tracking-wide">
+          Productos Más Vendidos
+        </h2>
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-8">
+          {loadingFeatured ? (
+            [...Array(4)].map((_, i) => (
+              <div key={i} className="border border-[#C9A84C]/20 rounded-sm overflow-hidden bg-white animate-pulse">
+                <div className="aspect-square bg-gray-100" />
+                <div className="p-4 bg-[#F5F0E8] space-y-2">
+                  <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto" />
+                  <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto" />
+                </div>
               </div>
-            ) : newArrivals.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {newArrivals.map((product) => (
-                  <Link key={product.id} to={`/producto/${product.slug}`} className="group cursor-pointer block">
-                    <div className="relative overflow-hidden rounded-[8px] mb-4 aspect-square bg-gray-100">
-                      <img
-                        alt={product.name}
-                        className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                        src={product.mainImageUrl || product.images?.[0]?.url || 'https://lh3.googleusercontent.com/aida-public/AB6AXuDTV0C2A9kZxNCY_ecO7ZTw7KvjkNkhPKh78DyzHc8VMFIASrb4pRdOKVi92ufNTCEI9SFewNOwVAE43M_nSooyGbxb_gqr1AzM-4mUJpeV1glvZqZeq6DTJoLbGl5yYAJDww_o3yx8ah5go5-GXnE_kdT6JmseNzoVWDo0gw1SrvvyyXS9HX0QZmXphwwyTTtRey12Hffxx6rVRqM-Xc7sYeQTknrD83jq-Gscn6c_25ZJT90zWZY0HLn3ZyYbEVM9nKALdCqhi1oO'}
+            ))
+          ) : bestSellers.length > 0 ? (
+            bestSellers.map((product, i) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+                whileHover={{ y: -4 }}
+                className="group border border-[#C9A84C]/20 rounded-sm overflow-hidden bg-white shadow-sm hover:shadow-md transition-all"
+              >
+                <Link to={`/producto/${product.slug}`}>
+                  <div className="aspect-square relative overflow-hidden bg-[#F5F0E8]">
+                    {product.mainImageUrl ? (
+                      <img 
+                        src={product.mainImageUrl} 
+                        alt={product.name} 
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
                       />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-4xl uppercase font-bold text-[#C9A84C]/30 italic">
+                        No Image
+                      </div>
+                    )}
+                    {product.isOnSale && (
+                      <div className="absolute top-2 right-2 bg-[#C9A84C] text-[#1B2A5E] text-[10px] font-bold px-2 py-1 rounded-sm">
+                        -{product.discountPercentage}%
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-3 text-center bg-[#F5F0E8] border-t border-[#C9A84C]/10">
+                    <div className="text-[10px] text-[#C9A84C] font-bold uppercase tracking-wider mb-1 truncate">
+                      {product.categoryName || 'Coleccionable'}
                     </div>
-                    <h3 className="text-xl font-bold mb-1 text-header">{product.name}</h3>
-                    <p className="text-gray-500 text-sm mb-4">{product.categoryName || 'Prop\'s Room'}</p>
-                    <span className="text-brand font-bold">
-                      ${product.salePrice?.toFixed(2) || product.basePrice?.toFixed(2)}
-                    </span>
+                    <h3 className="text-xs font-bold text-[#2C1F0E] mb-1 line-clamp-1">
+                      {product.name}
+                    </h3>
+                    <div className="text-sm font-bold text-[#2C1F0E]">
+                      {formatCurrency(product.salePrice || product.basePrice)}
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))
+          ) : (
+            [
+              { name: "Casco de Caballero", price: 1299, image: "https://res.cloudinary.com/dpeepkwas/image/upload/v1773684179/Categories/Casco.jpg" },
+              { name: "Espada Maestra", price: 850, image: "https://res.cloudinary.com/dpeepkwas/image/upload/v1773684179/Categories/Espada.jpg" },
+              { name: "Escudo Hyliano", price: 950, image: "https://res.cloudinary.com/dpeepkwas/image/upload/v1773684179/Categories/Escudo.jpg" },
+              { name: "Daga de Cristal", price: 450, image: "https://res.cloudinary.com/dpeepkwas/image/upload/v1773684179/Categories/Daga.jpg" },
+            ].map((prod, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+                className="border border-[#C9A84C]/20 rounded-sm overflow-hidden bg-white grayscale hover:grayscale-0 transition-all"
+              >
+                <div className="aspect-square bg-[#F5F0E8] flex items-center justify-center text-5xl">
+                   🏺
+                </div>
+                <div className="p-3 text-center bg-[#F5F0E8]">
+                  <h3 className="text-xs font-bold text-[#2C1F0E] mb-1">{prod.name}</h3>
+                  <div className="text-sm font-bold text-[#C9A84C]">{formatCurrency(prod.price)}</div>
+                </div>
+              </motion.div>
+            ))
+          )}
+        </div>
+      </section>
+
+      {/* New Arrivals Section */}
+      <section className="py-14 px-10 bg-[#1B2A5E]">
+        <p className="text-center text-[#C9A84C] text-sm tracking-[2px] uppercase mb-1">
+          Lo Más Nuevo
+        </p>
+        <h2 className="text-2xl font-bold text-center text-[#E8DCC8] mb-8 tracking-wide">
+          Recién Llegados
+        </h2>
+
+        <div className="relative max-w-4xl mx-auto">
+          <button 
+            onClick={prevCarousel}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 bg-[#C9A84C] border-none rounded-full w-9 h-9 text-[#1B2A5E] text-lg font-bold cursor-pointer flex items-center justify-center hover:bg-[#b8943e] transition-colors"
+          >
+            <ChevronLeft size={20} />
+          </button>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {loadingArrivals ? (
+              [...Array(4)].map((_, i) => (
+                <div key={i} className="bg-[#F5F0E8] rounded p-4 text-center border border-[#C9A84C]/30">
+                  <div className="h-32 bg-gray-200 rounded mb-3 animate-pulse" />
+                  <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto mb-2" />
+                  <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto" />
+                </div>
+              ))
+            ) : newArrivals.length > 0 ? (
+              visibleProducts.map((product, i) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="bg-[#F5F0E8] rounded p-4 text-center border border-[#C9A84C]/30"
+                >
+                  <Link to={`/producto/${product.slug}`}>
+                    <div className="aspect-square flex items-center justify-center text-6xl mb-3 overflow-hidden rounded">
+                      {product.mainImageUrl || product.images?.[0]?.url ? (
+                        <img 
+                          src={product.mainImageUrl || product.images[0].url} 
+                          alt={product.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span>🎭</span>
+                      )}
+                    </div>
+                    <div className="text-[#C9A84C] font-bold text-base mb-1">
+                      {formatCurrency(product.salePrice || product.basePrice)}
+                    </div>
+                    <div className="text-[#2C1F0E] text-sm mb-3 line-clamp-2 font-medium">
+                      {product.name}
+                    </div>
+                    <button className="bg-[#C9A84C] text-[#1B2A5E] border-none rounded-full px-5 py-2 text-xs font-bold cursor-pointer hover:bg-[#b8943e] transition-colors">
+                      Ver Detalle
+                    </button>
                   </Link>
-                ))}
-              </div>
+                </motion.div>
+              ))
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {/* Placeholder Products from Template */}
-                <div className="group cursor-pointer">
-                  <div className="relative overflow-hidden rounded-[8px] mb-4 aspect-square bg-gray-100">
-                    <img
-                      alt="Blade Replica"
-                      className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKfem5yLlZRFjD03uwlGU_Efc9i8xFhb_sHuhuwpSvl52X5qlg0n3XOlGmk-VgRDyfi43klZLyxbRKPesRw-7mtdC5Vv6-dz6aRRplAZ7NbuLw50s5Vx2YIF9k1fACs2NjQYRlEPtJ78m6bOZ2IIgoMjl2NBkJgYLk9KBATByicfzM5sK-g0ZDc4yYVR8G5dXkw5tLc1kOY3yVyIE90KtZbLiqLkMzuFzo2-NRYpx4DIU9_q8XJeJlpdkY1HW8tUbJSZjH3N3It1ep"
-                    />
+              [
+                { name: "Katana Neón", price: 349, emoji: "🗡️" },
+                { name: "Placa de Pecho Mando", price: 189, emoji: "🛡️" },
+                { name: "Núcleo de Célula de Fusión", price: 95, emoji: "⚡" },
+                { name: "Espada Láser's", price: 249, emoji: "⚔️" },
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="bg-[#F5F0E8] rounded p-4 text-center border border-[#C9A84C]/30"
+                >
+                  <div className="aspect-square flex items-center justify-center text-6xl mb-3">
+                    {item.emoji}
                   </div>
-                  <h3 className="text-xl font-bold mb-1 text-header">Neon Katana</h3>
-                  <p className="text-gray-500 text-sm mb-4">Cyberpunk Series | LED Integrated</p>
-                  <span className="text-brand font-bold">$349.00</span>
-                </div>
-                <div className="group cursor-pointer">
-                  <div className="relative overflow-hidden rounded-[8px] mb-4 aspect-square bg-gray-100">
-                    <img
-                      alt="Armor Plate"
-                      className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4jf4YxNbcjb2slLo9HS9Ro6nu4jJW8m_VNd8nUxn4BmSJa9Xt1b4QbPc-xo0luz6sC7kAl3QH5ozYsmbOUcebzvvEOzKqb-fMmyHQmAr7naxRYBSI8X_kUu_eWwIRzhbvCeARwsKxqbCcwJCDri4O6vyGlo0x7xCpcQAlzBb5j2hNo0zeJu0bvFwPpqNY2DQY9ZQKU4bR0-4E0frZAYmDIgNCs1zgUiy7_k8GrDRZHiQJQxzryqu99GRFlBW6KXrbaHekvmdwC7DX"
-                    />
+                  <div className="text-[#C9A84C] font-bold text-base mb-1">
+                    {formatCurrency(item.price)}
                   </div>
-                  <h3 className="text-xl font-bold mb-1 text-header">Mandalorian Chest Plate</h3>
-                  <p className="text-gray-500 text-sm mb-4">Beskar Finish | Bespoke Sizing</p>
-                  <span className="text-brand font-bold">$189.00</span>
-                </div>
-                <div className="group cursor-pointer">
-                  <div className="relative overflow-hidden rounded-[8px] mb-4 aspect-square bg-gray-100">
-                    <img
-                      alt="Sci-Fi Prop"
-                      className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzhpVNyyM4SW_mYL5cZ4yxXE--Z2iKFisMmAqdO4Fn3Tc9y2JFtULZTPATD3HugKrRHeDXkMMiP889ZbxDOXP38LNy_B6L5QZRx9Q-_GZHWGeuUi2Vv-Zbpb8v_hqhMnVw9BoOwZplT7UHNQJsU59iMQdT16coVmjKdeE18Mb35Mfd0V1vMxerQGi7CY76zjP9htZ07bFtzB7uk-yfX9GGAq4ry0wxy5ZPWD77WJv7ZCYhy_UiJ9_5Jjzr1otVNd9TEXWvgxOENf8s"
-                    />
+                  <div className="text-[#2C1F0E] text-sm mb-3 font-medium">
+                    {item.name}
                   </div>
-                  <h3 className="text-xl font-bold mb-1 text-header">Fusion Cell Core</h3>
-                  <p className="text-gray-500 text-sm mb-4">Wasteland Series | Hand-Weathered</p>
-                  <span className="text-brand font-bold">$95.00</span>
-                </div>
-              </div>
+                  <Link to="/catalogo">
+                    <button className="bg-[#C9A84C] text-[#1B2A5E] border-none rounded-full px-5 py-2 text-xs font-bold cursor-pointer hover:bg-[#b8943e] transition-colors">
+                      Ver Detalle
+                    </button>
+                  </Link>
+                </motion.div>
+              ))
             )}
           </div>
-        </section>
 
-        {/* Our Process */}
-        <section className="py-24 bg-header text-white">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-              <div>
-                <h2 className="text-4xl font-bold mb-8">Precision in Every Polygon</h2>
-                <p className="text-gray-300 mb-8 leading-relaxed">
-                  We don't just print; we engineer. Every piece undergoes a rigorous 4-stage process to ensure it doesn't just look like the character's gear—it feels like it.
-                </p>
-                <ul className="space-y-6">
-                  <li className="flex items-start">
-                    <span className="flex-shrink-0 w-8 h-8 rounded-full border border-brand text-brand flex items-center justify-center font-bold mr-4">
-                      1
-                    </span>
-                    <div>
-                      <h4 className="font-bold text-lg">3D Modeling & Scaling</h4>
-                      <p className="text-gray-400 text-sm">Perfectly scaled to your height and proportions using custom scan data.</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="flex-shrink-0 w-8 h-8 rounded-full border border-brand text-brand flex items-center justify-center font-bold mr-4">
-                      2
-                    </span>
-                    <div>
-                      <h4 className="font-bold text-lg">Ultra-Res Printing</h4>
-                      <p className="text-gray-400 text-sm">Industrial SLA and FDM printing for glass-smooth surfaces and structural integrity.</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="flex-shrink-0 w-8 h-8 rounded-full border border-brand text-brand flex items-center justify-center font-bold mr-4">
-                      3
-                    </span>
-                    <div>
-                      <h4 className="font-bold text-lg">Artisanal Hand-Finishing</h4>
-                      <p className="text-gray-400 text-sm">Hours of manual sanding, priming, and base coating to eliminate layer lines.</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="flex-shrink-0 w-8 h-8 rounded-full border border-brand text-brand flex items-center justify-center font-bold mr-4">
-                      4
-                    </span>
-                    <div>
-                      <h4 className="font-bold text-lg">Master Weathering</h4>
-                      <p className="text-gray-400 text-sm">Multi-layer paint techniques to simulate rust, wear, and battlefield scars.</p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-              <div className="bg-gray-800 p-2 rounded-[8px] shadow-2xl">
-                <img
-                  alt="Production Process"
-                  className="rounded-[8px] grayscale hover:grayscale-0 transition-all duration-700"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuChpSwXc7htj1-2GzSgpX9Bo1ssIX8wsb4qu_Df7gIA9SmcJucoVD7RAF6UodRUJvj94zqiAl6B54HTNSRNrhgeqUXT9S7Sr7DNuHcaOnqUHw1D6GwsPqb1z-ioxlX14Sirb9HE40W9giJAIgJIQTpn1zH7zLUHP_pjPgIchPe2_y0_kQ1YAwFcNs_zim8giM75pLnVCRpuayVSzLWcfOSgXw3liFvtnyYziMnYCop_FP5U09D3XfwrYsB36gJqSPZ-_bvTTluDWxT2"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
+          <button 
+            onClick={nextCarousel}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 bg-[#C9A84C] border-none rounded-full w-9 h-9 text-[#1B2A5E] text-lg font-bold cursor-pointer flex items-center justify-center hover:bg-[#b8943e] transition-colors"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </div>
+      </section>
 
-        {/* Final CTA */}
-        <section className="py-24 text-center bg-white">
-          <div className="max-w-3xl mx-auto px-6">
-            <h2 className="text-4xl font-bold mb-6 text-header">Ready to Elevate Your Build?</h2>
-            <p className="text-gray-500 mb-10 text-lg">
-              Join the thousands of professional cosplayers who trust Prop's Room for their competition-winning props.
-            </p>
-            <Link
-              to="/catalogo"
-              className="bg-brand hover:bg-brand-dark text-white px-12 py-5 rounded-[8px] text-xl font-bold transition-transform hover:scale-105 shadow-xl inline-block"
+      {/* Features/Benefits Section */}
+      <section className="py-14 px-10 bg-[#F5F0E8]">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-center text-[#2C1F0E] mb-8 tracking-wide">
+            ¿Por Qué Elegirnos?
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center p-6"
             >
-              Get Started Today
-            </Link>
+              <div className="text-4xl mb-3">🎨</div>
+              <h3 className="text-lg font-bold text-[#2C1F0E] mb-2">Diseño Personalizado</h3>
+              <p className="text-[#2C1F0E]/70 text-sm">
+                Creamos props únicos diseñados específicamente para tus necesidades.
+              </p>
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-center p-6"
+            >
+              <div className="text-4xl mb-3">✨</div>
+              <h3 className="text-lg font-bold text-[#2C1F0E] mb-2">Acabado Profesional</h3>
+              <p className="text-[#2C1F0E]/70 text-sm">
+                Cada pieza recibe un acabado artesanal de alta calidad.
+              </p>
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-center p-6"
+            >
+              <div className="text-4xl mb-3">📦</div>
+              <h3 className="text-lg font-bold text-[#2C1F0E] mb-2">Envío Seguro</h3>
+              <p className="text-[#2C1F0E]/70 text-sm">
+                Embalaje profesional para que tu pedido llegue intacto.
+              </p>
+            </motion.div>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section 
+        className="py-14 px-10 bg-[#1B2A5E] text-center"
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-2xl md:text-3xl font-bold text-[#E8DCC8] mb-4 tracking-wide">
+            ¿Listo para Comenzar?
+          </h2>
+          <p className="text-[#E8DCC8]/80 mb-6 max-w-md mx-auto">
+            Explora nuestro catálogo y encuentra el props perfecto para tu próximo proyecto.
+          </p>
+          <Link 
+            to="/catalogo"
+            className="inline-block bg-[#C9A84C] text-[#1B2A5E] px-8 py-3 font-bold tracking-[2px] uppercase hover:bg-[#b8943e] transition-colors"
+          >
+            Ver Catálogo
+          </Link>
+        </motion.div>
+      </section>
     </div>
   );
 };

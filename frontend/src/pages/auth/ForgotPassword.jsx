@@ -32,7 +32,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background-dark flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen bg-[#F5F0E8] flex items-center justify-center relative overflow-hidden">
       {/* Background Effects matching Login/Register */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent" />
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-3xl" />
@@ -41,7 +41,7 @@ const ForgotPassword = () => {
         {/* Back to Login */}
         <Link 
           to="/login" 
-          className="inline-flex items-center gap-2 text-text-secondary hover:text-white mb-6 sm:mb-8 transition-colors"
+          className="inline-flex items-center gap-2 text-[#2C1F0E]/70 hover:text-[#C9A84C] mb-6 sm:mb-8 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Volver a iniciar sesión

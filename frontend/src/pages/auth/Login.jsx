@@ -41,23 +41,23 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-[#F5F0E8] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="flex justify-center mb-6 sm:mb-8">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-12 h-12 bg-brand rounded-[8px] flex items-center justify-center text-white font-bold text-xl">PR</div>
+            <div className="w-12 h-12 bg-[#C9A84C] rounded-[8px] flex items-center justify-center text-white font-bold text-xl">PR</div>
             <h1 className="text-2xl font-bold text-header">PROP'S <span className="text-brand">ROOM</span></h1>
           </Link>
         </div>
 
         {/* Card */}
-        <div className="bg-white border border-gray-100 rounded-[8px] p-5 sm:p-8 shadow-lg">
+        <div className="bg-white border border-[#C9A84C]/20 rounded-[8px] p-5 sm:p-8 shadow-lg">
           <div className="text-center mb-6 sm:mb-8">
             <h1 className="text-2xl font-bold text-header mb-2">
               Iniciar Sesión
             </h1>
-            <p className="text-gray-500 text-sm">
+            <p className="text-[#2C1F0E]/60 text-sm">
               Ingresa tus credenciales para continuar
             </p>
           </div>
@@ -81,11 +81,11 @@ const Login = () => {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email Field */}
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-600">
+              <label className="block text-sm font-medium text-[#2C1F0E]/70">
                 Correo Electrónico
               </label>
               <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#2C1F0E]/50">
                   <Mail className="w-5 h-5" />
                 </div>
                 <input
@@ -94,7 +94,7 @@ const Login = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   onBlur={() => handleBlur('email', email, 'email')}
                   className={`w-full border rounded-[8px] py-3.5 pl-12 pr-4 text-header placeholder-gray-400 focus:outline-none focus:ring-2 transition-all ${
-                    fieldErrors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 'border-gray-300 focus:border-brand focus:ring-brand/20'
+                    fieldErrors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 'border-[#C9A84C]/30 focus:border-brand focus:ring-brand/20'
                   }`}
                   placeholder="tu@email.com"
                   required
@@ -107,11 +107,11 @@ const Login = () => {
             
             {/* Password Field */}
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-600">
+              <label className="block text-sm font-medium text-[#2C1F0E]/70">
                 Contraseña
               </label>
               <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#2C1F0E]/50">
                   <Lock className="w-5 h-5" />
                 </div>
                 <input
@@ -120,7 +120,7 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   onBlur={() => handleBlur('password', password, 'password')}
                   className={`w-full border rounded-[8px] py-3.5 pl-12 pr-12 text-header placeholder-gray-400 focus:outline-none focus:ring-2 transition-all ${
-                    fieldErrors.password ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 'border-gray-300 focus:border-brand focus:ring-brand/20'
+                    fieldErrors.password ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 'border-[#C9A84C]/30 focus:border-brand focus:ring-brand/20'
                   }`}
                   placeholder="••••••••"
                   required
@@ -128,7 +128,7 @@ const Login = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-header transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#2C1F0E]/50 hover:text-[#2C1F0E] transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -142,7 +142,7 @@ const Login = () => {
             <div className="flex justify-end">
               <Link 
                 to="/forgot-password" 
-                className="text-sm text-brand hover:text-brand-dark transition-colors"
+                className="text-sm text-brand hover:text-[#C9A84C]-dark transition-colors"
               >
                 ¿Olvidaste tu contraseña?
               </Link>
@@ -152,7 +152,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-brand hover:bg-brand-dark text-white font-bold py-3.5 sm:py-4 rounded-[8px] transition-all duration-300 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+              className="w-full bg-[#C9A84C] hover:bg-[#b8943e] text-white font-bold py-3.5 sm:py-4 rounded-[8px] transition-all duration-300 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed mt-6"
             >
               {isLoading ? (
                 <>
@@ -171,10 +171,10 @@ const Login = () => {
           {/* Social Login Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-100"></div>
+              <div className="w-full border-t border-[#C9A84C]/20"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white text-gray-500">
+              <span className="px-4 bg-white text-[#2C1F0E]/60">
                 o continúa con
               </span>
             </div>
@@ -185,10 +185,10 @@ const Login = () => {
           {/* Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-100"></div>
+              <div className="w-full border-t border-[#C9A84C]/20"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white text-gray-500">
+              <span className="px-4 bg-white text-[#2C1F0E]/60">
                 ¿Nuevo en Prop's Room?
               </span>
             </div>
@@ -197,15 +197,15 @@ const Login = () => {
           {/* Register Link */}
           <Link
             to="/registro"
-            className="w-full block text-center py-3.5 rounded-[8px] border border-gray-200 text-header font-bold hover:bg-gray-50 hover:border-brand/30 transition-all duration-300"
+            className="w-full block text-center py-3.5 rounded-[8px] border border-[#C9A84C]/30 text-[#2C1F0E] font-bold hover:bg-[#C9A84C]/10 hover:border-[#C9A84C]/50 transition-all duration-300"
           >
             Crear una cuenta
           </Link>
         </div>
 
         {/* Back to Home */}
-        <p className="text-center mt-6 text-gray-500 text-sm">
-          <Link to="/" className="hover:text-brand transition-colors">
+        <p className="text-center mt-6 text-[#2C1F0E]/60 text-sm">
+          <Link to="/" className="hover:text-[#C9A84C] transition-colors">
             ← Volver al inicio
           </Link>
         </p>

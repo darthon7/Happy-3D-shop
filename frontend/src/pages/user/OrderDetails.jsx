@@ -148,7 +148,7 @@ const OrderDetails = () => {
       .join('\n');
 
     const message = encodeURIComponent(
-      `🔄 *Solicitud de Devolución - DazeHaze*\n\n` +
+      `🔄 *Solicitud de Devolución - Prop's Room*\n\n` +
       `📦 *Pedido:* ${orderData.orderNumber}\n` +
       `📅 *Fecha de compra:* ${new Date(orderData.createdAt).toLocaleDateString('es-MX')}\n` +
       `💰 *Total:* $${orderData.total?.toFixed(2)}\n\n` +

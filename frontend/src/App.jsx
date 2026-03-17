@@ -11,7 +11,7 @@ import { useAuthStore } from './stores';
 const Home = lazy(() => import('./pages/Home'));
 const Catalog = lazy(() => import('./pages/Catalog'));
 const ProductDetail = lazy(() => import('./pages/ProductDetail'));
-const About = lazy(() => import('./pages/About'));
+
 const Gallery = lazy(() => import('./pages/Gallery'));
 const Login = lazy(() => import('./pages/auth/Login'));
 const Register = lazy(() => import('./pages/auth/Register'));
@@ -102,13 +102,15 @@ function App() {
           <Routes>
           {/* Public Layout */}
           <Route path="/" element={<Layout />}>
-            {/* Public routes */}
+            {/* Home */}
             <Route index element={<Home />} />
+
+            {/* Public routes */}
             <Route path="catalogo" element={<Catalog />} />
             <Route path="categoria/:slug" element={<Catalog />} />
             <Route path="producto/:slug" element={<ProductDetail />} />
             <Route path="buscar" element={<Catalog />} />
-            <Route path="about" element={<About />} />
+
             <Route path="galeria" element={<Gallery />} />
             <Route path="terminos" element={<TermsAndConditions />} />
             <Route path="privacidad" element={<PrivacyPolicy />} />

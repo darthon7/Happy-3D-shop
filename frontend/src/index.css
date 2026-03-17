@@ -2,6 +2,7 @@
 
 /* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Cormorant+Garamond:wght@600;700&display=swap');
 
 @theme {
   --font-family-display: "Be Vietnam Pro", system-ui, sans-serif;
@@ -14,44 +15,52 @@
   --color-snow: #FFFFFF;
   --color-silver: #E0E0E0;
 
-  /* Legacy colors (deprecated) */
-  /* Primary - Vibrant Pink/Magenta (#fa1c75) */
-  --color-primary: #fa1c75;
-  --color-primary-dark: #cc1261;
-  --color-primary-50: #fff1f6;
-  --color-primary-100: #ffe4ee;
-  --color-primary-200: #ffc9dd;
-  --color-primary-300: #ff9fbf;
-  --color-primary-400: #ff6695;
-  --color-primary-500: #fa1c75;
-  --color-primary-600: #e30d60;
-  --color-primary-700: #cc1261;
-  --color-primary-800: #a71253;
-  --color-primary-900: #8b1349;
+  /* Template Theme Colors */
+  --color-template-bg: #F5F0E8;
+  --color-template-dark: #1B2A5E;
+  --color-template-gold: #C9A84C;
+  --color-template-gold-light: #E8DCC8;
+  --color-template-text: #2C1F0E;
+  --color-template-footer: #3E2A0E;
 
-  /* Dark palette */
-  --color-dark-50: #f8f6f8;
-  --color-dark-100: #f1f0f1;
-  --color-dark-200: #e2e0e2;
-  --color-dark-300: #c9c5c9;
-  --color-dark-400: #a89fa7;
-  --color-dark-500: #8a7f89;
-  --color-dark-600: #6f646e;
-  --color-dark-700: #5a5259;
-  --color-dark-800: #4a444a;
-  --color-dark-900: #20121f;
-  --color-dark-950: #150a14;
+  /* Theme mapping (Template Colors) */
+  /* Primary - Gold */
+  --color-primary: var(--color-template-gold);     /* #C9A84C */
+  --color-primary-dark: #b8943e; /* darker gold */
+  --color-primary-50: #fcf9f2;
+  --color-primary-100: #f7f0df;
+  --color-primary-200: #ebd8b1;
+  --color-primary-300: #dec183;
+  --color-primary-400: #d6b263;
+  --color-primary-500: var(--color-template-gold);
+  --color-primary-600: #b8943e;
+  --color-primary-700: #9c7b31;
+  --color-primary-800: #7a6026;
+  --color-primary-900: #5e4a1e;
+
+  /* Dark palette mapped to blue/gold */
+  --color-dark-50: #f5f0e8;
+  --color-dark-100: #e8dcc8;
+  --color-dark-200: #d5c3aa;
+  --color-dark-300: #bfa88b;
+  --color-dark-400: #C9A84C;
+  --color-dark-500: #a38942;
+  --color-dark-600: #857038;
+  --color-dark-700: #233575; 
+  --color-dark-800: #141f45;
+  --color-dark-900: var(--color-template-dark); /* #1B2A5E */
+  --color-dark-950: #0f1836;
 
   /* Semantic tokens */
-  --color-background-light: #f8f6f8;
-  --color-background-dark: #20121f;
-  --color-surface: #301c2f;
-  --color-surface-elevated: #3d2a3c;
-  --color-border: #432841;
-  --color-border-active: #60395d;
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #c398bf;
-  --color-text-muted: #8a7f89;
+  --color-background-light: var(--color-template-bg);
+  --color-background-dark: var(--color-template-dark);
+  --color-surface: #141F45; /* Lighter/darker shade of blue for cards */
+  --color-surface-elevated: #283C85;
+  --color-border: #C9A84C40; /* Semi-transparent gold */
+  --color-border-active: var(--color-template-gold);
+  --color-text-primary: #ffffff; /* keep text readable on blue bg */
+  --color-text-secondary: var(--color-template-gold-light);
+  --color-text-muted: #E8DCC899;
 
   /* Shadows */
   --shadow-glow: 0 0 20px rgba(250, 28, 117, 0.5);
@@ -76,8 +85,8 @@
     font-family: var(--font-family-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #FFFFFF;
-    color: #37474F;
+    background-color: #F5F0E8;
+    color: #2C1F0E;
   }
 
   ::selection {
@@ -134,49 +143,44 @@
 @layer components {
   /* Glass card effect */
   .glass-card {
-    @apply bg-surface/60 backdrop-blur-xl border border-white/10 shadow-xl;
+    @apply bg-surface/60 backdrop-blur-xl border border-white/10 shadow-xl rounded-sm;
   }
 
   /* Neon glow effect */
   .neon-glow {
-    box-shadow: var(--shadow-glow);
+    box-shadow: none;
     transition: box-shadow var(--duration-normal) ease;
   }
 
   .neon-glow:hover {
-    box-shadow: var(--shadow-glow-intense);
+    box-shadow: none;
   }
 
   /* Legacy button classes (for backward compatibility) */
   .btn {
-    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 inline-flex items-center justify-center gap-2;
+    @apply px-4 py-3 text-sm font-bold uppercase tracking-[2px] rounded-none transition-colors duration-200 inline-flex items-center justify-center gap-2;
   }
 
   .btn-primary {
-    @apply bg-primary text-white hover:bg-white hover:text-black;
-    box-shadow: var(--shadow-glow);
-  }
-
-  .btn-primary:hover {
-    box-shadow: var(--shadow-glow-intense);
+    @apply bg-primary text-dark-900 border-none hover:bg-primary-dark hover:scale-[1.03] transition-transform;
   }
 
   .btn-secondary {
-    @apply bg-black/30 backdrop-blur-sm text-white border border-white/20 hover:bg-white/10 hover:border-white;
+    @apply bg-transparent text-primary border border-primary hover:bg-primary/10;
   }
 
   .input {
-    @apply w-full px-4 py-2 border border-border rounded-lg bg-surface text-white placeholder-text-muted;
-    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+    @apply w-full px-4 py-2 border border-border rounded-sm bg-white text-dark-900 placeholder-dark-300;
+    @apply focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary;
     @apply transition-all duration-200;
   }
 
   .card {
-    @apply bg-white rounded-xl shadow-sm border border-dark-100 overflow-hidden;
+    @apply bg-white rounded-sm shadow-sm border border-border overflow-hidden;
   }
 
   .card-dark {
-    @apply bg-surface rounded-xl border border-border overflow-hidden;
+    @apply bg-surface rounded-sm border border-border overflow-hidden;
   }
 }
 

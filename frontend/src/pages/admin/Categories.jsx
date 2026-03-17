@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, FolderTree, X } from 'lucide-react';
+import { Loader2, Upload, Plus, Edit, Trash2, FolderTree, X } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Badge, Skeleton } from '../../components/ui';
-import api from '../../api';
+import api, { uploadApi } from '../../api';
 import { validateField } from '../../lib/validation';
 
 const AdminCategories = () => {
@@ -16,7 +16,9 @@ const AdminCategories = () => {
     description: '',
     parentId: null,
     isActive: true,
+    imageUrl: '',
   });
+  const [uploading, setUploading] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
 
   const fetchCategories = async () => {
@@ -74,7 +76,7 @@ const AdminCategories = () => {
   };
 
   const resetForm = () => {
-    setFormData({ name: '', slug: '', description: '', parentId: null, isActive: true });
+    setFormData({ name: '', slug: '', description: '', parentId: null, isActive: true, imageUrl: '' });
     setEditingCategory(null);
   };
 
@@ -86,6 +88,7 @@ const AdminCategories = () => {
       description: category.description || '',
       parentId: category.parentId,
       isActive: category.isActive,
+      imageUrl: category.imageUrl || '',
     });
     setShowModal(true);
   };
@@ -242,6 +245,64 @@ const AdminCategories = () => {
                 />
                 <span className="text-sm text-text-secondary">Categoría activa</span>
               </label>
+
+              {/* Image Upload */}
+              <div className="pt-2">
+                <label className="block text-sm font-medium mb-2 text-text-secondary">Imagen de Categoría</label>
+                <div className="border-2 border-dashed border-border rounded-xl p-4 bg-surface-elevated/30">
+                  {uploading ? (
+                    <div className="flex flex-col items-center py-4">
+                      <Loader2 className="w-8 h-8 animate-spin text-primary mb-2" />
+                      <span className="text-sm text-text-secondary font-mono text-[10px]">Subiendo...</span>
+                    </div>
+                  ) : formData.imageUrl ? (
+                    <div className="flex items-center gap-4">
+                      <img src={formData.imageUrl} alt="Preview" className="w-16 h-16 object-cover rounded-xl border border-border" />
+                      <div className="flex-1">
+                        <button
+                          type="button"
+                          onClick={() => setFormData({ ...formData, imageUrl: '' })}
+                          className="text-xs text-red-500 hover:text-red-400 font-bold"
+                        >
+                          Eliminar
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <label className="flex flex-col items-center cursor-pointer py-2">
+                      <Upload className="w-6 h-6 text-primary mb-2" />
+                      <span className="text-xs font-medium text-white">Subir imagen</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            setUploading(true);
+                            try {
+                              const response = await uploadApi.categoryImage(file);
+                              setFormData({ ...formData, imageUrl: response.data.url });
+                            } catch (error) {
+                              console.error('Error uploading image:', error);
+                              alert('Error al subir la imagen');
+                            } finally {
+                              setUploading(false);
+                            }
+                          }
+                        }}
+                      />
+                    </label>
+                  )}
+                </div>
+                <input
+                  type="url"
+                  value={formData.imageUrl}
+                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                  placeholder="O pega una URL de imagen aquí"
+                  className="w-full px-4 py-2 mt-2 bg-surface-elevated border border-border rounded-lg text-white text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+                />
+              </div>
               <div className="flex gap-3 pt-4">
                 <button type="submit" className="btn bg-gradient-to-r from-primary-500 to-primary-600 text-white flex-1 shadow-lg shadow-primary-500/30">
                   {editingCategory ? 'Guardar Cambios' : 'Crear Categoría'}

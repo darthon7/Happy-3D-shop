@@ -5,6 +5,16 @@ export default {
   theme: {
     extend: {
       colors: {
+        arcane: {
+          bg: "#1a1a2e",
+          "bg-2": "#16213e",
+          "bg-3": "#0f3460",
+          parchment: "#f5ead7",
+          gold: "#c9a84c",
+          "gold-light": "#e8c97a",
+          "gold-dark": "#9a7a2e",
+          brown: "#2c1810",
+        },
         primary: {
           DEFAULT: "#c62ab9",
           dark: "#901e87",
@@ -52,9 +62,11 @@ export default {
         "text-muted": "#8a7f89",
       },
       fontFamily: {
-        display: ["Teko", "sans-serif"],
+        display: ['"Cinzel Decorative"', "serif", "Teko", "sans-serif"],
+        heading: ['"Cinzel"', "serif"],
+        data: ['"Cormorant Garamond"', "serif"],
         mono: ["Space Mono", "monospace"],
-        body: ["Space Grotesk", "sans-serif"],
+        body: ['"EB Garamond"', "serif", "Space Grotesk", "sans-serif"],
       },
       animation: {
         marquee: "marquee 30s linear infinite",
@@ -104,6 +116,9 @@ export default {
         fast: "150ms",
         normal: "300ms",
         slow: "500ms",
+      },
+      borderRadius: {
+        arcane: "4px",
       },
     },
   },
