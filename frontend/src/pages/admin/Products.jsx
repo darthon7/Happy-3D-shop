@@ -55,7 +55,7 @@ const AdminProducts = () => {
   });
 
   useEffect(() => {
-    fetchCategories();
+    fetchCategories(true);
   }, [fetchCategories]);
 
   const fetchProducts = async (page = 0) => {
