@@ -13,9 +13,9 @@ RUN npm ci
 # Copia el resto del código fuente del frontend
 COPY . .
 
-# Inyecta variables de entorno para producción si se requieren
-# ARG VITE_API_URL
-# ENV VITE_API_URL=$VITE_API_URL
+# Inyecta variables de entorno para producción
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
 
 # Construye la versión optimizada de React
 RUN npm run build
