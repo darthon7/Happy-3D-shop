@@ -17,6 +17,7 @@ public class CategoryResponse {
     private String description;
     private String slug;
     private String imageUrl;
+    private Boolean isActive;
     private Long productCount;
     private List<CategoryResponse> subcategories;
 }
