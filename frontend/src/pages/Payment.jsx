@@ -251,7 +251,7 @@ const Payment = () => {
                     <div className="flex flex-col flex-1 justify-center">
                       <h4 className="text-[#2C1F0E] text-sm font-bold leading-tight">{item.productName}</h4>
                       <p className="text-[#2C1F0E]/50 text-[10px] font-black uppercase mt-1">
-                        {item.size && `${item.size}`} {item.color && `/ ${item.color}`}
+                        {item.material && `${item.material}`} {item.color && `/ ${item.color}`}
                       </p>
                     </div>
                     <div className="flex flex-col justify-center items-end">

@@ -13,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,19 +30,16 @@ public class AdminProductService {
 
     @Transactional
     public ProductResponse createProduct(CreateProductRequest request) {
-        // Validate slug uniqueness
         if (productRepository.existsBySlug(request.getSlug())) {
             throw new RuntimeException("Product slug already exists: " + request.getSlug());
         }
 
-        // Get category if provided
         Category category = null;
         if (request.getCategoryId() != null) {
             category = categoryRepository.findById(request.getCategoryId())
                     .orElseThrow(() -> new RuntimeException("Category not found"));
         }
 
-        // Create product
         Product product = Product.builder()
                 .name(request.getName())
                 .description(request.getDescription())
@@ -58,7 +54,6 @@ public class AdminProductService {
                 .lowStockThreshold(request.getLowStockThreshold())
                 .metaTitle(request.getMetaTitle())
                 .metaDescription(request.getMetaDescription())
-                // Shipping dimensions
                 .weightKg(request.getWeightKg())
                 .lengthCm(request.getLengthCm())
                 .widthCm(request.getWidthCm())
@@ -67,27 +62,33 @@ public class AdminProductService {
 
         Product savedProduct = productRepository.save(product);
 
-        // Create variants
-        if (request.getVariants() != null) {
-            for (CreateProductRequest.VariantRequest variantReq : request.getVariants()) {
-                if (productVariantRepository.existsBySku(variantReq.getSku())) {
-                    throw new RuntimeException("SKU already exists: " + variantReq.getSku());
+        if (request.getMaterials() != null) {
+            for (CreateProductRequest.MaterialRequest matReq : request.getMaterials()) {
+                if (productVariantRepository.existsBySku(matReq.getSku())) {
+                    throw new RuntimeException("SKU already exists: " + matReq.getSku());
                 }
                 ProductVariant variant = ProductVariant.builder()
                         .product(savedProduct)
-                        .sku(variantReq.getSku())
-                        .size(variantReq.getSize())
-                        .color(variantReq.getColor())
-                        .colorHex(variantReq.getColorHex())
-                        .material(variantReq.getMaterial())
-                        .stock(variantReq.getStock())
-                        .priceAdjustment(variantReq.getPriceAdjustment())
+                        .sku(matReq.getSku())
+                        .material(matReq.getMaterial())
+                        .color(matReq.getColor())
+                        .colorHex(matReq.getColorHex())
+                        .stock(matReq.getStock())
+                        .priceAdjustment(matReq.getPriceAdjustment())
+                        .estimatedPrintMinutes(matReq.getEstimatedPrintMinutes())
+                        .weightGrams(matReq.getWeightGrams())
+                        .infillOptions(matReq.getInfillOptions())
+                        .layerHeightOptions(matReq.getLayerHeightOptions())
+                        .requiresSupport(matReq.getRequiresSupport())
+                        .postProcessing(matReq.getPostProcessing())
+                        .dimensionalAccuracy(matReq.getDimensionalAccuracy())
+                        .printTechnology(matReq.getPrintTechnology())
+                        .stlSpecs(matReq.getStlSpecs())
                         .build();
                 savedProduct.getVariants().add(variant);
             }
         }
 
-        // Create images
         if (request.getImages() != null) {
             for (CreateProductRequest.ImageRequest imageReq : request.getImages()) {
                 ProductImage image = ProductImage.builder()
@@ -104,7 +105,6 @@ public class AdminProductService {
 
         productRepository.save(savedProduct);
 
-        // Send notification about new product (wrapped in try-catch to prevent crashes)
         try {
             String imageUrl = null;
             if (savedProduct.getImages() != null && !savedProduct.getImages().isEmpty()) {
@@ -124,7 +124,6 @@ public class AdminProductService {
                     savedProduct.getName(),
                     imageUrl);
         } catch (Exception e) {
-            // Log but don't crash the product creation
             org.slf4j.LoggerFactory.getLogger(AdminProductService.class)
                     .error("Failed to send notification for new product: {}", e.getMessage());
         }
@@ -137,19 +136,16 @@ public class AdminProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        // Check slug if changed
         if (!product.getSlug().equals(request.getSlug()) && productRepository.existsBySlug(request.getSlug())) {
             throw new RuntimeException("Product slug already exists: " + request.getSlug());
         }
 
-        // Update category
         Category category = null;
         if (request.getCategoryId() != null) {
             category = categoryRepository.findById(request.getCategoryId())
                     .orElseThrow(() -> new RuntimeException("Category not found"));
         }
 
-        // Update basic fields
         product.setName(request.getName());
         product.setDescription(request.getDescription());
         product.setShortDescription(request.getShortDescription());
@@ -163,82 +159,79 @@ public class AdminProductService {
         product.setLowStockThreshold(request.getLowStockThreshold());
         product.setMetaTitle(request.getMetaTitle());
         product.setMetaDescription(request.getMetaDescription());
-        // Shipping dimensions
         product.setWeightKg(request.getWeightKg());
         product.setLengthCm(request.getLengthCm());
         product.setWidthCm(request.getWidthCm());
         product.setHeightCm(request.getHeightCm());
 
-        // Update variants - update existing, add new, deactivate removed
-        if (request.getVariants() != null && !request.getVariants().isEmpty()) {
-            // Get existing variant SKUs
-            List<String> existingSkus = product.getVariants().stream()
-                    .map(ProductVariant::getSku)
+        if (request.getMaterials() != null && !request.getMaterials().isEmpty()) {
+            List<String> newSkus = request.getMaterials().stream()
+                    .map(CreateProductRequest.MaterialRequest::getSku)
                     .collect(Collectors.toList());
 
-            List<String> newSkus = request.getVariants().stream()
-                    .map(CreateProductRequest.VariantRequest::getSku)
-                    .collect(Collectors.toList());
-
-            // Deactivate variants that are no longer in the request (instead of deleting)
-            // Also remove these items from all carts
             for (ProductVariant existingVariant : product.getVariants()) {
                 if (!newSkus.contains(existingVariant.getSku())) {
-                    // Remove items from carts before deactivating
                     cartItemRepository.deleteByProductVariantId(existingVariant.getId());
                     existingVariant.setIsActive(false);
                 }
             }
 
-            // Update or create variants
-            for (CreateProductRequest.VariantRequest variantReq : request.getVariants()) {
-                // Check if variant with this SKU already exists for this product
+            for (CreateProductRequest.MaterialRequest matReq : request.getMaterials()) {
                 ProductVariant existingVariant = product.getVariants().stream()
-                        .filter(v -> v.getSku().equals(variantReq.getSku()))
+                        .filter(v -> v.getSku().equals(matReq.getSku()))
                         .findFirst()
                         .orElse(null);
 
                 if (existingVariant != null) {
-                    // Update existing variant
-                    existingVariant.setSize(variantReq.getSize());
-                    existingVariant.setColor(variantReq.getColor());
-                    existingVariant.setColorHex(variantReq.getColorHex());
-                    existingVariant.setMaterial(variantReq.getMaterial());
-                    existingVariant.setStock(variantReq.getStock());
-                    existingVariant.setPriceAdjustment(variantReq.getPriceAdjustment());
-                    // Preserve or update isActive based on request
-                    if (variantReq.getIsActive() != null) {
-                        existingVariant.setIsActive(variantReq.getIsActive());
+                    existingVariant.setMaterial(matReq.getMaterial());
+                    existingVariant.setColor(matReq.getColor());
+                    existingVariant.setColorHex(matReq.getColorHex());
+                    existingVariant.setStock(matReq.getStock());
+                    existingVariant.setPriceAdjustment(matReq.getPriceAdjustment());
+                    existingVariant.setEstimatedPrintMinutes(matReq.getEstimatedPrintMinutes());
+                    existingVariant.setWeightGrams(matReq.getWeightGrams());
+                    existingVariant.setInfillOptions(matReq.getInfillOptions());
+                    existingVariant.setLayerHeightOptions(matReq.getLayerHeightOptions());
+                    existingVariant.setRequiresSupport(matReq.getRequiresSupport());
+                    existingVariant.setPostProcessing(matReq.getPostProcessing());
+                    existingVariant.setDimensionalAccuracy(matReq.getDimensionalAccuracy());
+                    existingVariant.setPrintTechnology(matReq.getPrintTechnology());
+                    existingVariant.setStlSpecs(matReq.getStlSpecs());
+                    if (matReq.getIsActive() != null) {
+                        existingVariant.setIsActive(matReq.getIsActive());
                     }
                 } else {
-                    // Check SKU uniqueness for new variant
-                    if (productVariantRepository.existsBySkuAndProductIdNot(variantReq.getSku(), id)) {
-                        throw new RuntimeException("SKU already exists: " + variantReq.getSku());
+                    if (productVariantRepository.existsBySkuAndProductIdNot(matReq.getSku(), id)) {
+                        throw new RuntimeException("SKU already exists: " + matReq.getSku());
                     }
-                    // Create new variant
                     ProductVariant variant = ProductVariant.builder()
                             .product(product)
-                            .sku(variantReq.getSku())
-                            .size(variantReq.getSize())
-                            .color(variantReq.getColor())
-                            .colorHex(variantReq.getColorHex())
-                            .material(variantReq.getMaterial())
-                            .stock(variantReq.getStock())
-                            .priceAdjustment(variantReq.getPriceAdjustment())
-                            .isActive(variantReq.getIsActive() != null ? variantReq.getIsActive() : true)
+                            .sku(matReq.getSku())
+                            .material(matReq.getMaterial())
+                            .color(matReq.getColor())
+                            .colorHex(matReq.getColorHex())
+                            .stock(matReq.getStock())
+                            .priceAdjustment(matReq.getPriceAdjustment())
+                            .estimatedPrintMinutes(matReq.getEstimatedPrintMinutes())
+                            .weightGrams(matReq.getWeightGrams())
+                            .infillOptions(matReq.getInfillOptions())
+                            .layerHeightOptions(matReq.getLayerHeightOptions())
+                            .requiresSupport(matReq.getRequiresSupport())
+                            .postProcessing(matReq.getPostProcessing())
+                            .dimensionalAccuracy(matReq.getDimensionalAccuracy())
+                            .printTechnology(matReq.getPrintTechnology())
+                            .stlSpecs(matReq.getStlSpecs())
+                            .isActive(matReq.getIsActive() != null ? matReq.getIsActive() : true)
                             .build();
                     product.getVariants().add(variant);
                 }
             }
         }
 
-        // Update images - clear and recreate
         if (request.getImages() != null && !request.getImages().isEmpty()) {
-            // Delete existing images
             productImageRepository.deleteAll(product.getImages());
             product.getImages().clear();
 
-            // Create new images
             for (CreateProductRequest.ImageRequest imageReq : request.getImages()) {
                 ProductImage image = ProductImage.builder()
                         .product(product)
@@ -313,18 +306,28 @@ public class AdminProductService {
         Double avgRating = reviewRepository.getAverageRating(product.getId());
         long reviewCount = reviewRepository.countApprovedByProductId(product.getId());
 
-        List<ProductResponse.VariantInfo> variants = product.getVariants().stream()
-                .map(v -> ProductResponse.VariantInfo.builder()
+        List<ProductResponse.MaterialInfo> materials = product.getVariants().stream()
+                .map(v -> ProductResponse.MaterialInfo.builder()
                         .id(v.getId())
                         .sku(v.getSku())
-                        .size(v.getSize())
+                        .material(v.getMaterial())
                         .color(v.getColor())
                         .colorHex(v.getColorHex())
                         .stock(v.getStock())
+                        .priceAdjustment(v.getPriceAdjustment())
                         .finalPrice(v.getFinalPrice())
                         .isLowStock(v.isLowStock())
                         .isOutOfStock(v.isOutOfStock())
                         .isActive(v.getIsActive())
+                        .estimatedPrintMinutes(v.getEstimatedPrintMinutes())
+                        .weightGrams(v.getWeightGrams())
+                        .infillOptions(v.getInfillOptions())
+                        .layerHeightOptions(v.getLayerHeightOptions())
+                        .requiresSupport(v.getRequiresSupport())
+                        .postProcessing(v.getPostProcessing())
+                        .dimensionalAccuracy(v.getDimensionalAccuracy())
+                        .printTechnology(v.getPrintTechnology())
+                        .stlSpecs(v.getStlSpecs())
                         .build())
                 .collect(Collectors.toList());
 
@@ -363,7 +366,7 @@ public class AdminProductService {
                 .discountPercentage(product.getDiscountPercentage())
                 .mainImageUrl(mainImageUrl)
                 .category(categoryInfo)
-                .variants(variants)
+                .materials(materials)
                 .images(images)
                 .averageRating(avgRating)
                 .reviewCount(reviewCount)

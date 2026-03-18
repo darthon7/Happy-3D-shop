@@ -504,7 +504,7 @@ const Checkout = () => {
                     <div className="flex flex-col justify-center flex-1">
                       <p className="text-[#2C1F0E] text-sm font-bold leading-tight">{item.productName}</p>
                       <p className="text-[#2C1F0E]/50 text-[10px] uppercase font-bold mt-1">
-                          {item.size && `${item.size}`} {item.color && `/ ${item.color}`}
+                          {item.material && `${item.material}`} {item.color && `/ ${item.color}`}
                       </p>
                     </div>
                     <span className="text-[#1B2A5E] font-bold text-sm">${(item.unitPrice * item.quantity).toFixed(2)}</span>

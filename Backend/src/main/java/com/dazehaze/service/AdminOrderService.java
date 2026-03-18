@@ -139,7 +139,7 @@ public class AdminOrderService {
                             .productSlug(pSlug)
                             .productName(item.getProductName())
                             .productSku(item.getProductSku())
-                            .size(item.getProductSize())
+                            .material(item.getProductMaterial())
                             .color(item.getProductColor())
                             .imageUrl(item.getProductImageUrl())
                             .quantity(item.getQuantity())

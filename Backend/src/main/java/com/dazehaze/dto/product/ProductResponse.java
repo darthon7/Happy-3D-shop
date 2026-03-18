@@ -28,7 +28,7 @@ public class ProductResponse {
     private Integer discountPercentage;
     private String mainImageUrl;
     private CategoryInfo category;
-    private List<VariantInfo> variants;
+    private List<MaterialInfo> materials;
     private List<ImageInfo> images;
     private Double averageRating;
     private Long reviewCount;
@@ -47,17 +47,27 @@ public class ProductResponse {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class VariantInfo {
+    public static class MaterialInfo {
         private Long id;
         private String sku;
-        private String size;
+        private String material;
         private String color;
         private String colorHex;
         private Integer stock;
+        private BigDecimal priceAdjustment;
         private BigDecimal finalPrice;
         private Boolean isLowStock;
         private Boolean isOutOfStock;
         private Boolean isActive;
+        private Integer estimatedPrintMinutes;
+        private Integer weightGrams;
+        private String infillOptions;
+        private String layerHeightOptions;
+        private Boolean requiresSupport;
+        private String postProcessing;
+        private String dimensionalAccuracy;
+        private String printTechnology;
+        private String stlSpecs;
     }
 
     @Data

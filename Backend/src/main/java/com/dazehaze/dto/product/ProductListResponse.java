@@ -29,9 +29,9 @@ public class ProductListResponse {
     private Double averageRating;
     private Long reviewCount;
     private Boolean isLowStock;
-    private List<String> availableSizes;
+    private List<String> availableMaterials;
     private List<ColorInfo> availableColors;
-    private List<SimpleVariant> variants;
+    private List<SimpleMaterial> materials;
 
     @Data
     @Builder
@@ -46,7 +46,7 @@ public class ProductListResponse {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class SimpleVariant {
+    public static class SimpleMaterial {
         private Long id;
         private String sku;
         private Integer stock;

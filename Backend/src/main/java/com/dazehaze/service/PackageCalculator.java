@@ -11,34 +11,21 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.List;
 
-/**
- * Calculates dynamic package dimensions and weight based on actual cart items
- * This replaces hardcoded values to provide accurate shipping quotes
- */
 @Component
 @Slf4j
 public class PackageCalculator {
 
-    // Packaging constants
-    private static final double PACKAGING_WEIGHT_KG = 0.200; // Box + padding weight
-    private static final double PADDING_CM = 5.0; // Extra space for safety
-    private static final double MAX_WEIGHT_KG = 20.0; // Max weight per package
-    private static final double MAX_DIMENSION_CM = 60.0; // Max dimension per side
+    private static final double PACKAGING_WEIGHT_KG = 0.200;
+    private static final double PADDING_CM = 5.0;
+    private static final double MAX_WEIGHT_KG = 20.0;
+    private static final double MAX_DIMENSION_CM = 60.0;
 
-    // Default values if product has no dimensions
     private static final double DEFAULT_WEIGHT_KG = 0.500;
     private static final double DEFAULT_LENGTH_CM = 30.0;
     private static final double DEFAULT_WIDTH_CM = 25.0;
     private static final double DEFAULT_HEIGHT_CM = 2.0;
 
-    /**
-     * Calculate package info dynamically from cart items
-     * 
-     * @param cartItems List of items in the cart
-     * @return PackageInfo with calculated dimensions, weight, and value
-     */
     public PackageInfo calculatePackage(List<CartItem> cartItems) {
-
         log.info("=== CALCULATING PACKAGE ===");
         log.info("Cart items: {}", cartItems.size());
 
@@ -47,14 +34,12 @@ public class PackageCalculator {
             return createDefaultPackage();
         }
 
-        // 1. CALCULATE TOTAL WEIGHT
         double totalWeight = calculateTotalWeight(cartItems);
         log.info("Products weight: {} kg", totalWeight);
 
         double finalWeight = totalWeight + PACKAGING_WEIGHT_KG;
         log.info("Final weight (with packaging): {} kg", finalWeight);
 
-        // 2. CALCULATE DIMENSIONS
         PackageDimensions dims = calculateDimensions(cartItems);
         log.info("Base dimensions: {}x{}x{} cm", dims.getLength(), dims.getWidth(), dims.getHeight());
 
@@ -63,15 +48,12 @@ public class PackageCalculator {
         double finalHeight = dims.getHeight() + PADDING_CM;
         log.info("Final dimensions: {}x{}x{} cm", finalLength, finalWidth, finalHeight);
 
-        // 3. CALCULATE DECLARED VALUE
         BigDecimal declaredValue = calculateDeclaredValue(cartItems);
         log.info("Declared value: ${}", declaredValue);
 
-        // 4. BUILD CONTENT DESCRIPTION
         String contentDescription = buildContentDescription(cartItems);
         log.info("Content: {}", contentDescription);
 
-        // 5. DETERMINE NUMBER OF PACKAGES
         int numberOfPackages = determineNumberOfPackages(finalWeight, finalLength, finalWidth, finalHeight);
         log.info("Number of packages: {}", numberOfPackages);
 
@@ -88,26 +70,25 @@ public class PackageCalculator {
                 .build();
     }
 
-    /**
-     * Calculate total weight by summing all product weights
-     */
     private double calculateTotalWeight(List<CartItem> cartItems) {
         double total = 0.0;
 
         for (CartItem item : cartItems) {
             Product product = item.getProductVariant().getProduct();
+            Integer weightGrams = item.getProductVariant().getWeightGrams();
 
-            // Get weight or use default
-            double weight = (product.getWeightKg() != null && product.getWeightKg() > 0)
-                    ? product.getWeightKg()
-                    : DEFAULT_WEIGHT_KG;
-
-            if (product.getWeightKg() == null || product.getWeightKg() <= 0) {
+            double weightKg;
+            if (weightGrams != null && weightGrams > 0) {
+                weightKg = weightGrams / 1000.0;
+            } else if (product.getWeightKg() != null && product.getWeightKg() > 0) {
+                weightKg = product.getWeightKg();
+            } else {
+                weightKg = DEFAULT_WEIGHT_KG;
                 log.warn("Product '{}' has no weight, using default: {} kg",
                         product.getName(), DEFAULT_WEIGHT_KG);
             }
 
-            double itemWeight = weight * item.getQuantity();
+            double itemWeight = weightKg * item.getQuantity();
             total += itemWeight;
 
             log.debug("  - {} x{} = {} kg",
@@ -116,13 +97,9 @@ public class PackageCalculator {
                     itemWeight);
         }
 
-        return Math.max(total, 0.1); // Minimum 100g
+        return Math.max(total, 0.1);
     }
 
-    /**
-     * Calculate package dimensions
-     * Strategy for clothing: use max length/width, sum heights (items stack)
-     */
     private PackageDimensions calculateDimensions(List<CartItem> cartItems) {
         double maxLength = 0;
         double maxWidth = 0;
@@ -131,7 +108,6 @@ public class PackageCalculator {
         for (CartItem item : cartItems) {
             Product product = item.getProductVariant().getProduct();
 
-            // Get dimensions or use defaults
             double length = (product.getLengthCm() != null && product.getLengthCm() > 0)
                     ? product.getLengthCm()
                     : DEFAULT_LENGTH_CM;
@@ -142,18 +118,14 @@ public class PackageCalculator {
                     ? product.getHeightCm()
                     : DEFAULT_HEIGHT_CM;
 
-            // Take maximum length and width
             maxLength = Math.max(maxLength, length);
             maxWidth = Math.max(maxWidth, width);
-
-            // Stack items (multiply height by quantity)
             totalHeight += height * item.getQuantity();
 
             log.debug("  - {}: {}x{}x{} cm",
                     product.getName(), length, width, height);
         }
 
-        // Ensure minimum dimensions
         maxLength = Math.max(maxLength, 20.0);
         maxWidth = Math.max(maxWidth, 15.0);
         totalHeight = Math.max(totalHeight, 5.0);
@@ -161,9 +133,6 @@ public class PackageCalculator {
         return new PackageDimensions(maxLength, maxWidth, totalHeight);
     }
 
-    /**
-     * Calculate total declared value (sum of product prices)
-     */
     private BigDecimal calculateDeclaredValue(List<CartItem> cartItems) {
         BigDecimal total = BigDecimal.ZERO;
 
@@ -181,11 +150,8 @@ public class PackageCalculator {
         return total;
     }
 
-    /**
-     * Build human-readable content description
-     */
     private String buildContentDescription(List<CartItem> cartItems) {
-        StringBuilder desc = new StringBuilder("Ropa: ");
+        StringBuilder desc = new StringBuilder("Impresiones 3D: ");
 
         int itemsProcessed = 0;
         for (CartItem item : cartItems) {
@@ -201,7 +167,6 @@ public class PackageCalculator {
 
             itemsProcessed++;
 
-            // Limit to avoid too long descriptions
             if (desc.length() > 80 && itemsProcessed < cartItems.size()) {
                 desc.append("...");
                 break;
@@ -209,22 +174,16 @@ public class PackageCalculator {
         }
 
         String result = desc.toString();
-        // Envia.com content field max length is typically 100-150 chars
         return result.length() > 100 ? result.substring(0, 97) + "..." : result;
     }
 
-    /**
-     * Determine if multiple packages are needed based on size/weight limits
-     */
     private int determineNumberOfPackages(double weight, double length, double width, double height) {
-        // Check if exceeds carrier limits
         boolean exceedsWeight = weight > MAX_WEIGHT_KG;
         boolean exceedsDimensions = length > MAX_DIMENSION_CM ||
                 width > MAX_DIMENSION_CM ||
                 height > MAX_DIMENSION_CM;
 
         if (exceedsWeight || exceedsDimensions) {
-            // Calculate packages needed based on weight (simplest approach)
             int packagesNeeded = (int) Math.ceil(weight / MAX_WEIGHT_KG);
             log.warn("Package exceeds limits. Splitting into {} packages", packagesNeeded);
             return Math.max(packagesNeeded, 1);
@@ -233,9 +192,6 @@ public class PackageCalculator {
         return 1;
     }
 
-    /**
-     * Create default package for empty cart or errors
-     */
     private PackageInfo createDefaultPackage() {
         return PackageInfo.builder()
                 .totalWeightKg(1.0)
@@ -243,14 +199,11 @@ public class PackageCalculator {
                 .widthCm(25.0)
                 .heightCm(10.0)
                 .declaredValue(BigDecimal.valueOf(100))
-                .contentDescription("Producto")
+                .contentDescription("Impresiones 3D")
                 .numberOfPackages(1)
                 .build();
     }
 
-    /**
-     * Inner class to hold dimension data
-     */
     @Data
     @AllArgsConstructor
     private static class PackageDimensions {

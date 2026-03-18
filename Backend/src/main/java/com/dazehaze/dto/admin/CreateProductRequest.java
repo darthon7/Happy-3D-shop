@@ -39,21 +39,17 @@ public class CreateProductRequest {
     private Boolean isActive = true;
     private Integer lowStockThreshold = 5;
 
-    // SEO
     private String metaTitle;
     private String metaDescription;
 
-    // Shipping dimensions
-    private Double weightKg; // Weight in kilograms
-    private Double lengthCm; // Length in centimeters
-    private Double widthCm; // Width in centimeters
-    private Double heightCm; // Height in centimeters
+    private Double weightKg;
+    private Double lengthCm;
+    private Double widthCm;
+    private Double heightCm;
 
-    // Variants
     @Valid
-    private List<VariantRequest> variants;
+    private List<MaterialRequest> materials;
 
-    // Images
     @Valid
     private List<ImageRequest> images;
 
@@ -61,18 +57,26 @@ public class CreateProductRequest {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class VariantRequest {
+    public static class MaterialRequest {
         private Long id;
         @NotBlank(message = "SKU is required")
         private String sku;
-        private String size;
+        private String material;
         private String color;
         private String colorHex;
-        private String material;
         @NotNull(message = "Stock is required")
         private Integer stock;
         private BigDecimal priceAdjustment;
         private Boolean isActive;
+        private Integer estimatedPrintMinutes;
+        private Integer weightGrams;
+        private String infillOptions;
+        private String layerHeightOptions;
+        private Boolean requiresSupport;
+        private String postProcessing;
+        private String dimensionalAccuracy;
+        private String printTechnology;
+        private String stlSpecs;
     }
 
     @Data

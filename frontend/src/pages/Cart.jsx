@@ -143,9 +143,9 @@ const Cart = () => {
                             Color: <span className="font-medium">{item.color}</span>
                           </span>
                         )}
-                        {item.size && (
+                        {item.material && (
                           <span className="px-2 py-1 bg-[#C9A84C]/10 rounded">
-                            Talla: <span className="font-medium">{item.size}</span>
+                            Material: <span className="font-medium">{item.material}</span>
                           </span>
                         )}
                       </div>

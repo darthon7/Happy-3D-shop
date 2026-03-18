@@ -27,8 +27,8 @@ const ProductDetail = () => {
       try {
         const response = await productsApi.getBySlug(slug);
         setProduct(response.data);
-        if (response.data.variants?.length > 0) {
-          setSelectedVariant(response.data.variants[0]);
+        if (response.data.materials?.length > 0) {
+          setSelectedVariant(response.data.materials[0]);
         }
         if (isAuthenticated && response.data?.id) {
           try {
@@ -90,16 +90,16 @@ const ProductDetail = () => {
     }
   };
 
-  const uniqueColors = product?.variants
-    ? [...new Map(product.variants.map(v => [v.color, v])).values()]
+  const uniqueColors = product?.materials
+    ? [...new Map(product.materials.map(v => [v.color, v])).values()]
     : [];
 
-  const uniqueSizes = product?.variants
-    ? [...new Set(product.variants.map(v => v.size))]
+  const uniqueMaterials = product?.materials
+    ? [...new Set(product.materials.map(v => v.material))]
     : [];
 
-  const getVariantByColorAndSize = (color, size) =>
-    product?.variants?.find(v => v.color === color && v.size === size);
+  const getMaterialVariant = (material) =>
+    product?.materials?.find(v => v.material === material);
 
   /* ─── Loading skeleton ─── */
   if (loading) {
@@ -148,7 +148,9 @@ const ProductDetail = () => {
 
   const images = product.images || [];
   const hasDiscount = product.salePrice && product.salePrice < product.basePrice;
-  const currentPrice = hasDiscount ? product.salePrice : product.basePrice;
+  const basePrice = hasDiscount ? product.salePrice : product.basePrice;
+  const priceAdjustment = selectedVariant?.priceAdjustment ? Number(selectedVariant.priceAdjustment) : 0;
+  const currentPrice = basePrice ? (basePrice + priceAdjustment) : null;
   const discountPct = hasDiscount
     ? Math.round((1 - product.salePrice / product.basePrice) * 100)
     : 0;
@@ -333,7 +335,7 @@ const ProductDetail = () => {
             )}
 
             {/* ── Color Selection ── */}
-            {uniqueColors.length > 0 && (
+                  {uniqueColors.length > 0 && (
               <div>
                 <h3 className="text-xs font-bold text-[#2C1F0E] uppercase tracking-widest mb-3">
                   Color: <span className="font-normal normal-case tracking-normal text-[#2C1F0E]/60">{selectedVariant?.color}</span>
@@ -343,14 +345,7 @@ const ProductDetail = () => {
                     <button
                       key={variant.color}
                       onClick={() => {
-                        const availableSizes = product.variants
-                          .filter(v => v.color === variant.color && v.stock > 0)
-                          .map(v => v.size);
-                        let newSize = selectedVariant?.size;
-                        if (!availableSizes.includes(newSize) && availableSizes.length > 0) {
-                          newSize = availableSizes[0];
-                        }
-                        const newVariant = getVariantByColorAndSize(variant.color, newSize);
+                        const newVariant = product.materials.find(v => v.color === variant.color && v.material === selectedVariant?.material);
                         if (newVariant) setSelectedVariant(newVariant);
                       }}
                       title={variant.color}
@@ -366,24 +361,25 @@ const ProductDetail = () => {
               </div>
             )}
 
-            {/* ── Size Selection ── */}
-            {uniqueSizes.length > 0 && (
+            {/* ── Material Selection ── */}
+            {uniqueMaterials.length > 0 && (
               <div>
                 <h3 className="text-xs font-bold text-[#2C1F0E] uppercase tracking-widest mb-3">
-                  Talla
+                  Material: <span className="font-normal normal-case tracking-normal text-[#2C1F0E]/60">{selectedVariant?.material}</span>
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {uniqueSizes.map((size) => {
-                    const variant = getVariantByColorAndSize(selectedVariant?.color, size);
+                  {uniqueMaterials.map((material) => {
+                    const variant = getMaterialVariant(material);
                     const exists = !!variant;
                     const inStock = exists && variant.stock > 0;
+                    const priceAdj = variant?.priceAdjustment;
                     return (
                       <button
-                        key={size}
+                        key={material}
                         onClick={() => variant && setSelectedVariant(variant)}
                         disabled={!inStock}
                         className={`px-4 py-2 rounded-md border text-sm font-semibold transition-all ${
-                          selectedVariant?.size === size
+                          selectedVariant?.material === material
                             ? 'bg-[#1B2A5E] text-[#C9A84C] border-[#1B2A5E]'
                             : !exists
                               ? 'border-[#2C1F0E]/10 text-[#2C1F0E]/25 cursor-not-allowed'
@@ -392,7 +388,7 @@ const ProductDetail = () => {
                                 : 'border-[#2C1F0E]/10 text-[#2C1F0E]/25 cursor-not-allowed line-through'
                         }`}
                       >
-                        {size}
+                        {material}{priceAdj > 0 ? ` (+$${Number(priceAdj).toFixed(2)})` : ''}
                       </button>
                     );
                   })}
