@@ -43,6 +43,7 @@ public class CheckoutRequest {
     private String carrier; // e.g. FedEx
     private String serviceLevel; // e.g. Standard (display name)
     private String serviceCode; // e.g. ground, express (API code for Envia)
+    private String shippingProvider; // "envia" or "envioclick"
 
     // Payment
     @NotNull(message = "Payment method is required")

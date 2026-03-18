@@ -72,7 +72,8 @@ const Payment = () => {
         shippingCost: shippingCost,
         carrier: selectedRate?.provider,
         serviceLevel: selectedRate?.serviceName,
-        serviceCode: selectedRate?.serviceCode
+        serviceCode: selectedRate?.serviceCode,
+        shippingProvider: selectedRate?.providerLabel === 'EnvioClickPro' ? 'envioclick' : 'envia'
       };
 
       const orderRes = await ordersApi.checkout(orderData);

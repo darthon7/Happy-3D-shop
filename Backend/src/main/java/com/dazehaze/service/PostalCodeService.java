@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,17 +54,49 @@ public class PostalCodeService {
     }
 
     public void importData(String filePath) {
-        log.info("Starting Postal Code Import from: {}", filePath);
-        long startTime = System.currentTimeMillis();
+        importData(filePath, false);
+    }
 
+    public void importData(String filePath, boolean fromClasspath) {
+        if (fromClasspath) {
+            importDataFromClasspath(filePath);
+        } else {
+            importDataFromFile(filePath);
+        }
+    }
+
+    private void importDataFromFile(String filePath) {
+        log.info("Starting Postal Code Import from file: {}", filePath);
+        long startTime = System.currentTimeMillis();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath, StandardCharsets.ISO_8859_1))) {
+            doImport(br, startTime);
+        } catch (Exception e) {
+            log.error("Failed to import postal codes from file: {}", filePath, e);
+        }
+    }
+
+    private void importDataFromClasspath(String resourcePath) {
+        log.info("Starting Postal Code Import from classpath: {}", resourcePath);
+        long startTime = System.currentTimeMillis();
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+            if (is == null) {
+                log.error("Classpath resource not found: {}", resourcePath);
+                return;
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.ISO_8859_1));
+            doImport(br, startTime);
+        } catch (Exception e) {
+            log.error("Failed to import postal codes from classpath: {}", resourcePath, e);
+        }
+    }
+
+    private void doImport(BufferedReader br, long startTime) throws Exception {
         List<PostalCode> batch = new ArrayList<>();
         int count = 0;
 
-        // Use ISO_8859_1 for standard SEPOMEX files to handle accents correctly
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath, StandardCharsets.ISO_8859_1))) {
+        try {
             String line;
             while ((line = br.readLine()) != null) {
-                // Skip header or empty lines
                 if (line.trim().isEmpty() || line.startsWith("d_codigo") || line.contains("Catálogo Nacional")
                         || line.contains("El Catálogo")) {
                     continue;
@@ -96,13 +130,11 @@ public class PostalCodeService {
 
                     if (batch.size() >= 1000) {
                         try {
-                            // Use isolated transaction for batch
                             postalCodeBatchService.saveBatch(batch);
                         } catch (Exception e) {
                             log.error("Batch save failed, retrying individually...", e);
                             for (PostalCode p : batch) {
                                 try {
-                                    // Use isolated transaction for single save
                                     postalCodeBatchService.saveSingle(p);
                                 } catch (Exception ex) {
                                     log.error("Failed to save record: {} | Error: {}", p.getCode(), ex.getMessage());
@@ -134,8 +166,8 @@ public class PostalCodeService {
             log.info("Finished Postal Code Import. Total records: {} in {} ms", count,
                     System.currentTimeMillis() - startTime);
 
-        } catch (Exception e) {
-            log.error("Failed to import postal codes", e);
+        } finally {
+            br.close();
         }
     }
 

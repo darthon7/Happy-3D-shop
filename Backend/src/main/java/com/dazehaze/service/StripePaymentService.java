@@ -44,6 +44,7 @@ public class StripePaymentService {
 
     private final OrderRepository orderRepository;
     private final EnviaShippingService enviaShippingService;
+    private final EnvioClickShippingService envioClickShippingService;
     private final OrderNotificationService orderNotificationService;
     private final CartService cartService;
 
@@ -149,15 +150,24 @@ public class StripePaymentService {
                     cartService.clearCart(order.getUser().getId(), null);
                 }
 
-                // Create shipment in Envia.com after payment is confirmed
+                // Create shipment after payment is confirmed (Envia or EnvioClick)
                 if (order.getCarrier() != null && order.getServiceCode() != null) {
                     try {
-                        log.info("Creating shipment in Envia.com for order {}", order.getOrderNumber());
+                        String provider = order.getShippingProvider();
+                        log.info("Creating shipment for order {} using provider: {}", order.getOrderNumber(), provider);
 
-                        ShipmentResult result = enviaShippingService.createShipment(
-                                order,
-                                order.getCarrier(),
-                                order.getServiceCode());
+                        ShipmentResult result;
+                        if ("envioclick".equalsIgnoreCase(provider)) {
+                            result = envioClickShippingService.createShipment(
+                                    order,
+                                    order.getCarrier(),
+                                    order.getServiceCode());
+                        } else {
+                            result = enviaShippingService.createShipment(
+                                    order,
+                                    order.getCarrier(),
+                                    order.getServiceCode());
+                        }
 
                         if (result.isSuccess()) {
                             order.setTrackingNumber(result.getTrackingNumber());
@@ -165,18 +175,16 @@ public class StripePaymentService {
                             orderRepository.save(order);
 
                             log.info(
-                                    "Shipment created successfully. Tracking number assigned: {}. Status remains CONFIRMED.",
-                                    result.getTrackingNumber());
+                                    "Shipment created successfully ({}). Tracking: {}. Status remains CONFIRMED.",
+                                    provider, result.getTrackingNumber());
                         } else {
                             log.error("Failed to create shipment: {}", result.getErrorMessage());
-                            // Order is still confirmed, shipment can be created manually later
                         }
                     } catch (Exception e) {
-                        log.error("Error creating shipment in Envia", e);
-                        // Don't fail the payment process, shipment can be created manually
+                        log.error("Error creating shipment in {}", order.getShippingProvider(), e);
                     }
                 } else {
-                    log.warn("Order {} has no carrier/serviceCode, skipping Envia shipment creation",
+                    log.warn("Order {} has no carrier/serviceCode, skipping shipment creation",
                             order.getOrderNumber());
                 }
             }

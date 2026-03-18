@@ -84,6 +84,8 @@ public class OrderService {
                 .shippingCost(shippingCost)
                 .carrier(request.getCarrier())
                 .serviceCode(request.getServiceCode())
+                .serviceName(request.getServiceLevel())
+                .shippingProvider(request.getShippingProvider())
                 .tax(BigDecimal.ZERO)
                 .total(total)
                 .paymentMethod(Order.PaymentMethod.valueOf(request.getPaymentMethod().name()))

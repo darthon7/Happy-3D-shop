@@ -80,6 +80,9 @@ public class Order {
     @Column(name = "service_name")
     private String serviceName; // "Express", "Terrestre", etc.
 
+    @Column(name = "shipping_provider")
+    private String shippingProvider; // "envia" or "envioclick"
+
     @Column(columnDefinition = "TEXT")
     private String notes;
 
