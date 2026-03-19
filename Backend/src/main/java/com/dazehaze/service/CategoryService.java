@@ -55,6 +55,7 @@ public class CategoryService {
                 .description(category.getDescription())
                 .slug(category.getSlug())
                 .imageUrl(category.getImageUrl())
+                .isActive(category.getIsActive())
                 .productCount(productCount)
                 .subcategories(subcategories.isEmpty() ? null : subcategories)
                 .build();

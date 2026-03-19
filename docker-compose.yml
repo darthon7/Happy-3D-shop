@@ -41,6 +41,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://40.233.15.187:8080
     container_name: h3ds_frontend
     restart: always
     depends_on:
