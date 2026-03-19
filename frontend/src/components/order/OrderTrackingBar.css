@@ -1,13 +1,9 @@
 /* ─── OrderTrackingBar ─── */
 
 .tracking-bar {
-  background: linear-gradient(
-    135deg,
-    rgba(250, 28, 117, 0.08),
-    rgba(250, 28, 117, 0.04)
-  );
-  border: 1px solid rgba(250, 28, 117, 0.2);
-  border-radius: 1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-custom);
   padding: 1.5rem;
   margin-bottom: 0;
 }
@@ -29,7 +25,7 @@
 .tracking-bar__title {
   font-size: 1.35rem;
   font-weight: 800;
-  color: #fff;
+  color: var(--color-text-primary);
   margin: 0 0 0.35rem;
   letter-spacing: -0.01em;
 }
@@ -40,21 +36,21 @@
 
 .tracking-bar__description {
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--color-text-muted);
   margin: 0 0 0.5rem;
   line-height: 1.4;
 }
 
 .tracking-bar__tracking-info {
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--color-text-muted);
   margin: 0;
 }
 
 .tracking-bar__tracking-number {
   background: none;
   border: none;
-  color: #fff;
+  color: var(--color-text-primary);
   font-weight: 600;
   font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
   font-size: 0.85rem;
@@ -70,7 +66,7 @@
 }
 
 .tracking-bar__tracking-number:hover {
-  color: #fa1c75;
+  color: var(--color-primary);
 }
 
 .tracking-bar__copy-icon {
@@ -100,8 +96,8 @@
   height: 100%;
   background: linear-gradient(
     90deg,
-    #fa1c75,
-    #cc1261
+    var(--color-primary),
+    var(--color-primary-dark)
   );
   border-radius: 2px;
   transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
@@ -138,16 +134,16 @@
   border-radius: 50%;
   background: linear-gradient(
     135deg,
-    #fa1c75,
-    #cc1261
+    var(--color-primary),
+    var(--color-primary-dark)
   );
-  color: #fff;
+  color: var(--color-template-dark);
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow:
-    0 0 0 4px rgba(250, 28, 117, 0.2),
-    0 4px 12px rgba(250, 28, 117, 0.3);
+    0 0 0 4px rgba(201, 168, 76, 0.2),
+    0 4px 12px rgba(201, 168, 76, 0.3);
   animation: tracking-pulse 2s ease-in-out infinite;
 }
 
@@ -156,8 +152,8 @@
   width: 0.75rem;
   height: 0.75rem;
   border-radius: 50%;
-  background: #fa1c75;
-  box-shadow: 0 0 0 3px rgba(250, 28, 117, 0.2);
+  background: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.2);
 }
 
 /* Pending dot */
@@ -171,19 +167,19 @@
 /* Labels */
 .tracking-bar__label {
   font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--color-text-muted);
   font-weight: 500;
   text-align: center;
   white-space: nowrap;
 }
 
 .tracking-bar__label--active {
-  color: #fff;
+  color: var(--color-text-primary);
   font-weight: 700;
 }
 
 .tracking-bar__step--completed .tracking-bar__label {
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--color-text-secondary);
 }
 
 /* Track button */
@@ -194,9 +190,9 @@
   gap: 0.5rem;
   width: 100%;
   padding: 0.75rem 1rem;
-  border-radius: 0.75rem;
-  background: linear-gradient(135deg, #fa1c75, #cc1261);
-  color: #fff;
+  border-radius: var(--radius-custom);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  color: var(--color-template-dark);
   font-weight: 700;
   font-size: 0.95rem;
   text-decoration: none;
@@ -207,7 +203,7 @@
 
 .tracking-bar__button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(250, 28, 117, 0.35);
+  box-shadow: 0 6px 20px rgba(201, 168, 76, 0.35);
   filter: brightness(1.1);
 }
 
@@ -220,13 +216,13 @@
   0%,
   100% {
     box-shadow:
-      0 0 0 4px rgba(250, 28, 117, 0.15),
-      0 4px 12px rgba(250, 28, 117, 0.3);
+      0 0 0 4px rgba(201, 168, 76, 0.15),
+      0 4px 12px rgba(201, 168, 76, 0.3);
   }
   50% {
     box-shadow:
-      0 0 0 6px rgba(250, 28, 117, 0.1),
-      0 4px 16px rgba(250, 28, 117, 0.4);
+      0 0 0 6px rgba(201, 168, 76, 0.1),
+      0 4px 16px rgba(201, 168, 76, 0.4);
   }
 }
 

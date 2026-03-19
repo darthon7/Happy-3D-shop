@@ -3,23 +3,21 @@ import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import { AlertCircle } from 'lucide-react';
 
-/**
- * Input variants using CVA
- */
 const inputVariants = cva(
-  // Base styles
   [
     'w-full rounded-lg transition-all duration-200',
-    'bg-surface border text-white placeholder-text-muted',
-    'focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent',
+    'bg-surface border text-white placeholder:text-text-muted',
+    'focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary',
     'disabled:cursor-not-allowed disabled:opacity-50',
   ],
   {
     variants: {
       variant: {
-        default: 'border-border focus:ring-primary',
-        error: 'border-red-500 focus:ring-red-500 bg-red-500/5',
-        success: 'border-green-500 focus:ring-green-500',
+        default: 'border-border',
+        light: 'bg-white/10 border-white/20 text-white placeholder:text-white/50',
+        error: 'border-error focus:ring-error/50 bg-error/5',
+        success: 'border-success focus:ring-success/50',
+        gold: 'border-primary/50 focus:border-primary',
       },
       inputSize: {
         sm: 'h-9 px-3 text-sm',
@@ -34,23 +32,6 @@ const inputVariants = cva(
   }
 );
 
-/**
- * Input Component
- * 
- * @example
- * // Basic input
- * <Input placeholder="Enter your email" />
- * 
- * // With label and error
- * <Input 
- *   label="Email"
- *   error="Please enter a valid email"
- *   placeholder="you@example.com"
- * />
- * 
- * // With left icon
- * <Input leftIcon={<Mail />} placeholder="Email" />
- */
 const Input = forwardRef(
   (
     {
@@ -76,7 +57,7 @@ const Input = forwardRef(
         {label && (
           <label 
             htmlFor={inputId}
-            className="block text-sm font-medium text-text-secondary mb-1.5"
+            className="block text-sm font-medium text-text-inverse-secondary mb-1.5"
           >
             {label}
           </label>
@@ -114,7 +95,7 @@ const Input = forwardRef(
           )}
           
           {hasError && (
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500">
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-error">
               <AlertCircle className="h-4 w-4" />
             </div>
           )}
@@ -125,7 +106,7 @@ const Input = forwardRef(
             id={`${inputId}-error`}
             className={cn(
               "mt-1.5 text-sm",
-              hasError ? "text-red-500" : "text-text-muted"
+              hasError ? "text-error" : "text-text-muted"
             )}
             role={hasError ? "alert" : undefined}
           >

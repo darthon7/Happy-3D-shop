@@ -22,7 +22,6 @@ public class CreateProductRequest {
     private String name;
 
     private String description;
-    private String shortDescription;
 
     @NotNull(message = "Base price is required")
     @Positive(message = "Price must be positive")

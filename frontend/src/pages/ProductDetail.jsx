@@ -91,11 +91,11 @@ const ProductDetail = () => {
   };
 
   const uniqueColors = product?.materials
-    ? [...new Map(product.materials.map(v => [v.color, v])).values()]
+    ? [...new Map(product.materials.filter(v => v.color).map(v => [v.color, v])).values()]
     : [];
 
   const uniqueMaterials = product?.materials
-    ? [...new Set(product.materials.map(v => v.material))]
+    ? [...new Set(product.materials.filter(v => v.material).map(v => v.material))]
     : [];
 
   const getMaterialVariant = (material) =>
@@ -319,13 +319,6 @@ const ProductDetail = () => {
                 )
               )}
             </div>
-
-            {/* Short description */}
-            {product.shortDescription && (
-              <p className="text-[#2C1F0E]/70 text-sm leading-relaxed border-b border-[#2C1F0E]/10 pb-5">
-                {product.shortDescription}
-              </p>
-            )}
 
             {/* Full description */}
             {product.description && (

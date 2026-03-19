@@ -43,7 +43,6 @@ public class AdminProductService {
         Product product = Product.builder()
                 .name(request.getName())
                 .description(request.getDescription())
-                .shortDescription(request.getShortDescription())
                 .basePrice(request.getBasePrice())
                 .salePrice(request.getSalePrice())
                 .slug(request.getSlug())
@@ -148,7 +147,6 @@ public class AdminProductService {
 
         product.setName(request.getName());
         product.setDescription(request.getDescription());
-        product.setShortDescription(request.getShortDescription());
         product.setBasePrice(request.getBasePrice());
         product.setSalePrice(request.getSalePrice());
         product.setSlug(request.getSlug());
@@ -354,7 +352,6 @@ public class AdminProductService {
                 .id(product.getId())
                 .name(product.getName())
                 .description(product.getDescription())
-                .shortDescription(product.getShortDescription())
                 .basePrice(product.getBasePrice())
                 .salePrice(product.getSalePrice())
                 .currentPrice(product.getCurrentPrice())

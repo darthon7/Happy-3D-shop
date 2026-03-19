@@ -6,6 +6,9 @@ import { Skeleton } from '../components/ui';
 import { productsApi } from '../api';
 import { useIsMobile } from '../hooks/useIsMobile';
 import { useCategoryStore } from '../stores';
+import { FadeInUp, StaggerContainer, StaggerItem } from '../components/common/Animations';
+import { Button } from '../components/ui/Button';
+import { Badge } from '../components/ui/Badge';
 
 const Catalog = () => {
   const { slug } = useParams();
@@ -220,27 +223,30 @@ const Catalog = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F0E8] text-[#2C1F0E] font-sans">
-      {/* Main Content */}
+    <div className="min-h-screen bg-background-light text-text-primary font-sans">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <FadeInUp>
+          <h1 className="text-3xl font-bold text-text-primary mb-8 text-center">
+            {getTitle()}
+          </h1>
+        </FadeInUp>
+        
         <div className="flex flex-col md:flex-row gap-8">
-          {/* Sidebar Filters */}
           <aside className="w-full md:w-64 flex-shrink-0">
             <div className="sticky top-28">
-              <h2 className="text-lg font-bold mb-6 text-header uppercase tracking-wider">Categorías</h2>
+              <h2 className="text-lg font-bold mb-6 text-text-primary uppercase tracking-wider">Categorías</h2>
               <div className="space-y-6">
-                {/* Category Filter */}
                 <section>
-                  <h3 className="text-sm font-semibold text-header/60 mb-3 uppercase">Tipo</h3>
+                  <h3 className="text-sm font-semibold text-text-muted mb-3 uppercase">Tipo</h3>
                   <ul className="space-y-2">
                     <li className="flex items-center gap-2">
                       <input 
                         type="checkbox" 
                         checked={!filters.categoryId}
                         onChange={() => handleCategoryChange(null, null)}
-                        className="rounded border-[#C9A84C]/30 text-brand focus:ring-brand"
+                        className="rounded border-primary/30 text-primary focus:ring-primary"
                       />
-                      <label className="text-sm cursor-pointer" onClick={() => handleCategoryChange(null, null)}>Todos</label>
+                      <label className="text-sm cursor-pointer hover:text-primary transition-colors" onClick={() => handleCategoryChange(null, null)}>Todos</label>
                     </li>
                     {categories.map(category => (
                       <li key={category.id} className="flex items-center gap-2">
@@ -248,42 +254,38 @@ const Catalog = () => {
                           type="checkbox" 
                           checked={filters.categoryId === category.id}
                           onChange={() => handleCategoryChange(category.id, category.slug)}
-                          className="rounded border-[#C9A84C]/30 text-brand focus:ring-brand"
+                          className="rounded border-primary/30 text-primary focus:ring-primary"
                         />
-                        <label className="text-sm cursor-pointer" onClick={() => handleCategoryChange(category.id, category.slug)}>{category.name}</label>
+                        <label className="text-sm cursor-pointer hover:text-primary transition-colors" onClick={() => handleCategoryChange(category.id, category.slug)}>{category.name}</label>
                       </li>
                     ))}
                   </ul>
                 </section>
 
-                {/* Price Range Filter */}
                 <section>
-                  <h3 className="text-sm font-semibold text-header/60 mb-3 uppercase">Precio</h3>
-                  <div className="space-y-2">
-                    <div className="flex gap-2">
-                      <input 
-                        type="number" 
-                        placeholder="Min"
-                        value={filters.minPrice}
-                        onChange={(e) => handleFilterChange('minPrice', e.target.value)}
-                        className="w-full px-3 py-2 border border-[#C9A84C]/20 rounded-[8px] text-sm focus:outline-none focus:border-brand"
-                      />
-                      <input 
-                        type="number" 
-                        placeholder="Max"
-                        value={filters.maxPrice}
-                        onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
-                        className="w-full px-3 py-2 border border-[#C9A84C]/20 rounded-[8px] text-sm focus:outline-none focus:border-brand"
-                      />
-                    </div>
+                  <h3 className="text-sm font-semibold text-text-muted mb-3 uppercase">Precio</h3>
+                  <div className="flex gap-2">
+                    <input 
+                      type="number" 
+                      placeholder="Min"
+                      value={filters.minPrice}
+                      onChange={(e) => handleFilterChange('minPrice', e.target.value)}
+                      className="w-full px-3 py-2 border border-primary/20 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                    />
+                    <input 
+                      type="number" 
+                      placeholder="Max"
+                      value={filters.maxPrice}
+                      onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
+                      className="w-full px-3 py-2 border border-primary/20 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                    />
                   </div>
                 </section>
 
-                {/* Clear Filters */}
                 {activeFilters.length > 0 && (
                   <button 
                     onClick={clearFilters}
-                    className="text-sm text-brand hover:text-brand-dark font-medium"
+                    className="text-sm text-primary hover:text-primary-dark font-medium link-underline"
                   >
                     Limpiar filtros
                   </button>
@@ -292,19 +294,17 @@ const Catalog = () => {
             </div>
           </aside>
 
-          {/* Product Grid */}
           <section className="flex-1">
-            {/* Results Header */}
             <div className="flex items-center justify-between mb-8">
-              <h2 className="text-xl font-medium text-header">
+              <h2 className="text-xl font-medium text-text-primary">
                 {loading ? 'Cargando...' : `Mostrando ${products.length} resultados`}
               </h2>
               <div className="flex items-center gap-2">
-                <label className="text-sm text-header/60">Ordenar por:</label>
+                <label className="text-sm text-text-muted">Ordenar por:</label>
                 <select 
                   value={filters.sort}
                   onChange={(e) => handleFilterChange('sort', e.target.value)}
-                  className="border-0 bg-transparent text-sm font-semibold focus:ring-0 cursor-pointer text-[#2C1F0E]"
+                  className="border-0 bg-transparent text-sm font-semibold focus:ring-0 cursor-pointer text-text-primary hover:text-primary transition-colors"
                 >
                   <option value="">Más recientes</option>
                   <option value="price_asc">Precio: Menor a Mayor</option>
@@ -314,29 +314,24 @@ const Catalog = () => {
               </div>
             </div>
 
-            {/* Active Filters */}
             {activeFilters.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
                 {activeFilters.map((filter, i) => (
-                  <span 
-                    key={i}
-                    className="inline-flex items-center gap-1 px-3 py-1 bg-[#C9A84C]/10 text-[#C9A84C] text-sm rounded-full"
-                  >
+                  <Badge key={i} variant="gold" className="flex items-center gap-1">
                     {filter.label}
-                    <button onClick={() => removeFilter(filter)} className="hover:text-brand-dark">
+                    <button onClick={() => removeFilter(filter)} className="ml-1 hover:text-primary-dark">
                       <X className="w-3 h-3" />
                     </button>
-                  </span>
+                  </Badge>
                 ))}
               </div>
             )}
 
-            {/* Products Grid */}
             {loading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {[...Array(6)].map((_, i) => (
-                  <div key={i} className="bg-white border border-gray-100 rounded-[8px] overflow-hidden">
-                    <div className="aspect-square bg-gray-100 animate-pulse" />
+                  <div key={i} className="bg-white border border-border-light rounded-lg overflow-hidden animate-shimmer">
+                    <div className="aspect-square bg-gray-100" />
                     <div className="p-5">
                       <div className="h-3 bg-gray-100 rounded w-1/3 mb-2" />
                       <div className="h-4 bg-gray-100 rounded w-2/3 mb-2" />
@@ -347,34 +342,33 @@ const Catalog = () => {
               </div>
             ) : products.length === 0 ? (
               <div className="text-center py-16">
-                <SearchX className="w-16 h-16 text-[#2C1F0E]/50 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-header mb-2">No se encontraron productos</h3>
-                <p className="text-gray-500 mb-6">Intenta con otros filtros o términos de búsqueda</p>
-                <button 
-                  onClick={clearFilters}
-                  className="bg-[#C9A84C] text-white px-6 py-3 rounded-[8px] font-semibold hover:bg-[#b8943e] transition-colors"
-                >
+                <SearchX className="w-16 h-16 text-text-muted mx-auto mb-4" />
+                <h3 className="text-xl font-bold text-text-primary mb-2">No se encontraron productos</h3>
+                <p className="text-text-muted mb-6">Intenta con otros filtros o términos de búsqueda</p>
+                <Button variant="primary" onClick={clearFilters}>
                   Limpiar filtros
-                </button>
+                </Button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {products.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                  <StaggerItem key={product.id}>
+                    <ProductCard product={product} />
+                  </StaggerItem>
                 ))}
-              </div>
+              </StaggerContainer>
             )}
 
-            {/* Load More */}
             {!loading && products.length > 0 && pagination.page < pagination.totalPages - 1 && (
               <div className="mt-12 text-center">
-                <button 
+                <Button 
+                  variant="secondary" 
+                  size="lg"
                   onClick={handleLoadMore}
-                  disabled={loadingMore}
-                  className="bg-[#C9A84C] text-white px-8 py-3 rounded-[8px] font-semibold hover:bg-[#b8943e] transition-colors disabled:opacity-50"
+                  isLoading={loadingMore}
                 >
                   {loadingMore ? 'Cargando...' : 'Cargar más'}
-                </button>
+                </Button>
               </div>
             )}
           </section>

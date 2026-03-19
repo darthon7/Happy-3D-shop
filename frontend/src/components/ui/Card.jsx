@@ -1,15 +1,13 @@
 import { forwardRef } from 'react';
 import { cn } from '../../lib/utils';
 
-/**
- * Card - Root container component
- */
-const Card = forwardRef(({ className, variant = 'default', ...props }, ref) => {
+const Card = forwardRef(({ className, variant = 'default', hover = false, ...props }, ref) => {
   const variants = {
-    default: 'bg-white border-dark-100',
+    default: 'bg-white border-border-light',
     dark: 'bg-surface border-border',
-    glass: 'bg-white/10 backdrop-blur-xl border-white/10',
-    elevated: 'bg-surface border-border shadow-xl shadow-black/20',
+    glass: 'glass-card',
+    elevated: 'bg-surface border-border shadow-xl',
+    gold: 'bg-surface border-primary/30 hover:border-primary',
   };
   
   return (
@@ -18,6 +16,7 @@ const Card = forwardRef(({ className, variant = 'default', ...props }, ref) => {
       className={cn(
         'rounded-xl border overflow-hidden transition-all duration-200',
         variants[variant],
+        hover && 'hover-lift cursor-pointer',
         className
       )}
       {...props}
@@ -26,9 +25,6 @@ const Card = forwardRef(({ className, variant = 'default', ...props }, ref) => {
 });
 Card.displayName = 'Card';
 
-/**
- * CardHeader - Header section with optional bottom border
- */
 const CardHeader = forwardRef(({ className, ...props }, ref) => (
   <div
     ref={ref}
@@ -38,9 +34,6 @@ const CardHeader = forwardRef(({ className, ...props }, ref) => (
 ));
 CardHeader.displayName = 'CardHeader';
 
-/**
- * CardTitle - Main heading of the card
- */
 const CardTitle = forwardRef(({ className, ...props }, ref) => (
   <h3
     ref={ref}
@@ -50,9 +43,6 @@ const CardTitle = forwardRef(({ className, ...props }, ref) => (
 ));
 CardTitle.displayName = 'CardTitle';
 
-/**
- * CardDescription - Secondary text below title
- */
 const CardDescription = forwardRef(({ className, ...props }, ref) => (
   <p
     ref={ref}
@@ -62,17 +52,11 @@ const CardDescription = forwardRef(({ className, ...props }, ref) => (
 ));
 CardDescription.displayName = 'CardDescription';
 
-/**
- * CardContent - Main content area
- */
 const CardContent = forwardRef(({ className, ...props }, ref) => (
   <div ref={ref} className={cn('p-6 pt-0', className)} {...props} />
 ));
 CardContent.displayName = 'CardContent';
 
-/**
- * CardFooter - Footer section, typically for actions
- */
 const CardFooter = forwardRef(({ className, ...props }, ref) => (
   <div
     ref={ref}

@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
-import { motion, useSpring, useTransform } from 'framer-motion';
+import { motion, useSpring, useTransform, useReducedMotion } from 'framer-motion';
 
 // ============================================
 // 3D TILT HOOK - Mouse tracking perspective
@@ -16,8 +16,8 @@ export const useTilt3D = (options = {}) => {
 
   const ref = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
   
-  // Spring configuration for smooth motion
   const springConfig = { stiffness: 300, damping: 30 };
   const rotateX = useSpring(0, springConfig);
   const rotateY = useSpring(0, springConfig);
@@ -34,19 +34,19 @@ export const useTilt3D = (options = {}) => {
     const mouseX = e.clientX - centerX;
     const mouseY = e.clientY - centerY;
     
-    // Calculate rotation based on mouse position
+    if (shouldReduceMotion) return;
+    
     const tiltX = (mouseY / (rect.height / 2)) * -maxTilt;
     const tiltY = (mouseX / (rect.width / 2)) * maxTilt;
     
     rotateX.set(tiltX);
     rotateY.set(tiltY);
     
-    // Calculate glare position
     const glareXPos = ((e.clientX - rect.left) / rect.width) * 100;
     const glareYPos = ((e.clientY - rect.top) / rect.height) * 100;
     glareX.set(glareXPos);
     glareY.set(glareYPos);
-  }, [maxTilt, rotateX, rotateY, glareX, glareY]);
+  }, [maxTilt, rotateX, rotateY, glareX, glareY, shouldReduceMotion]);
 
   const handleMouseEnter = useCallback(() => {
     setIsHovered(true);
@@ -59,6 +59,13 @@ export const useTilt3D = (options = {}) => {
     glareX.set(50);
     glareY.set(50);
   }, [rotateX, rotateY, glareX, glareY]);
+
+  const glareStyle = glare ? {
+    background: useTransform(
+      [glareX, glareY],
+      ([x, y]) => `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,${glareOpacity}), transparent 60%)`
+    ),
+  } : null;
 
   return {
     ref,
@@ -79,12 +86,7 @@ export const useTilt3D = (options = {}) => {
       onMouseLeave: handleMouseLeave,
     },
     glare: glare ? {
-      style: {
-        background: useTransform(
-          [glareX, glareY],
-          ([x, y]) => `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,${glareOpacity}), transparent 60%)`
-        ),
-      },
+      style: glareStyle,
       isVisible: isHovered,
     } : null,
   };
@@ -145,10 +147,12 @@ export const Float3D = ({
   intensity = 20,
   duration = 6,
 }) => {
+  const shouldReduceMotion = useReducedMotion();
+  
   return (
     <motion.div
       className={className}
-      animate={{
+      animate={shouldReduceMotion ? {} : {
         y: [0, -intensity, 0],
         rotateZ: [-1, 1, -1],
       }}
@@ -169,16 +173,16 @@ export const Float3D = ({
 export const ParallaxLayer = ({ 
   children, 
   className = '',
-  depth = 0.5, // 0 = no movement, 1 = maximum
-  direction = 'both', // 'x', 'y', 'both'
+  depth = 0.5,
+  direction = 'both',
 }) => {
   const ref = useRef(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const shouldReduceMotion = useReducedMotion();
 
   const handleMouseMove = useCallback((e) => {
-    if (!ref.current) return;
+    if (!ref.current || shouldReduceMotion) return;
     
-    const rect = ref.current.getBoundingClientRect();
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
     
@@ -189,7 +193,7 @@ export const ParallaxLayer = ({
       x: direction === 'y' ? 0 : moveX,
       y: direction === 'x' ? 0 : moveY,
     });
-  }, [depth, direction]);
+  }, [depth, direction, shouldReduceMotion]);
 
   return (
     <motion.div
@@ -222,6 +226,7 @@ export const FlipCard3D = ({
   flipOnClick = false,
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   const handleFlip = () => {
     if (flipOnClick) setIsFlipped(!isFlipped);
@@ -239,11 +244,11 @@ export const FlipCard3D = ({
         className="relative w-full h-full"
         style={{ transformStyle: 'preserve-3d' }}
         animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+        transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
       >
         {/* Front */}
         <div 
-          className="absolute inset-0 backface-hidden"
+          className="absolute inset-0"
           style={{ backfaceVisibility: 'hidden' }}
         >
           {front}
@@ -251,7 +256,7 @@ export const FlipCard3D = ({
         
         {/* Back */}
         <div 
-          className="absolute inset-0 backface-hidden"
+          className="absolute inset-0"
           style={{ 
             backfaceVisibility: 'hidden',
             transform: 'rotateY(180deg)',
@@ -271,7 +276,7 @@ export const Perspective3DText = ({
   text,
   className = '',
   depth = 8,
-  color = 'rgba(198,42,185, 0.3)',
+  color = 'rgba(201, 168, 76, 0.3)',
 }) => {
   const layers = Array.from({ length: depth }, (_, i) => i);
   
@@ -308,6 +313,7 @@ export const HoverReveal3D = ({
   className = '',
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <div 
@@ -317,7 +323,7 @@ export const HoverReveal3D = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       <motion.div
-        animate={{
+        animate={shouldReduceMotion ? {} : {
           rotateX: isHovered ? -90 : 0,
           y: isHovered ? -20 : 0,
           opacity: isHovered ? 0 : 1,
@@ -331,7 +337,7 @@ export const HoverReveal3D = ({
       <motion.div
         className="absolute inset-0"
         initial={{ rotateX: 90, y: 20, opacity: 0 }}
-        animate={{
+        animate={shouldReduceMotion ? {} : {
           rotateX: isHovered ? 0 : 90,
           y: isHovered ? 0 : 20,
           opacity: isHovered ? 1 : 0,

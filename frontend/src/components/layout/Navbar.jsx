@@ -59,16 +59,16 @@ const Navbar = () => {
           {navLinks.map((link) => (
             link.label === 'Categorías' ? (
               <li key={link.label} className="relative group">
-                <button className="flex items-center text-[#E8DCC8] text-sm cursor-pointer hover:text-[#C9A84C] transition-colors font-sans">
+                <button className="flex items-center text-text-inverse-secondary text-sm cursor-pointer hover:text-primary transition-colors font-sans link-underline">
                   {link.label}
                   <ChevronDown className="w-4 h-4 ml-1" />
                 </button>
                 <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                  <div className="w-56 bg-white rounded-[8px] shadow-xl border border-gray-100 overflow-hidden">
+                  <div className="w-56 bg-white rounded-lg shadow-xl border border-border-light overflow-hidden">
                     <div className="flex flex-col py-2">
                        <Link 
                          to="/catalogo"
-                         className="px-4 py-2.5 text-sm text-[#1B2A5E] hover:bg-gray-50 transition-colors font-medium"
+                         className="px-4 py-2.5 text-sm text-text-primary hover:bg-background-light hover:text-primary transition-colors font-medium"
                        >
                          Ver Todo
                        </Link>
@@ -76,7 +76,7 @@ const Navbar = () => {
                          <Link 
                            key={cat.id}
                            to={`/categoria/${cat.slug}`}
-                           className="px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-[#1B2A5E] transition-colors"
+                           className="px-4 py-2.5 text-sm text-text-secondary hover:bg-background-light hover:text-primary transition-colors"
                          >
                            {cat.name}
                          </Link>
@@ -89,7 +89,7 @@ const Navbar = () => {
               <li key={link.label}>
                 <Link 
                   to={link.to}
-                  className="text-[#E8DCC8] text-sm cursor-pointer hover:text-[#C9A84C] transition-colors font-sans"
+                  className="text-text-inverse-secondary text-sm cursor-pointer hover:text-primary transition-colors font-sans link-underline"
                 >
                   {link.label}
                 </Link>
@@ -163,8 +163,11 @@ const Navbar = () => {
                 </div>
               </div>
            ) : (
-             <Link to="/login" className="hover:text-[#E8DCC8] transition-colors flex items-center">
-               <User size={20} />
+             <Link 
+               to="/login" 
+               className="bg-primary hover:bg-primary-dark text-dark-900 px-5 py-2 rounded-full font-bold text-sm tracking-wide transition-colors flex items-center shadow-sm"
+             >
+               Iniciar Sesión
              </Link>
            )}
         </div>

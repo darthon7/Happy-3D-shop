@@ -3,71 +3,62 @@ import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 import { Loader2 } from 'lucide-react';
 
-/**
- * Button variants using Class Variance Authority (CVA)
- * Provides consistent styling with multiple variant options
- */
 const buttonVariants = cva(
-  // Base styles applied to all buttons
   [
     'inline-flex items-center justify-center gap-2',
-    'font-semibold transition-all duration-200',
+    'font-bold uppercase tracking-wider transition-all',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
     'focus-visible:ring-offset-background-dark',
     'disabled:pointer-events-none disabled:opacity-50',
-    'active:scale-[0.98]',
+    'active:scale-[0.98] hover-lift press-effect',
   ],
   {
     variants: {
       variant: {
-        // Primary: Solid magenta with glow effect
         primary: [
-          'bg-primary text-white',
-          'hover:bg-primary-600',
-          'shadow-[0_0_20px_rgba(198,42,185,0.4)]',
-          'hover:shadow-[0_0_30px_rgba(198,42,185,0.6)]',
+          'bg-primary text-dark-900',
+          'hover:bg-primary-dark hover:shadow-gold',
         ],
-        // Secondary: Dark surface with border
+        'primary-glow': [
+          'bg-primary text-dark-900',
+          'shadow-gold hover:shadow-gold-lg',
+        ],
         secondary: [
           'bg-surface text-white',
-          'border border-border',
-          'hover:border-primary hover:bg-surface-elevated',
+          'border border-border hover:border-primary',
+          'hover:bg-surface-elevated hover:shadow-gold-sm',
         ],
-        // Outline: Transparent with border
         outline: [
-          'bg-transparent text-white',
-          'border border-white/20',
-          'hover:bg-white/10 hover:border-white',
+          'bg-transparent text-primary',
+          'border border-primary hover:bg-primary/10',
         ],
-        // Ghost: No background, subtle hover
+        'outline-light': [
+          'bg-transparent text-white',
+          'border border-white/30 hover:border-white hover:bg-white/10',
+        ],
         ghost: [
-          'bg-transparent text-white',
-          'hover:bg-white/10',
+          'bg-transparent text-white hover:bg-white/10',
         ],
-        // Destructive: Red for dangerous actions
+        'ghost-gold': [
+          'bg-transparent text-primary hover:bg-primary/10',
+        ],
         destructive: [
           'bg-red-600 text-white',
-          'hover:bg-red-700',
-          'shadow-[0_0_15px_rgba(220,38,38,0.3)]',
-          'hover:shadow-[0_0_25px_rgba(220,38,38,0.5)]',
+          'hover:bg-red-700 shadow-[0_0_15px_rgba(220,38,38,0.3)]',
         ],
-        // Glass: Glassmorphism effect
         glass: [
-          'bg-white/10 text-white',
-          'backdrop-blur-md border border-white/20',
+          'bg-white/10 text-white backdrop-blur-md border border-white/20',
           'hover:bg-white/20',
         ],
-        // Link: Text only, underline on hover
         link: [
-          'bg-transparent text-primary',
-          'hover:text-primary-400 underline-offset-4 hover:underline',
+          'bg-transparent text-primary underline-offset-4 hover:underline',
         ],
       },
       size: {
-        sm: 'h-9 px-3 text-sm rounded-md',
-        md: 'h-11 px-5 text-sm rounded-lg',
-        lg: 'h-12 px-8 text-base rounded-lg',
-        xl: 'h-14 px-10 text-lg rounded-xl',
+        sm: 'h-9 px-4 text-xs rounded-md',
+        md: 'h-11 px-6 text-sm rounded-lg',
+        lg: 'h-12 px-8 text-sm rounded-lg',
+        xl: 'h-14 px-10 text-base rounded-xl',
         icon: 'h-10 w-10 rounded-lg',
         'icon-sm': 'h-8 w-8 rounded-md',
         'icon-lg': 'h-12 w-12 rounded-xl',
@@ -80,22 +71,6 @@ const buttonVariants = cva(
   }
 );
 
-/**
- * Button Component
- * 
- * @example
- * // Primary button
- * <Button>Click me</Button>
- * 
- * // Secondary large button
- * <Button variant="secondary" size="lg">Large Button</Button>
- * 
- * // Loading state
- * <Button isLoading>Saving...</Button>
- * 
- * // Icon button
- * <Button variant="ghost" size="icon"><Heart /></Button>
- */
 const Button = forwardRef(
   (
     {
@@ -107,26 +82,36 @@ const Button = forwardRef(
       rightIcon,
       children,
       disabled,
+      ariaLabel,
       ...props
     },
     ref
   ) => {
+    const isDisabled = disabled || isLoading;
+    
     return (
       <button
         ref={ref}
         className={cn(buttonVariants({ variant, size, className }))}
-        disabled={disabled || isLoading}
+        disabled={isDisabled}
+        aria-disabled={isDisabled}
+        aria-busy={isLoading}
+        aria-label={ariaLabel}
         {...props}
       >
         {isLoading ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : leftIcon ? (
-          leftIcon
-        ) : null}
-        
-        {children}
-        
-        {!isLoading && rightIcon}
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+            <span className="sr-only">Cargando...</span>
+            {children}
+          </>
+        ) : (
+          <>
+            {leftIcon && <span aria-hidden="true">{leftIcon}</span>}
+            {children}
+            {rightIcon && <span aria-hidden="true">{rightIcon}</span>}
+          </>
+        )}
       </button>
     );
   }

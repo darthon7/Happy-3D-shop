@@ -6,7 +6,7 @@ import { CheckCircle2 } from "lucide-react";
 
 export const ReviewCard = ({ review }) => {
   return (
-    <div className="bg-gray-900/40 p-6 rounded-2xl border border-gray-800 backdrop-blur-sm transition-colors hover:border-gray-700">
+    <div className="bg-surface p-6 rounded-2xl border border-border shadow-md transition-colors hover:border-primary/50">
       <div className="flex justify-between items-start mb-4">
         <div>
           <StarRating rating={review.rating} size={16} />
@@ -14,19 +14,19 @@ export const ReviewCard = ({ review }) => {
             {review.title}
           </h3>
         </div>
-        <span className="text-sm text-gray-500">
+        <span className="text-sm text-text-muted font-medium">
           {format(new Date(review.createdAt), "dd MMM yyyy", { locale: es })}
         </span>
       </div>
 
-      <p className="text-gray-300 mb-4 leading-relaxed">{review.comment}</p>
+      <p className="text-gray-200 mb-4 leading-relaxed">{review.comment}</p>
 
-      <div className="flex items-center justify-between border-t border-gray-800 pt-4">
-        <span className="font-medium text-sm text-gray-400">
+      <div className="flex items-center justify-between border-t border-border/50 pt-4">
+        <span className="font-bold text-sm text-text-secondary">
           {review.authorName}
         </span>
         {review.isVerified && (
-          <div className="flex items-center text-green-400 text-xs font-medium bg-green-500/10 px-2 py-1 rounded-full">
+          <div className="flex items-center text-green-400 text-xs font-bold bg-green-500/10 px-2 py-1 rounded-full border border-green-500/20">
             <CheckCircle2 size={12} className="mr-1" />
             Compra verificada
           </div>

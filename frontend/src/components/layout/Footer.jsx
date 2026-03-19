@@ -17,17 +17,17 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-[#3E2A0E] text-[#E8DCC8]">
+    <footer className="bg-[#3E2A0E] text-text-inverse-secondary">
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand Column */}
           <div className="md:col-span-1">
             <Link to="/" className="inline-block mb-4">
-              <span className="text-xl font-bold text-[#C9A84C] tracking-wider uppercase">
+              <span className="text-xl font-bold text-primary tracking-wider uppercase hover:text-primary-light transition-colors">
                 Happy 3D Shop
               </span>
             </Link>
-            <p className="text-sm text-[#E8DCC8]/80 leading-relaxed mb-6">
+            <p className="text-sm text-text-inverse-secondary/80 leading-relaxed mb-6">
               Creamos props y réplicas personalizadas impresos en 3D para cosplayers, 
               coleccionistas y entusiastas del entretenimiento.
             </p>
@@ -36,7 +36,7 @@ const Footer = () => {
                 href="https://facebook.com/propsroom3d" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-[#E8DCC8] hover:text-[#C9A84C] transition-all hover:scale-110"
+                className="text-text-inverse-secondary hover:text-primary transition-all hover:scale-110"
                 aria-label="Facebook"
               >
                 <Facebook size={20} />
@@ -45,7 +45,7 @@ const Footer = () => {
                 href="https://instagram.com/propsroom3d" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-[#E8DCC8] hover:text-[#C9A84C] transition-all hover:scale-110"
+                className="text-text-inverse-secondary hover:text-primary transition-all hover:scale-110"
                 aria-label="Instagram"
               >
                 <Instagram size={20} />
@@ -54,7 +54,7 @@ const Footer = () => {
                 href="https://tiktok.com/@propsroom3d" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-[#E8DCC8] hover:text-[#C9A84C] transition-all hover:scale-110"
+                className="text-text-inverse-secondary hover:text-primary transition-all hover:scale-110"
                 aria-label="TikTok"
               >
                 <svg 
@@ -72,7 +72,7 @@ const Footer = () => {
 
           {/* Shop Column */}
           <div>
-            <h4 className="font-bold mb-5 text-[#C9A84C] uppercase text-xs tracking-[2px]">
+            <h4 className="font-bold mb-5 text-primary uppercase text-xs tracking-[2px]">
               Tienda
             </h4>
             <ul className="space-y-3 text-sm">
@@ -80,7 +80,7 @@ const Footer = () => {
                 <li key={link.label}>
                   <Link 
                     to={link.to} 
-                    className="text-[#E8DCC8] hover:text-[#C9A84C] transition-colors"
+                    className="text-text-inverse-secondary hover:text-primary transition-colors link-underline"
                   >
                     {link.label}
                   </Link>
@@ -91,7 +91,7 @@ const Footer = () => {
 
           {/* Support Column */}
           <div>
-            <h4 className="font-bold mb-5 text-[#C9A84C] uppercase text-xs tracking-[2px]">
+            <h4 className="font-bold mb-5 text-primary uppercase text-xs tracking-[2px]">
               Soporte
             </h4>
             <ul className="space-y-3 text-sm">
@@ -99,7 +99,7 @@ const Footer = () => {
                 <li key={link.label}>
                   <Link 
                     to={link.to} 
-                    className="text-[#E8DCC8] hover:text-[#C9A84C] transition-colors"
+                    className="text-text-inverse-secondary hover:text-primary transition-colors link-underline"
                   >
                     {link.label}
                   </Link>
@@ -110,14 +110,14 @@ const Footer = () => {
 
           {/* Contact Column */}
           <div>
-            <h4 className="font-bold mb-5 text-[#C9A84C] uppercase text-xs tracking-[2px]">
+            <h4 className="font-bold mb-5 text-primary uppercase text-xs tracking-[2px]">
               Contacto
             </h4>
-            <ul className="space-y-3 text-sm text-[#E8DCC8]/80">
+            <ul className="space-y-3 text-sm text-text-inverse-secondary/80">
               <li>
                 <a 
                   href="mailto:contacto@propsroom.com" 
-                  className="hover:text-[#C9A84C] transition-colors"
+                  className="hover:text-primary transition-colors link-underline"
                 >
                   contacto@propsroom.com
                 </a>
@@ -127,13 +127,13 @@ const Footer = () => {
                   href="https://wa.me/528711038861" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="hover:text-[#C9A84C] transition-colors"
+                  className="hover:text-primary transition-colors"
                 >
                   +52 871 103 8861
                 </a>
               </li>
               <li className="pt-2">
-                <span className="text-[#E8DCC8]/60 text-xs">
+                <span className="text-text-inverse-secondary/60 text-xs">
                   Ciudad de México, México
                 </span>
               </li>
@@ -142,8 +142,8 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-6 border-t border-[#E8DCC8]/15 text-center">
-          <p className="text-xs text-[#E8DCC8]/55 uppercase tracking-wider">
+        <div className="mt-12 pt-6 border-t border-text-inverse-secondary/15 text-center">
+          <p className="text-xs text-text-inverse-secondary/55 uppercase tracking-wider">
             © {currentYear} Happy 3D Shop. Todos los derechos reservados.
           </p>
         </div>

@@ -15,7 +15,6 @@ import java.util.List;
 public class ProductListResponse {
     private Long id;
     private String name;
-    private String shortDescription;
     private BigDecimal basePrice;
     private BigDecimal salePrice;
     private BigDecimal currentPrice;

@@ -34,7 +34,6 @@ const AdminProducts = () => {
   const [formData, setFormData] = useState({
     name: '',
     slug: '',
-    shortDescription: '',
     description: '',
     basePrice: '',
     salePrice: '',
@@ -113,9 +112,9 @@ const AdminProducts = () => {
 
   const resetForm = () => {
     setFormData({
-      name: '', slug: '', shortDescription: '', description: '',
+      name: '', slug: '', description: '',
       basePrice: '', salePrice: '', categoryId: '', isActive: true,
-      isFeatured: false, isNew: true, variants: [],
+      isFeatured: false, isNew: true, variants: [{ material: 'PLA', stock: '0', sku: '', weightGrams: '', printTechnology: '', isActive: true }],
       imageUrl: '', imagePreview: '', imageBase64: '', imageName: '',
       weightKg: '', lengthCm: '', widthCm: '', heightCm: '',
     });
@@ -128,10 +127,9 @@ const AdminProducts = () => {
     setEditingProduct(product);
     const variants = product.materials?.length ? product.materials : (product.variants?.length ? product.variants : []);
     const mainImage = product.images?.find(img => img.isMain) || product.images?.[0];
-    setFormData({
+      setFormData({
       name: product.name || '',
       slug: product.slug || '',
-      shortDescription: product.shortDescription || '',
       description: product.description || '',
       basePrice: product.basePrice || '',
       salePrice: product.salePrice || '',
@@ -228,7 +226,6 @@ const AdminProducts = () => {
       const productData = {
         name: formData.name,
         slug: formData.slug || generateSlug(formData.name),
-        shortDescription: formData.shortDescription,
         description: formData.description,
         basePrice: Number(normalizedBasePrice),
         salePrice: normalizedSalePrice ? Number(normalizedSalePrice) : null,
@@ -642,15 +639,6 @@ const AdminProducts = () => {
                     />
                   </div>
                   <div className="md:col-span-2">
-                    <label className="block text-xs font-medium mb-1 text-text-secondary">Descripción Corta</label>
-                    <input
-                      type="text"
-                      value={formData.shortDescription}
-                      onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })}
-                      className="w-full px-3 py-2 bg-surface-elevated border border-border rounded-lg text-white text-sm placeholder-text-muted focus:outline-none focus:ring-1 focus:ring-primary"
-                    />
-                  </div>
-                  <div className="md:col-span-2">
                     <label className="block text-xs font-medium mb-1 text-text-secondary">Descripción</label>
                     <textarea
                       value={formData.description}
@@ -716,34 +704,10 @@ const AdminProducts = () => {
                     <span className="w-6 h-6 bg-primary/20 rounded-full flex items-center justify-center text-primary text-sm">3</span>
                     Materiales
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setFormData(prev => ({
-                        ...prev,
-                        variants: [...prev.variants, { material: '', color: '', colorHex: '#000000', stock: '', sku: '', priceAdjustment: 0, isActive: true, estimatedPrintMinutes: '', weightGrams: '', infillOptions: '', layerHeightOptions: '', requiresSupport: false, postProcessing: '', dimensionalAccuracy: '', printTechnology: '', stlSpecs: '' }]
-                      }));
-                    }}
-                    className="flex items-center gap-1 text-sm text-primary hover:text-primary-400"
-                  >
-                    <Plus className="w-4 h-4" /> Agregar Material
-                  </button>
                 </h3>
 
                 {fieldErrors.variants && <p className="text-red-400 text-sm mb-4">{fieldErrors.variants}</p>}
 
-                {formData.variants.length === 0 ? (
-                  <div className="text-center py-6 border border-dashed border-border rounded-lg bg-surface-elevated/30">
-                    <p className="text-sm text-text-muted mb-2">No has agregado ningún material.</p>
-                    <button
-                      type="button"
-                      onClick={() => setFormData(prev => ({ ...prev, variants: [{ material: 'PLA', color: '', colorHex: '#000000', stock: '0', sku: '', priceAdjustment: 0, isActive: true, estimatedPrintMinutes: '', weightGrams: '', infillOptions: '', layerHeightOptions: '', requiresSupport: false, postProcessing: '', dimensionalAccuracy: '', printTechnology: '', stlSpecs: '' }] }))}
-                      className="text-xs bg-primary/20 text-primary px-3 py-1.5 rounded-lg hover:bg-primary/30 transition-colors"
-                    >
-                      Añadir material PLA por defecto
-                    </button>
-                  </div>
-                ) : (
                   <div className="space-y-4">
                     {formData.variants.map((variant, index) => (
                       <div key={index} className={`flex flex-col gap-3 bg-surface-elevated p-4 rounded-xl border relative transition-all duration-300 ${variant.isActive === false ? 'border-amber-500/30 opacity-60 bg-surface-elevated/50' : 'border-border'}`}>
@@ -751,7 +715,7 @@ const AdminProducts = () => {
                           <div className="absolute inset-x-0 inset-y-0 rounded-xl bg-surface/50 pointer-events-none z-10" />
                         )}
                         <div className="flex items-start justify-between">
-                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 flex-1">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 flex-1">
                             <div>
                               <label className="block text-xs text-text-secondary mb-1">Material *</label>
                               <input
@@ -784,47 +748,6 @@ const AdminProducts = () => {
                               {fieldErrors[`variant_${index}_stock`] && <span className="text-red-400 text-xs mt-0.5 block">{fieldErrors[`variant_${index}_stock`]}</span>}
                             </div>
                             <div>
-                              <label className="block text-xs text-text-secondary mb-1">Precio ajuste</label>
-                              <input
-                                type="number"
-                                step="0.01"
-                                value={variant.priceAdjustment}
-                                onChange={(e) => {
-                                  const newVariants = [...formData.variants];
-                                  newVariants[index].priceAdjustment = parseFloat(e.target.value) || 0;
-                                  setFormData({ ...formData, variants: newVariants });
-                                }}
-                                className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                                placeholder="0.00"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-xs text-text-secondary mb-1">Color</label>
-                              <div className="flex gap-2">
-                                <input
-                                  type="color"
-                                  value={variant.colorHex || '#000000'}
-                                  onChange={(e) => {
-                                    const newVariants = [...formData.variants];
-                                    newVariants[index].colorHex = e.target.value;
-                                    setFormData({ ...formData, variants: newVariants });
-                                  }}
-                                  className="w-10 h-9 bg-surface border border-border rounded-lg cursor-pointer"
-                                />
-                                <input
-                                  type="text"
-                                  value={variant.color}
-                                  onChange={(e) => {
-                                    const newVariants = [...formData.variants];
-                                    newVariants[index].color = e.target.value;
-                                    setFormData({ ...formData, variants: newVariants });
-                                  }}
-                                  className="flex-1 px-3 py-2 bg-surface border border-border rounded-lg text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                                  placeholder="Nombre del color"
-                                />
-                              </div>
-                            </div>
-                            <div>
                               <label className="block text-xs text-text-secondary mb-1">SKU</label>
                               <input
                                 type="text"
@@ -836,21 +759,6 @@ const AdminProducts = () => {
                                 }}
                                 className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary font-mono"
                                 placeholder="3DP-001-PLA"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-xs text-text-secondary mb-1">Tiempo impresión (min)</label>
-                              <input
-                                type="number"
-                                min="0"
-                                value={variant.estimatedPrintMinutes}
-                                onChange={(e) => {
-                                  const newVariants = [...formData.variants];
-                                  newVariants[index].estimatedPrintMinutes = e.target.value;
-                                  setFormData({ ...formData, variants: newVariants });
-                                }}
-                                className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                                placeholder="120"
                               />
                             </div>
                             <div>
@@ -886,108 +794,11 @@ const AdminProducts = () => {
                                 <option value="DLP">DLP</option>
                               </select>
                             </div>
-                            <div>
-                              <label className="block text-xs text-text-secondary mb-1">Infill (valores)</label>
-                              <input
-                                type="text"
-                                value={variant.infillOptions}
-                                onChange={(e) => {
-                                  const newVariants = [...formData.variants];
-                                  newVariants[index].infillOptions = e.target.value;
-                                  setFormData({ ...formData, variants: newVariants });
-                                }}
-                                className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                                placeholder="10%, 20%, 40%"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-xs text-text-secondary mb-1">Layer height</label>
-                              <input
-                                type="text"
-                                value={variant.layerHeightOptions}
-                                onChange={(e) => {
-                                  const newVariants = [...formData.variants];
-                                  newVariants[index].layerHeightOptions = e.target.value;
-                                  setFormData({ ...formData, variants: newVariants });
-                                }}
-                                className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                                placeholder="0.12, 0.16, 0.20"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-xs text-text-secondary mb-1">Precisión dimensional</label>
-                              <input
-                                type="text"
-                                value={variant.dimensionalAccuracy}
-                                onChange={(e) => {
-                                  const newVariants = [...formData.variants];
-                                  newVariants[index].dimensionalAccuracy = e.target.value;
-                                  setFormData({ ...formData, variants: newVariants });
-                                }}
-                                className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                                placeholder="±0.1mm"
-                              />
-                            </div>
-                            <div className="flex items-center gap-3 pt-4">
-                              <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  checked={variant.requiresSupport}
-                                  onChange={(e) => {
-                                    const newVariants = [...formData.variants];
-                                    newVariants[index].requiresSupport = e.target.checked;
-                                    setFormData({ ...formData, variants: newVariants });
-                                  }}
-                                  className="w-4 h-4 rounded border-border bg-surface-elevated text-primary focus:ring-1 focus:ring-primary"
-                                />
-                                <span className="text-xs text-text-secondary">Requiere soporte</span>
-                              </label>
-                            </div>
                           </div>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const newVariants = [...formData.variants];
-                              newVariants.splice(index, 1);
-                              setFormData({ ...formData, variants: newVariants });
-                            }}
-                            className="ml-2 p-2 hover:bg-red-500/20 rounded-lg text-text-muted hover:text-red-400 transition-colors"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                        <div>
-                          <label className="block text-xs text-text-secondary mb-1">Post-proceso</label>
-                          <input
-                            type="text"
-                            value={variant.postProcessing}
-                            onChange={(e) => {
-                              const newVariants = [...formData.variants];
-                              newVariants[index].postProcessing = e.target.value;
-                              setFormData({ ...formData, variants: newVariants });
-                            }}
-                            className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                            placeholder="Lijado, pintura, sellado..."
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-xs text-text-secondary mb-1">Especificaciones STL (interno)</label>
-                          <textarea
-                            value={variant.stlSpecs}
-                            onChange={(e) => {
-                              const newVariants = [...formData.variants];
-                              newVariants[index].stlSpecs = e.target.value;
-                              setFormData({ ...formData, variants: newVariants });
-                            }}
-                            className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                            rows={2}
-                            placeholder="Notas sobre perfil de impresión, ajustes, etc."
-                          />
                         </div>
                       </div>
                     ))}
                   </div>
-                )}
               </div>
 
               {/* Shipping Dimensions */}

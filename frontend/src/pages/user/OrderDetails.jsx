@@ -324,28 +324,27 @@ const OrderDetails = () => {
         </div>
       )}
 
-      {/* Header with Back Button */}
       <div className="mb-8">
         <button 
           onClick={() => navigate('/pedidos')}
-          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-4"
+          className="flex items-center gap-2 text-dark-600 hover:text-dark-900 transition-colors mb-4"
         >
           <ArrowLeft size={20} />
-          <span>Volver a mis pedidos</span>
+          <span className="font-medium">Volver a mis pedidos</span>
         </button>
         
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Pedido {order.orderNumber}</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-dark-900 tracking-tight">Pedido {order.orderNumber}</h1>
               <button 
                 onClick={() => copyToClipboard(order.orderNumber, 'order')}
-                className="text-primary-400 hover:text-primary-300 p-1"
+                className="text-primary-700 hover:text-primary-900 p-1 transition-colors"
               >
                 {copiedId === 'order' ? <Check size={16} /> : <Copy size={16} />}
               </button>
             </div>
-            <p className="text-sm text-text-secondary">Realizado el {formatFullDate(order.createdAt)}</p>
+            <p className="text-sm text-dark-600 font-medium">Realizado el {formatFullDate(order.createdAt)}</p>
           </div>
           
           <div className="flex items-center gap-3">
@@ -353,7 +352,7 @@ const OrderDetails = () => {
               <button
                 id="btn-cancel-order"
                 onClick={() => { setCancelError(null); setShowCancelModal(true); }}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500/50 transition-all text-sm font-medium"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-red-500/30 text-red-600 hover:bg-red-500/10 hover:border-red-500/50 transition-all text-sm font-bold"
               >
                 <XCircle size={16} />
                 Cancelar pedido
@@ -431,7 +430,7 @@ const OrderDetails = () => {
                       <div className="mt-4 pt-4 border-t border-border/50">
                         <Link
                           to={`/producto/${item.productSlug}`}
-                          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-br from-primary-500 to-pink-500 text-white font-bold py-2.5 px-6 rounded-xl hover:brightness-110 hover:-translate-y-[1px] hover:shadow-[0_6px_20px_rgba(168,85,247,0.35)] transition-all text-sm"
+                          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-br from-primary-500 to-primary-700 text-dark-900 font-bold py-2.5 px-6 rounded-xl hover:brightness-110 hover:-translate-y-[1px] hover:shadow-[0_6px_20px_rgba(201,168,76,0.35)] transition-all text-sm"
                         >
                           <Star size={16} className="text-yellow-400 fill-yellow-400" />
                           Calificar producto
@@ -539,7 +538,7 @@ const OrderDetails = () => {
                     href={getTrackingUrl(order.carrier, order.trackingNumber)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-2 w-full py-2 rounded-lg bg-primary hover:bg-primary-dark text-white font-bold transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-widest"
+                    className="mt-2 w-full py-2 rounded-lg bg-primary hover:bg-primary-dark text-dark-900 font-bold transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-widest"
                   >
                     <Truck size={14} />
                     Rastrear pedido

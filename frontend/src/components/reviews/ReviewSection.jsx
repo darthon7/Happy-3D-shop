@@ -100,15 +100,15 @@ export const ReviewSection = ({ productId }) => {
     <section className="mt-20 border-t border-gray-100 pt-16">
       <div className="flex justify-between items-end mb-8">
         <div>
-          <h2 className="text-3xl font-heading font-bold text-white">Reseñas de clientes</h2>
-          <p className="text-gray-400 mt-2">
+          <h2 className="text-3xl font-heading font-bold text-dark-900">Reseñas de clientes</h2>
+          <p className="text-dark-600 mt-2 font-medium">
             Lo que otros piensan sobre este producto
           </p>
         </div>
         {canReview && (
           <button
             onClick={() => setIsFormOpen(true)}
-            className="hidden sm:block bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-gray-200 transition-colors"
+            className="hidden sm:block bg-primary text-dark-900 px-6 py-3 rounded-full font-bold hover:bg-primary-dark transition-colors shadow-sm"
           >
             Escribir reseña
           </button>
@@ -122,7 +122,7 @@ export const ReviewSection = ({ productId }) => {
             {canReview && (
               <button
                 onClick={() => setIsFormOpen(true)}
-                className="mt-4 sm:hidden w-full bg-white text-black px-6 py-3.5 rounded-2xl font-medium hover:bg-gray-200 transition-colors"
+                className="mt-4 sm:hidden w-full bg-primary text-dark-900 px-6 py-3.5 rounded-2xl font-bold hover:bg-primary-dark transition-colors shadow-sm"
               >
                 Escribir reseña
               </button>
@@ -132,12 +132,12 @@ export const ReviewSection = ({ productId }) => {
 
         <div className="lg:col-span-7">
           {reviews.length === 0 ? (
-            <div className="text-center py-16 bg-gray-900/40 rounded-2xl border border-gray-800 border-dashed backdrop-blur-sm">
-              <StarRating rating={0} size={40} className="mx-auto mb-4 opacity-30 justify-center" />
-              <h3 className="text-xl font-heading font-semibold text-white mb-2">
+            <div className="text-center py-16 bg-surface/50 rounded-2xl border border-border border-dashed backdrop-blur-sm shadow-sm">
+              <StarRating rating={0} size={40} className="mx-auto mb-4 opacity-40 justify-center text-primary-300" />
+              <h3 className="text-xl font-heading font-semibold text-white mb-2 tracking-wide">
                 Aún no hay reseñas
               </h3>
-              <p className="text-gray-400 max-w-sm mx-auto">
+              <p className="text-text-muted max-w-sm mx-auto">
                 Sé el primero en compartir tu experiencia con este producto.
               </p>
             </div>
@@ -159,7 +159,7 @@ export const ReviewSection = ({ productId }) => {
                 <div className="pt-6 pb-2 text-center">
                   <button
                     onClick={() => fetchReviews(page + 1)}
-                    className="px-6 py-3 border border-gray-700 text-gray-300 font-medium rounded-full hover:border-white hover:text-white transition-colors"
+                    className="px-6 py-3 border border-border text-dark-700 font-bold rounded-full hover:border-primary hover:bg-primary/10 transition-colors"
                   >
                     Cargar más reseñas
                   </button>
