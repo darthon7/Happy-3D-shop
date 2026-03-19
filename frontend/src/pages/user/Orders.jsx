@@ -256,7 +256,7 @@ const Orders = ({ embedded = false }) => {
                         <div className="flex-1 min-w-0">
                           <h4 className="font-semibold text-white truncate">{item.productName}</h4>
                           <p className="text-sm text-gray-400">
-                            {item.size && <span className="mr-3">Talla: {item.size}</span>}
+                            {item.material && <span className="mr-3">Material: {item.material}</span>}
                             {item.color && <span>Color: {item.color}</span>}
                           </p>
                           <div className="flex items-center gap-4 mt-1">
@@ -442,7 +442,7 @@ const Orders = ({ embedded = false }) => {
                             <div className="flex-1 min-w-0">
                               <h4 className="font-medium text-white">{item.productName}</h4>
                               <p className="text-xs text-gray-400">
-                                {item.size && <span className="mr-3">Talla: {item.size}</span>}
+                                {item.material && <span className="mr-3">Material: {item.material}</span>}
                                 {item.color && <span>Color: {item.color}</span>}
                               </p>
                               

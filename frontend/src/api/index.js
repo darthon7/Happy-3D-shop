@@ -82,6 +82,15 @@ export const shippingApi = {
     api.post(`/shipping/track/verify-delivery/${orderId}`),
 };
 
+// EnvioClick Shipping API
+export const envioClickApi = {
+  getRates: (data) => api.post("/shipping/envioclick/rates", data),
+  trackOrder: (orderNumber) => api.get(`/shipping/envioclick/track/order/${orderNumber}`),
+  verifyDelivery: (orderId) =>
+    api.post(`/shipping/envioclick/track/verify-delivery/${orderId}`),
+  discoverEndpoints: () => api.post("/shipping/envioclick/discover"),
+};
+
 // Wishlist API
 export const wishlistApi = {
   get: () => api.get("/wishlist"),

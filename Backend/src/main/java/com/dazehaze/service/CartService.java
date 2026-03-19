@@ -33,12 +33,10 @@ public class CartService {
         ProductVariant variant = productVariantRepository.findById(request.getVariantId())
                 .orElseThrow(() -> new RuntimeException("Product variant not found"));
 
-        // Check stock
         if (variant.getStock() < request.getQuantity()) {
             throw new RuntimeException("Not enough stock available. Available: " + variant.getStock());
         }
 
-        // Check if item already exists in cart
         CartItem existingItem = cartItemRepository.findByCartIdAndProductVariantId(cart.getId(), variant.getId())
                 .orElse(null);
 
@@ -70,7 +68,6 @@ public class CartService {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Cart item not found"));
 
-        // Check stock
         if (item.getProductVariant().getStock() < request.getQuantity()) {
             throw new RuntimeException("Not enough stock. Available: " + item.getProductVariant().getStock());
         }
@@ -136,12 +133,10 @@ public class CartService {
         Cart userCart = cartRepository.findByUserId(userId).orElse(null);
 
         if (userCart == null) {
-            // Transfer guest cart to user
             guestCart.setSessionId(null);
             guestCart.setUser(User.builder().id(userId).build());
             cartRepository.save(guestCart);
         } else {
-            // Merge items
             for (CartItem guestItem : guestCart.getItems()) {
                 CartItem existingItem = userCart.getItems().stream()
                         .filter(i -> i.getProductVariant().getId().equals(guestItem.getProductVariant().getId()))
@@ -167,11 +162,10 @@ public class CartService {
     @Transactional
     public Cart getCartEntity(Long userId, String sessionId) {
         Cart cart = getOrCreateCart(userId, sessionId);
-        cart.getItems().size(); // Initialize lazy collection
+        cart.getItems().size();
         return cart;
     }
 
-    // Helper methods
     public Cart getOrCreateCart(Long userId, String sessionId) {
         if (userId != null) {
             return cartRepository.findByUserId(userId)
@@ -216,11 +210,9 @@ public class CartService {
         ProductVariant variant = item.getProductVariant();
         Product product = variant.getProduct();
 
-        // Try to get main image first, then fallback to first available image
         String imageUrl = productImageRepository.findByProductIdAndIsMainTrue(product.getId())
                 .map(ProductImage::getUrl)
                 .orElseGet(() -> {
-                    // Fallback: get first image from product's images
                     if (product.getImages() != null && !product.getImages().isEmpty()) {
                         return product.getImages().get(0).getUrl();
                     }
@@ -233,7 +225,7 @@ public class CartService {
                 .productName(product.getName())
                 .productSlug(product.getSlug())
                 .sku(variant.getSku())
-                .size(variant.getSize())
+                .material(variant.getMaterial())
                 .color(variant.getColor())
                 .imageUrl(imageUrl)
                 .quantity(item.getQuantity())

@@ -39,8 +39,7 @@ public class ProductService {
         }
 
         public PageResponse<ProductListResponse> getProductsByCategory(Long categoryId, int page, int size,
-                        String sortBy,
-                        String sortDir) {
+                        String sortBy, String sortDir) {
                 Pageable pageable = createPageable(page, size, sortBy, sortDir);
                 Page<Product> productPage = productRepository.findByCategoryIdAndIsActiveTrue(categoryId, pageable);
                 return mapToPageResponse(productPage);
@@ -65,7 +64,6 @@ public class ProductService {
                         Product product = productRepository.findBySlug(slug)
                                         .orElseThrow(() -> new RuntimeException("Product not found: " + slug));
 
-                        // Load collections with separate queries to avoid MultipleBagFetchException
                         List<ProductImage> images = productImageRepository
                                         .findByProductIdOrderBySortOrderAsc(product.getId());
                         List<ProductVariant> variants = productVariantRepository.findByProductId(product.getId());
@@ -95,7 +93,6 @@ public class ProductService {
                                 .collect(Collectors.toList());
         }
 
-        // Mappers
         private Pageable createPageable(int page, int size, String sortBy, String sortDir) {
                 Sort sort = "desc".equalsIgnoreCase(sortDir)
                                 ? Sort.by(sortBy).descending()
@@ -128,7 +125,7 @@ public class ProductService {
                                 .map(ProductImage::getUrl)
                                 .orElse(product.getImages().isEmpty() ? null : product.getImages().get(0).getUrl());
 
-                List<String> sizes = productVariantRepository.findDistinctSizesByProductId(product.getId());
+                List<String> materials = productVariantRepository.findDistinctMaterialsByProductId(product.getId());
                 List<String> colors = productVariantRepository.findDistinctColorsByProductId(product.getId());
 
                 boolean isLowStock = product.getVariants().stream()
@@ -146,9 +143,9 @@ public class ProductService {
                                 .distinct()
                                 .collect(Collectors.toList());
 
-                List<ProductListResponse.SimpleVariant> simpleVariants = product.getVariants().stream()
+                List<ProductListResponse.SimpleMaterial> simpleMaterials = product.getVariants().stream()
                                 .filter(v -> !Boolean.FALSE.equals(v.getIsActive()))
-                                .map(v -> ProductListResponse.SimpleVariant.builder()
+                                .map(v -> ProductListResponse.SimpleMaterial.builder()
                                                 .id(v.getId())
                                                 .sku(v.getSku())
                                                 .stock(v.getStock())
@@ -172,9 +169,9 @@ public class ProductService {
                                 .averageRating(avgRating)
                                 .reviewCount(reviewCount)
                                 .isLowStock(isLowStock)
-                                .availableSizes(sizes)
+                                .availableMaterials(materials)
                                 .availableColors(colorInfos)
-                                .variants(simpleVariants)
+                                .materials(simpleMaterials)
                                 .build();
         }
 
@@ -189,9 +186,9 @@ public class ProductService {
                                 .map(ProductImage::getUrl)
                                 .orElse(imagesList.isEmpty() ? null : imagesList.get(0).getUrl());
 
-                List<ProductResponse.VariantInfo> variants = variantsList.stream()
+                List<ProductResponse.MaterialInfo> materials = variantsList.stream()
                                 .filter(v -> !Boolean.FALSE.equals(v.getIsActive()))
-                                .map(v -> mapToVariantInfo(v, product))
+                                .map(v -> mapToMaterialInfo(v, product))
                                 .collect(Collectors.toList());
 
                 List<ProductResponse.ImageInfo> images = imagesList.stream()
@@ -222,7 +219,7 @@ public class ProductService {
                                 .discountPercentage(product.getDiscountPercentage())
                                 .mainImageUrl(mainImageUrl)
                                 .category(categoryInfo)
-                                .variants(variants)
+                                .materials(materials)
                                 .images(images)
                                 .averageRating(avgRating)
                                 .reviewCount(reviewCount)
@@ -230,32 +227,39 @@ public class ProductService {
         }
 
         private ProductResponse mapToProductResponse(Product product) {
-                // For backward compatibility, load collections and call the overloaded method
                 List<ProductImage> images = productImageRepository.findByProductIdOrderBySortOrderAsc(product.getId());
                 List<ProductVariant> variants = productVariantRepository.findByProductId(product.getId());
                 return mapToProductResponse(product, images, variants);
         }
 
-        private ProductResponse.VariantInfo mapToVariantInfo(ProductVariant variant, Product product) {
-                // Calculate finalPrice and isLowStock using product passed in, not
-                // variant.product (which is LAZY)
+        private ProductResponse.MaterialInfo mapToMaterialInfo(ProductVariant variant, Product product) {
                 BigDecimal finalPrice = product.getCurrentPrice().add(
                                 variant.getPriceAdjustment() != null ? variant.getPriceAdjustment() : BigDecimal.ZERO);
                 boolean isLowStock = variant
-                                .getStock() <= (product.getLowStockThreshold() != null ? product.getLowStockThreshold()
-                                                : 5);
+                                .getStock() <= (product.getLowStockThreshold() != null ? product.getLowStockThreshold() : 5);
                 boolean isOutOfStock = variant.getStock() <= 0;
 
-                return ProductResponse.VariantInfo.builder()
+                return ProductResponse.MaterialInfo.builder()
                                 .id(variant.getId())
                                 .sku(variant.getSku())
-                                .size(variant.getSize())
+                                .material(variant.getMaterial())
                                 .color(variant.getColor())
                                 .colorHex(variant.getColorHex())
                                 .stock(variant.getStock())
+                                .priceAdjustment(variant.getPriceAdjustment())
                                 .finalPrice(finalPrice)
                                 .isLowStock(isLowStock)
                                 .isOutOfStock(isOutOfStock)
+                                .isActive(variant.getIsActive())
+                                .estimatedPrintMinutes(variant.getEstimatedPrintMinutes())
+                                .weightGrams(variant.getWeightGrams())
+                                .infillOptions(variant.getInfillOptions())
+                                .layerHeightOptions(variant.getLayerHeightOptions())
+                                .requiresSupport(variant.getRequiresSupport())
+                                .postProcessing(variant.getPostProcessing())
+                                .dimensionalAccuracy(variant.getDimensionalAccuracy())
+                                .printTechnology(variant.getPrintTechnology())
+                                .stlSpecs(variant.getStlSpecs())
                                 .build();
         }
 

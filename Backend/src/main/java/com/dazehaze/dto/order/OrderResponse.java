@@ -63,7 +63,7 @@ public class OrderResponse {
         private String productSlug;
         private String productName;
         private String productSku;
-        private String size;
+        private String material;
         private String color;
         private String imageUrl;
         private Integer quantity;

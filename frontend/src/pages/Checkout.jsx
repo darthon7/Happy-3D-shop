@@ -20,7 +20,7 @@ import {
 import { useCartStore, useAuthStore } from '../stores';
 import toast from 'react-hot-toast';
 import { MEXICO_STATES, CITIES_BY_STATE } from '../data/mexicoData';
-import { ordersApi, userApi, paymentApi, shippingApi, zipCodeApi } from '../api';
+import { ordersApi, userApi, paymentApi, shippingApi, envioClickApi, zipCodeApi } from '../api';
 import { validateField } from '../lib/validation';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY || 'pk_test_placeholder');
@@ -110,17 +110,54 @@ const Checkout = () => {
     setShippingRates([]);
     setSelectedRate(null);
     try {
-        const res = await shippingApi.getRates({
+        const requestData = {
            shippingStreet: formData.address,
            shippingCity: formData.city,
            shippingState: formData.state,
            shippingPostalCode: formData.postalCode,
            shippingCountry: formData.country,
            shippingStreetLine2: formData.apartment
-        });
-        setShippingRates(res.data);
-        if (res.data.length === 0) setRatesError("No se encontraron tarifas para esta dirección.");
-        else toast.success("Tarifas calculadas");
+        };
+
+        const [enviaRes, clickRes] = await Promise.allSettled([
+            shippingApi.getRates(requestData),
+            envioClickApi.getRates(requestData)
+        ]);
+
+        let allRates = [];
+
+        if (enviaRes.status === 'fulfilled' && Array.isArray(enviaRes.value.data)) {
+            const tasaEnvias = enviaRes.value.data.map(rate => ({
+                ...rate,
+                id: `envia_${rate.id}`,
+                providerLabel: 'Envia.com'
+            }));
+            allRates.push(...tasaEnvias);
+            console.log(`Envia.com: ${tasaEnvias.length} tarifas`);
+        } else {
+            console.warn('Envia.com falló:', enviaRes.reason?.message || 'sin respuesta');
+        }
+
+        if (clickRes.status === 'fulfilled' && Array.isArray(clickRes.value.data)) {
+            const tasaClick = clickRes.value.data.map(rate => ({
+                ...rate,
+                id: `envioclick_${rate.id}`,
+                providerLabel: 'EnvioClickPro'
+            }));
+            allRates.push(...tasaClick);
+            console.log(`EnvioClickPro: ${tasaClick.length} tarifas`);
+        } else {
+            console.warn('EnvioClickPro falló:', clickRes.reason?.message || 'sin respuesta');
+        }
+
+        allRates.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+        setShippingRates(allRates);
+
+        if (allRates.length === 0) {
+            setRatesError("No se encontraron tarifas para esta dirección.");
+        } else {
+            toast.success(`${allRates.length} tarifas encontradas`);
+        }
     } catch (err) {
         console.error(err);
         setRatesError("Error al cargar tarifas.");
@@ -404,32 +441,43 @@ const Checkout = () => {
                   </div>
                 )}
                 
-                {shippingRates.length > 0 ? (
-                  <div className="grid grid-cols-1 gap-3">
-                    {shippingRates.map(rate => (
-                      <label key={rate.id} className={`flex items-center justify-between p-4 rounded-[4px] border cursor-pointer transition-all ${
-                          selectedRate?.id === rate.id
-                          ? 'border-[#C9A84C] bg-[#C9A84C]/5' 
-                          : 'border-[#C9A84C]/10 hover:border-[#C9A84C]/30'
-                      }`}>
-                          <div className="flex items-center gap-4">
-                            <input 
-                                type="radio"
-                                name="shippingRate"
-                                checked={selectedRate?.id === rate.id}
-                                onChange={() => setSelectedRate(rate)}
-                                className="h-5 w-5 text-[#C9A84C] focus:ring-[#C9A84C]"
-                            />
-                            <div className="flex flex-col">
-                                <span className="font-bold text-[#2C1F0E] text-sm">{rate.provider}</span>
-                                <span className="text-[#2C1F0E]/50 text-xs italic">{rate.serviceName} • {rate.estimatedDays} días</span>
+                  {shippingRates.length > 0 ? (
+                    <div className="grid grid-cols-1 gap-3">
+                      {shippingRates.map(rate => (
+                        <label key={rate.id} className={`flex items-center justify-between p-4 rounded-[4px] border cursor-pointer transition-all ${
+                            selectedRate?.id === rate.id
+                            ? 'border-[#C9A84C] bg-[#C9A84C]/5' 
+                            : 'border-[#C9A84C]/10 hover:border-[#C9A84C]/30'
+                        }`}>
+                            <div className="flex items-center gap-4">
+                              <input 
+                                  type="radio"
+                                  name="shippingRate"
+                                  checked={selectedRate?.id === rate.id}
+                                  onChange={() => setSelectedRate(rate)}
+                                  className="h-5 w-5 text-[#C9A84C] focus:ring-[#C9A84C]"
+                              />
+                              <div className="flex flex-col">
+                                  <div className="flex items-center gap-2">
+                                    <span className="font-bold text-[#2C1F0E] text-sm">{rate.provider}</span>
+                                    {rate.providerLabel && (
+                                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                        rate.providerLabel === 'Envia.com' 
+                                          ? 'bg-blue-100 text-blue-700' 
+                                          : 'bg-green-100 text-green-700'
+                                      }`}>
+                                        {rate.providerLabel}
+                                      </span>
+                                    )}
+                                  </div>
+                                  <span className="text-[#2C1F0E]/50 text-xs italic">{rate.serviceName} • {rate.estimatedDays} días</span>
+                              </div>
                             </div>
-                          </div>
-                          <span className="font-black text-[#1B2A5E]">${parseFloat(rate.price).toFixed(2)}</span>
-                      </label>
-                    ))}
-                  </div>
-                ) : (
+                            <span className="font-black text-[#1B2A5E]">${parseFloat(rate.price).toFixed(2)}</span>
+                        </label>
+                      ))}
+                    </div>
+                  ) : (
                   <div className="p-10 rounded-[4px] border-2 border-dashed border-[#C9A84C]/10 text-center bg-[#F5F0E8]/30">
                       <p className="text-[#2C1F0E]/40 text-sm italic">
                           Ingresa tu dirección arriba para ver las opciones de mensajería disponibles.
@@ -456,7 +504,7 @@ const Checkout = () => {
                     <div className="flex flex-col justify-center flex-1">
                       <p className="text-[#2C1F0E] text-sm font-bold leading-tight">{item.productName}</p>
                       <p className="text-[#2C1F0E]/50 text-[10px] uppercase font-bold mt-1">
-                          {item.size && `${item.size}`} {item.color && `/ ${item.color}`}
+                          {item.material && `${item.material}`} {item.color && `/ ${item.color}`}
                       </p>
                     </div>
                     <span className="text-[#1B2A5E] font-bold text-sm">${(item.unitPrice * item.quantity).toFixed(2)}</span>

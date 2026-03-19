@@ -21,15 +21,9 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant, 
 
     List<ProductVariant> findByProductIdAndIsActiveTrue(Long productId);
 
-    @Query("SELECT pv FROM ProductVariant pv WHERE pv.product.id = :productId AND pv.size = :size AND pv.color = :color")
-    Optional<ProductVariant> findByProductAndSizeAndColor(
-            @Param("productId") Long productId,
-            @Param("size") String size,
-            @Param("color") String color);
+    @Query("SELECT DISTINCT pv.material FROM ProductVariant pv WHERE pv.product.id = :productId AND pv.isActive = true AND pv.material IS NOT NULL")
+    List<String> findDistinctMaterialsByProductId(@Param("productId") Long productId);
 
-    @Query("SELECT DISTINCT pv.size FROM ProductVariant pv WHERE pv.product.id = :productId AND pv.isActive = true")
-    List<String> findDistinctSizesByProductId(@Param("productId") Long productId);
-
-    @Query("SELECT DISTINCT pv.color FROM ProductVariant pv WHERE pv.product.id = :productId AND pv.isActive = true")
+    @Query("SELECT DISTINCT pv.color FROM ProductVariant pv WHERE pv.product.id = :productId AND pv.isActive = true AND pv.color IS NOT NULL")
     List<String> findDistinctColorsByProductId(@Param("productId") Long productId);
 }

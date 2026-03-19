@@ -301,12 +301,12 @@ public class OrderNotificationService {
             notificationService.createForAdmin(
                     NotificationType.LOW_STOCK,
                     "Stock bajo ⚠️",
-                    "Stock bajo: " + product.getName() + " (" + variant.getSize() + ", " + variant.getColor()
+                    "Stock bajo: " + product.getName() + " (" + variant.getMaterial() + ", " + variant.getColor()
                             + ") - Solo quedan " + variant.getStock() + " unidades",
                     "/admin/productos");
 
             log.info("Low stock notification sent for variant: {}/{} - {} units",
-                    product.getName(), variant.getSize(), variant.getStock());
+                    product.getName(), variant.getMaterial(), variant.getStock());
         } catch (Exception e) {
             log.error("Failed to send low stock notification: {}", e.getMessage());
         }
@@ -320,11 +320,11 @@ public class OrderNotificationService {
             notificationService.createForAdmin(
                     NotificationType.OUT_OF_STOCK,
                     "Producto agotado ❌",
-                    "AGOTADO: " + product.getName() + " (" + variant.getSize() + ", " + variant.getColor() + ")",
+                    "AGOTADO: " + product.getName() + " (" + variant.getMaterial() + ", " + variant.getColor() + ")",
                     "/admin/productos");
 
             log.info("Out of stock notification sent for variant: {}/{}",
-                    product.getName(), variant.getSize());
+                    product.getName(), variant.getMaterial());
         } catch (Exception e) {
             log.error("Failed to send out of stock notification: {}", e.getMessage());
         }

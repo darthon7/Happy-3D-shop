@@ -480,7 +480,7 @@ const AdminOrders = () => {
                             <div className="flex-1 min-w-0">
                               <p className="font-medium text-white truncate">{item.productName}</p>
                               <p className="text-sm text-text-secondary">
-                                {item.color} / {item.size} × {item.quantity}
+                                {item.color} / {item.material} × {item.quantity}
                               </p>
                             </div>
                             <span className="font-semibold text-white font-mono">

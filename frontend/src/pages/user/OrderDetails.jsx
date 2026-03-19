@@ -144,7 +144,7 @@ const OrderDetails = () => {
 
   const buildWhatsAppUrl = (orderData) => {
     const productsList = orderData.items
-      .map(item => `• ${item.productName} (Talla: ${item.size || 'N/A'}, Color: ${item.color || 'N/A'})`)
+      .map(item => `• ${item.productName} (Material: ${item.material || 'N/A'}, Color: ${item.color || 'N/A'})`)
       .join('\n');
 
     const message = encodeURIComponent(
@@ -405,9 +405,9 @@ const OrderDetails = () => {
                     <h3 className="text-base font-bold text-white mb-1 line-clamp-1">{item.productName}</h3>
                     
                     <div className="flex flex-wrap gap-1.5 mb-2">
-                      {item.size && (
+                      {item.material && (
                         <span className="px-2 py-0.5 bg-white/5 rounded text-[10px] text-text-secondary border border-border">
-                          Talla: <span className="text-white font-bold">{item.size}</span>
+                          Material: <span className="text-white font-bold">{item.material}</span>
                         </span>
                       )}
                       {item.color && (

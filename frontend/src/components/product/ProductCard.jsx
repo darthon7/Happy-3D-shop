@@ -30,7 +30,8 @@ const ProductCard = ({ product }) => {
       return;
     }
     
-    const variant = product.variants?.find(v => v.stock > 0) || product.variants?.[0];
+    const mats = product.materials || product.variants || [];
+    const variant = mats.find(v => v.stock > 0) || mats[0];
     if (!variant) {
       toast.error('Producto sin stock');
       return;
@@ -141,7 +142,7 @@ const ProductCard = ({ product }) => {
           </div>
           <button 
             onClick={handleAddToCart}
-            disabled={addingToCart || !product.variants?.some(v => v.stock > 0)}
+            disabled={addingToCart || !(product.materials || product.variants || []).some(v => v.stock > 0)}
             className="w-full bg-[#C9A84C] hover:bg-[#b8943e] text-[#1B2A5E] px-4 py-2.5 rounded-[8px] text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {addingToCart ? 'Agregando...' : 'Agregar al Carrito'}

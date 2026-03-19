@@ -32,7 +32,7 @@ public class CartResponse {
         private String productName;
         private String productSlug;
         private String sku;
-        private String size;
+        private String material;
         private String color;
         private String imageUrl;
         private Integer quantity;
